@@ -1,196 +1,202 @@
+import 'tailwindcss/tailwind.css'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
+import { useRef, useState } from 'react';
+import isSvg from 'is-svg';
+
+import TEMPLATES from '../templates/templates';
+
+import FullScreenLoading from '../components/full-screen-loading';
+import Icon from '../components/icon';
+
+import CopyToClipboard from '../utils/copy-to-clipboard';
+
+const CodeEditor = dynamic(
+  () => import('./code-editor'),
+  { ssr: false },
+)
 
 export default function Home() {
+  const [svgString, setSvgString] = useState("// paste your SVG here");
+  const [componentString, setComponentString] = useState("");
+  const [framework, setFramework] = useState("react");
+  const [editorMode, setEditorMode] = useState("javascript");
+  const [sourceEditorReady, setSourceEditorReady] = useState(false);
+  const [resultEditorReady, setResultEditorReady] = useState(false);
+  const sourceRef = useRef(null);
+  const resultRef = useRef(null);
+
+  const templates = {
+    react: (svg) => TEMPLATES.react.replace('%content%', svg),
+    preact: (svg) => TEMPLATES.preact.replace('%content%', svg),
+    vue: (svg) => TEMPLATES.vue.replace('%content%', svg),
+    angular: (svg) => TEMPLATES.angular.replace('%content%', svg)
+  }
+
+  const frameworks = [
+    { label: 'React', framework: 'react', mode: 'javascript' },
+    { label: 'Preact', framework: 'preact', mode: 'javascript' },
+    { label: 'Vue 2/3', framework: 'vue', mode: 'javascript' },
+    { label: 'Angular +2', framework: 'angular', mode: 'typescript' },
+  ]
+
+  async function onChange(value) {
+    if (!isSvg(value)) return;
+
+    setSvgString(value);
+    value = await httpFormatCode(value, 'svg');
+
+    if (!value) return;
+    value = value.replace(/>;/g, '>');
+    setSvgString(value);
+
+    const { stroke, fill, viewBox, content } = getSvgData(value);
+    const svgFormat = getSvgFormat({ stroke, fill, viewBox, content });
+
+    if (!svgFormat) return Promise.resolve('');
+
+    const script = templates[framework](svgFormat);
+    await httpFormatCode(script);
+  }
+
+  function onSourceLoad() {
+    setSourceEditorReady(true);
+  }
+
+  function onResultLoad() {
+    setResultEditorReady(true);
+  }
+
+  function getSvgData(value) {
+    let match = "";
+    match = value.match(/viewBox=["'"]([^\\"']+)+/i);
+    const [, viewBox = ""] = match || [];
+
+    match = value.match(/fill=["'"]([^\\"']+)+/i);
+    const [, fill = ""] = match || [];
+
+    match = value.match(/stroke=["'"]([^\\"']+)+/i);
+    const [, stroke = ""] = match || [];
+
+    match = value.match(/<svg[^>]+>([^]+)<\/svg>/i);
+    const [, content = ""] = match || [];
+
+    return { stroke, fill, viewBox, content };
+  }
+
+  async function onFrameworkChange(fw) {
+    await setFramework(fw.framework);
+    await setEditorMode(fw.mode);
+    const { stroke, fill, viewBox, content } = getSvgData(svgString);
+    const svgFormat = getSvgFormat({ stroke, fill, viewBox, content, fw: fw.framework });
+
+    const script = templates[fw.framework || framework](svgFormat);
+    httpFormatCode(script, fw.framework);
+  }
+
+  function getSvgFormat({ stroke, fill, viewBox, content, fw }) {
+    const style = {
+      react: `style={{ width, height }}`,
+      vue: `:style="{ width, height }"`,
+      angular: `[style]="style"`,
+    }[fw || framework];
+
+    return `<svg
+      x="0px"
+      y="0px"
+      stroke="${stroke}"
+      fill="${fill}"
+      viewBox="${viewBox}"
+      ${style}
+    >
+      ${content}
+    </svg>
+    `;
+  }
+
+  async function httpFormatCode(script, fw) {
+    const code = await fetch('/api', {
+      method: 'POST',
+      body: JSON.stringify({
+        script,
+        framework: fw || framework,
+      }),
+    }).then(i => i.json())
+    .then(({ code }) => code);
+
+    setComponentString(code);
+
+    return code;
+  }
+
+  function onClickCopyResult() {
+    CopyToClipboard(componentString);
+  }
+
   return (
-    <div className="container">
+    <div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
       <Head>
-        <title>Create Next App</title>
+        <title>Icon library builder</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <main className="flex flex-col items-center w-full justify-start flex-grow">
+        <header
+          className="h-16 bg-gray-800 w-full flex items-center justify-center text-white text-sm"
+        >
+          icon library <Icon className="text-gray-400" width="50" height="50" /> builder
+        </header>
+        <div className="flex w-full h-full relative">
+          {!sourceEditorReady && !resultEditorReady ? <FullScreenLoading /> : null}
+          <div className="Source h-full w-full">
+            <CodeEditor
+              ref={sourceRef}
+              name="source"
+              onChange={onChange}
+              value={svgString}
+              onLoad={onSourceLoad}
+            />
+          </div>
+          <div className="Result w-full pl-4 h-full flex flex-col" suppressHydrationWarning={true}>
+            {componentString && <button
+              onClick={onClickCopyResult}
+              className="px-3 py-2 rounded-sm absolute right-10 top-20 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
+            >copy</button>}
 
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+            <div className="Result__format">
+              <ul className="text-xs text-white flex bg-gray-700 p-2">
+                {frameworks.map((fw, key) => {
+                  return <li
+                    className={[
+                      "mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer",
+                      fw.framework === framework ? 'bg-gray-400' : 'bg-gray-700'
+                    ].join(' ')}
+                    key={key}
+                    onClick={() => onFrameworkChange(fw)}
+                  >
+                    {fw.label}
+                  </li>
+                })}
+              </ul>
+            </div>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            <CodeEditor
+              ref={resultRef}
+              name="result"
+              value={componentString}
+              readOnly
+              mode={editorMode}
+              onLoad={onResultLoad}
+            />
+          </div>
         </div>
       </main>
 
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
+      <footer className="p-4 text-xs text-white">
+        made by <a href="https://dimaslz.dev" className="text-gray-400 hover:text-gray-300" target="_blank">dimaslz.dev</a> · <a href="https://www.linkedin.com/in/dimaslopezzurita/" className="text-gray-400 hover:text-gray-300" target="_blank">in</a>
       </footer>
 
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
+      {/* <style jsx global>{`
         html,
         body {
           padding: 0;
@@ -203,7 +209,7 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style>
+      `}</style> */}
     </div>
   )
 }
