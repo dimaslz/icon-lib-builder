@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css';
 
 import Head from 'next/head';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import isSvg from 'is-svg';
 
 import TEMPLATES from '../templates/templates';
@@ -12,7 +12,12 @@ import CodeEditor from '../components/code-editor';
 
 import CopyToClipboard from '../utils/copy-to-clipboard';
 
-export default function Home() {
+type Framework = {
+  framework: string;
+  label: string;
+  mode: string;
+}
+export default function Home(): JSX.Element {
   const [svgString, setSvgString] = useState("// paste your SVG here");
   const [componentString, setComponentString] = useState("");
   const [framework, setFramework] = useState("react");
@@ -20,21 +25,21 @@ export default function Home() {
   const [sourceEditorReady, setSourceEditorReady] = useState(false);
   const [resultEditorReady, setResultEditorReady] = useState(false);
 
-  const templates = {
-    react: (svg) => TEMPLATES.react.replace('%content%', svg),
-    preact: (svg) => TEMPLATES.preact.replace('%content%', svg),
-    vue: (svg) => TEMPLATES.vue.replace('%content%', svg),
-    angular: (svg) => TEMPLATES.angular.replace('%content%', svg)
+  const templates: { [key: string]: (svg: string) => {} } = {
+    react: (svg: string): string => TEMPLATES.react.replace('%content%', svg),
+    preact: (svg: string): string => TEMPLATES.preact.replace('%content%', svg),
+    vue: (svg: string): string => TEMPLATES.vue.replace('%content%', svg),
+    angular: (svg: string): string => TEMPLATES.angular.replace('%content%', svg)
   }
 
-  const frameworks = [
+  const frameworks: Framework[] = [
     { label: 'React', framework: 'react', mode: 'javascript' },
     { label: 'Preact', framework: 'preact', mode: 'javascript' },
     { label: 'Vue 2/3', framework: 'vue', mode: 'javascript' },
     { label: 'Angular +2', framework: 'angular', mode: 'typescript' },
   ]
 
-  async function onChange(value) {
+  async function onChange(value: string): Promise<string | void> {
     if (!isSvg(value)) return;
 
     setSvgString(value);
@@ -49,7 +54,7 @@ export default function Home() {
 
     if (!svgFormat) return Promise.resolve('');
 
-    const script = templates[framework](svgFormat);
+    const script = templates[framework](svgFormat) as string;
     await httpFormatCode(script);
   }
 
@@ -61,8 +66,8 @@ export default function Home() {
     setResultEditorReady(true);
   }
 
-  function getSvgData(value) {
-    let match = "";
+  function getSvgData(value: string) {
+    let match: RegExpMatchArray | null = null;
     match = value.match(/viewBox=["'"]([^\\"']+)+/i);
     const [, viewBox = ""] = match || [];
 
@@ -78,17 +83,23 @@ export default function Home() {
     return { stroke, fill, viewBox, content };
   }
 
-  async function onFrameworkChange(fw) {
+  async function onFrameworkChange(fw: Framework) {
     await setFramework(fw.framework);
     await setEditorMode(fw.mode);
     const { stroke, fill, viewBox, content } = getSvgData(svgString);
     const svgFormat = getSvgFormat({ stroke, fill, viewBox, content, fw: fw.framework });
 
-    const script = templates[fw.framework || framework](svgFormat);
+    const script = templates[fw.framework || framework](svgFormat) as string;
     httpFormatCode(script, fw.framework);
   }
 
-  function getSvgFormat({ stroke, fill, viewBox, content, fw }) {
+  function getSvgFormat({ stroke, fill, viewBox, content, fw }: {
+    stroke: string,
+    fill: string,
+    viewBox: string,
+    content: string,
+    fw?: string,
+  }) {
     const style = {
       react: `style={{ width, height }}`,
       vue: `:style="{ width, height }"`,
@@ -108,7 +119,7 @@ export default function Home() {
     `;
   }
 
-  async function httpFormatCode(script, fw) {
+  async function httpFormatCode(script: string, fw?: string) {
     const code = await fetch('/api', {
       method: 'POST',
       body: JSON.stringify({
@@ -190,21 +201,6 @@ export default function Home() {
       <footer className="p-4 text-xs text-white">
         made by <a href="https://dimaslz.dev" className="text-gray-400 hover:text-gray-300" target="_blank">dimaslz.dev</a> · <a href="https://www.linkedin.com/in/dimaslopezzurita/" className="text-gray-400 hover:text-gray-300" target="_blank">in</a>
       </footer>
-
-      {/* <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style> */}
     </div>
   )
 }

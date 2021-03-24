@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic'
 
 const AceEditor = dynamic(
@@ -17,22 +17,23 @@ const AceEditor = dynamic(
   ssr: false,
 })
 
+type CodeEditorType = {
+	value: string;
+	name: string;
+	onChange?: (value?: any) => void;
+	onLoad: (value?: any) => void;
+	readOnly?: boolean;
+	mode?: string;
+}
 
 export default function CodeEditor({
 	value = "",
-	name,
+	name = "",
 	onChange = () => { },
 	onLoad = () => { },
 	readOnly = false,
-	beautify = false,
 	mode = 'javascript'
-}) {
-	useEffect(() => {
-		if (beautify) {
-			const Beautify = require('ace-builds/src-noconflict/ext-beautify').default;
-			Beautify.beautify(editor.current.editor.session);
-		}
-	}, [value])
+}: CodeEditorType) {
 
 	return (
 		<AceEditor

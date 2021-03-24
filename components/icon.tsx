@@ -1,6 +1,10 @@
 import React from "react";
 
-function Icon({ width = 24, height = 24, className }) {
+function Icon({ width = 24, height = 24, className }: {
+	width: string | number,
+	height: string | number,
+	className: string,
+}) {
   return (
 		<svg
 			className={className}
