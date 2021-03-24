@@ -63,9 +63,9 @@ export default {
   // A set of global variables that need to be available in all test environments
   // globals: {},
   globals: {
-    'ts-jest': {
-      diagnostics: true,
-    },
+    "ts-jest": {
+      "tsconfig": "tsconfig.jest.json"
+    }
   },
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
@@ -167,7 +167,7 @@ export default {
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  // "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
@@ -204,4 +204,15 @@ export default {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  moduleNameMapper: {
+    "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+  },
+  testMatch: [
+    "**/*.(test|spec).(js|ts|tsx)"
+  ],
+  testPathIgnorePatterns: [
+    "./.next/",
+    "./node_modules/"
+  ],
 };
