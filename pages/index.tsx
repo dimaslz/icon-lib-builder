@@ -58,14 +58,6 @@ export default function Home(): JSX.Element {
     await httpFormatCode(script);
   }
 
-  function onSourceLoad() {
-    setSourceEditorReady(true);
-  }
-
-  function onResultLoad() {
-    setResultEditorReady(true);
-  }
-
   function getSvgData(value: string) {
     let match: RegExpMatchArray | null = null;
     match = value.match(/viewBox=["'"]([^\\"']+)+/i);
