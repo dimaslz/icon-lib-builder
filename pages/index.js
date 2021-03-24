@@ -1,20 +1,16 @@
-import 'tailwindcss/tailwind.css'
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
-import { useRef, useState } from 'react';
+import 'tailwindcss/tailwind.css';
+
+import Head from 'next/head';
+import { useState } from 'react';
 import isSvg from 'is-svg';
 
 import TEMPLATES from '../templates/templates';
 
 import FullScreenLoading from '../components/full-screen-loading';
 import Icon from '../components/icon';
+import CodeEditor from '../components/code-editor';
 
 import CopyToClipboard from '../utils/copy-to-clipboard';
-
-const CodeEditor = dynamic(
-  () => import('./code-editor'),
-  { ssr: false },
-)
 
 export default function Home() {
   const [svgString, setSvgString] = useState("// paste your SVG here");
@@ -23,8 +19,6 @@ export default function Home() {
   const [editorMode, setEditorMode] = useState("javascript");
   const [sourceEditorReady, setSourceEditorReady] = useState(false);
   const [resultEditorReady, setResultEditorReady] = useState(false);
-  const sourceRef = useRef(null);
-  const resultRef = useRef(null);
 
   const templates = {
     react: (svg) => TEMPLATES.react.replace('%content%', svg),
@@ -150,14 +144,16 @@ export default function Home() {
           {!sourceEditorReady && !resultEditorReady ? <FullScreenLoading /> : null}
           <div className="Source h-full w-full">
             <CodeEditor
-              ref={sourceRef}
               name="source"
               onChange={onChange}
               value={svgString}
               onLoad={onSourceLoad}
             />
           </div>
-          <div className="Result w-full pl-4 h-full flex flex-col" suppressHydrationWarning={true}>
+          <div className={[
+            "Result w-full pl-4 h-full flex flex-col",
+            !componentString ? 'pointer-events-none opacity-50' : ''
+          ].join(' ')} suppressHydrationWarning={true}>
             {componentString && <button
               onClick={onClickCopyResult}
               className="px-3 py-2 rounded-sm absolute right-10 top-20 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
@@ -181,7 +177,6 @@ export default function Home() {
             </div>
 
             <CodeEditor
-              ref={resultRef}
               name="result"
               value={componentString}
               readOnly
