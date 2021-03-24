@@ -1,7 +1,7 @@
 export default {
   react: `import React from "react";
 
-function Icon({ width = 24, height = 24 }) {
+function Icon({ size = 24 }) {
   return (
     %content%
   );
@@ -9,7 +9,7 @@ function Icon({ width = 24, height = 24 }) {
 
 export default Icon;
 `,
-  preact: `function Icon({ width = 24, height = 24 }) {
+  preact: `function Icon({ size = 24 }) {
   return (
     %content%
   );
@@ -24,11 +24,7 @@ export default Icon;
 <script>
 export default {
   props: {
-    width: {
-      type: [Number, String],
-      default: 24
-    },
-    height: {
+    size: {
       type: [Number, String],
       default: 24
     },
@@ -63,6 +59,18 @@ export class IconComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.renderStyle();
+  }
+
+  renderStyle() {
+    let style = [];
+    if (this.size) {
+      style.push(\`width: \${this.size}px; height: \${this.size}px;\`);
+    }
+    if (this.color) {
+      style.push(\`color: \${this.color};\`);
+    }
+
+    this.style = style.join(' ') + this.style;
   }
 }`
 }

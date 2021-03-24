@@ -101,8 +101,8 @@ export default function Home(): JSX.Element {
     fw?: string,
   }) {
     const style = {
-      react: `style={{ width, height }}`,
-      vue: `:style="{ width, height }"`,
+      react: `style={{ width: size, height: size }}`,
+      vue: `:style="{ width: size, height: size }"`,
       angular: `[style]="style"`,
     }[fw || framework];
 
@@ -115,8 +115,7 @@ export default function Home(): JSX.Element {
       ${style}
     >
       ${content}
-    </svg>
-    `;
+    </svg>`;
   }
 
   async function httpFormatCode(script: string, fw?: string) {
@@ -158,7 +157,7 @@ export default function Home(): JSX.Element {
               name="source"
               onChange={onChange}
               value={svgString}
-              onLoad={onSourceLoad}
+              onLoad={() => setSourceEditorReady(true)}
             />
           </div>
           <div className={[
@@ -192,7 +191,7 @@ export default function Home(): JSX.Element {
               value={componentString}
               readOnly
               mode={editorMode}
-              onLoad={onResultLoad}
+              onLoad={() => setResultEditorReady(true)}
             />
           </div>
         </div>
