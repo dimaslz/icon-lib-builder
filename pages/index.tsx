@@ -17,7 +17,7 @@ import readFile from '../utils/read-file.utils';
 
 import CopyToClipboard from '../utils/copy-to-clipboard';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 
 type FileToUpload = {
   content?: string;
