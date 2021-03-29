@@ -57,6 +57,9 @@
     "components/**/*",
     "pages/**/*",
     "utils/**/*",
+    "constants/**/*",
+    "entity-type/**/*",
+    "api/**/*",
     "tests/**/*"
   ],
   "exclude": [

@@ -1,9 +1,9 @@
 export const autoDownload: any = (function () {
-	if (!(process as any).browser) return;
+	if (!(typeof window !== 'undefined')) return;
 
-	const a: any = document.createElement("a");
+	const a: any = document.createElement('a');
 	document.body.appendChild(a);
-	a.style = "display: none";
+	a.style = 'display: none';
 
 	return function (blob: any, filename: string) {
 		const url = window.URL.createObjectURL(blob);

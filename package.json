@@ -8,7 +8,7 @@
     "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
+    "lint": "tsc --noEmit && eslint ."
   },
   "dependencies": {
     "@types/jest": "^26.0.21",

@@ -5,17 +5,18 @@ export const download = async (fileUrl: string) => {
 
 	let receivedLength = 0;
 	const chunks: any[] = [];
-	while(true) {
-			const { done, value, } = await reader.read();
+	const condition = true;
+	while (condition) {
+		const { done, value } = await reader.read();
 
-			if (done) {
-					break;
-			}
+		if (done) {
+			break;
+		}
 
-			chunks.push(value);
-			receivedLength += value.length;
+		chunks.push(value);
+		receivedLength += value.length;
 
-			console.log(`Received ${receivedLength} of ${contentLength}`);
+		console.log(`Received ${receivedLength} of ${contentLength}`);
 	}
 
 	return new Blob(chunks);
