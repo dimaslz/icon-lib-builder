@@ -26,7 +26,8 @@ export class API {
                 files,
                 framework,
             }),
-        }).then(response => response.json());
+        }).then(response => response.json())
+        .catch(this.errorHandler);
 	}
 
 	public formatter(script: string, framework: string): Promise<string> {
@@ -40,12 +41,16 @@ export class API {
             framework,
         }),
         }).then(i => i.json())
-        .then(({ code }) => code);
+        .catch(this.errorHandler);
     }
 
     public downloadFilename(filename: string) {
         const url = `${API_URL}/download/${filename}`;
         return downloadUrl(url);
+    }
+
+    private errorHandler(error: Error) {
+        console.error('Error', error);
     }
 }
 
