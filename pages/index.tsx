@@ -16,16 +16,11 @@ import autoDownload from '../utils/auto-download';
 import readFile from '../utils/read-file.utils';
 import CopyToClipboard from '../utils/copy-to-clipboard';
 
+import FileToUpload from '../entity-type/FileToUpload.type';
+
 import API from '../api';
 
 const API_URL = process.env.API_URL;
-
-type FileToUpload = {
-  content?: string;
-  name?: string;
-  framework?: string;
-  script?: string;
-};
 
 type Framework = {
   framework: string;
