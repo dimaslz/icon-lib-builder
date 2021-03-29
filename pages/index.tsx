@@ -5,11 +5,7 @@ import React, { useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
 
-
-import FullScreenLoading from '../components/full-screen-loading';
-import Icon from '../components/icon';
-import CodeEditor from '../components/code-editor';
-import DropZoneComponent from '../components/drop-zone.component';
+import { CodeEditor, DropZone, FullScreenLoading, Icon } from '../components';
 
 import downloadFile from '../utils/download';
 import autoDownload from '../utils/auto-download';
@@ -133,7 +129,7 @@ export default function Home(): JSX.Element {
 
         <div className="flex w-full h-full relative">
           {!sourceEditorReady && !resultEditorReady ? <FullScreenLoading /> : null}
-          <DropZoneComponent onDrop={handleDrop}>
+          <DropZone onDrop={handleDrop}>
             {filesDropped.length > 0
               ? <div style={{ backgroundColor: '#3C4451' }} className="text-gray-200 h-full p-4 text-sm font-normal">
                 {filesDropped.map((file: File, key: number) => <div key={key}>{file.name}</div>)}
@@ -147,7 +143,7 @@ export default function Home(): JSX.Element {
                 />
               )
             }
-          </DropZoneComponent>
+          </DropZone>
           <div className={[
             "Result w-full pl-4 h-full flex flex-col",
             (!componentString && !filesDropped.length) ? 'pointer-events-none opacity-50' : ''

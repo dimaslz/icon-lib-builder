@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { render } from '@testing-library/react'
-import Icon from './icon'
+
+import { Icon } from './'
 
 test('should render the component correctly', () => {
 	const icon = render(<Icon />)
