@@ -8,7 +8,7 @@ import _ from 'lodash';
 import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
 
-import { CodeEditor, DropZone, FullScreenLoading, Icon } from '../components';
+import { CodeEditor, DropZone, FullScreenLoading, Icon, Footer } from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
 
 import frameworks from '../constants/frameworks.constants';
@@ -203,21 +203,7 @@ export default function Home(): JSX.Element {
         </div>
       </main>
 
-      <footer className="p-4 text-xs text-white">
-        made by <a
-          href="https://dimaslz.dev"
-          className="text-gray-400 hover:text-gray-300"
-          target="_blank"
-        >
-          dimaslz.dev
-        </a> · <a
-          href="https://www.linkedin.com/in/dimaslopezzurita/"
-          className="text-gray-400 hover:text-gray-300"
-          target="_blank"
-        >
-          in
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }
