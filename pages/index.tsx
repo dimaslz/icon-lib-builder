@@ -14,8 +14,9 @@ import DropZoneComponent from '../components/drop-zone.component';
 import downloadFile from '../utils/download';
 import autoDownload from '../utils/auto-download';
 import readFile from '../utils/read-file.utils';
-
 import CopyToClipboard from '../utils/copy-to-clipboard';
+
+import API from '../api';
 
 const API_URL = process.env.API_URL;
 
@@ -137,22 +138,9 @@ export default function Home(): JSX.Element {
     )).filter(i => i);
 
     if (filesContent.length) {
-      const filesUploaded: any = await uploadFiles(filesContent, fw.framework);
+      const filesUploaded: any = await API.uploadFiles(filesContent, fw.framework);
       downloadURL(filesUploaded?.file);
     }
-  }
-
-  function uploadFiles(files: FileToUpload[], framework: string) {
-    return fetch(`${API_URL}/upload`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        files,
-        framework,
-      }),
-    }).then(response => response.json());
   }
 
   return (
