@@ -1,21 +1,21 @@
 import React from 'react';
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
 const AceEditor = dynamic(
-  async () => {
-    const ace = await import('react-ace');
-    require('ace-builds/src-noconflict/mode-javascript');
-    require('ace-builds/src-noconflict/mode-typescript');
-    require('ace-builds/src-noconflict/theme-nord_dark');
-    require('ace-builds/webpack-resolver');
-    return ace;
-  },
-{
-  loading: () => (
-    <>Loading...</>
-  ),
-  ssr: false,
-})
+	async () => {
+		const ace = await import('react-ace');
+		require('ace-builds/src-noconflict/mode-javascript');
+		require('ace-builds/src-noconflict/mode-typescript');
+		require('ace-builds/src-noconflict/theme-nord_dark');
+		require('ace-builds/webpack-resolver');
+		return ace;
+	},
+	{
+		loading: () => (
+			<>Loading...</>
+		),
+		ssr: false
+	});
 
 type CodeEditorType = {
 	value: string;
@@ -27,8 +27,8 @@ type CodeEditorType = {
 }
 
 export default function CodeEditor({
-	value = "",
-	name = "",
+	value = '',
+	name = '',
 	onChange = () => { },
 	onLoad = () => { },
 	readOnly = false,
@@ -50,5 +50,5 @@ export default function CodeEditor({
 				useWorker: false
 			}}
 		/>
-  )
+	);
 }

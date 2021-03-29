@@ -1,9 +1,9 @@
 import React from 'react';
 
 export default function Loader() {
-  return (
-    <div>
-			<div className="lds-dual-ring"></div>
+	return (
+		<div>
+			<div className="lds-dual-ring" />
 
 			<style jsx>{`
 				.lds - dual - ring {
@@ -31,6 +31,6 @@ export default function Loader() {
 					}
 				}
 			`}</style>
-    </div>
-  )
+		</div>
+	);
 }
