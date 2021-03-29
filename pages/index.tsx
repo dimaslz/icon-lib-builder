@@ -26,7 +26,7 @@ const API_URL = process.env.API_URL;
 export default function Home(): JSX.Element {
   const [svgString, setSvgString] = useState("// paste your SVG here");
   const [componentString, setComponentString] = useState("");
-  const [framework, setFramework] = useState("react");
+  const [currentFramework, setCurrentFramework] = useState("react");
   const [editorMode, setEditorMode] = useState("javascript");
   const [sourceEditorReady, setSourceEditorReady] = useState(false);
   const [resultEditorReady, setResultEditorReady] = useState(false);
@@ -35,10 +35,10 @@ export default function Home(): JSX.Element {
   const isBrowser = (process as any).browser;
 
   const frameworks: Framework[] = [
-    { label: 'React', framework: 'react', mode: 'javascript' },
-    { label: 'Preact', framework: 'preact', mode: 'javascript' },
-    { label: 'Vue 2/3', framework: 'vue', mode: 'javascript' },
-    { label: 'Angular +2', framework: 'angular', mode: 'typescript' },
+    { label: 'React', name: 'react', mode: 'javascript' },
+    { label: 'Preact', name: 'preact', mode: 'javascript' },
+    { label: 'Vue 2/3', name: 'vue', mode: 'javascript' },
+    { label: 'Angular +2', name: 'angular', mode: 'typescript' },
   ];
 
   async function onChange(value: string): Promise<string | void> {
@@ -49,15 +49,15 @@ export default function Home(): JSX.Element {
     svgFormatted = svgFormatted.trim();
     setSvgString(svgFormatted);
 
-    const script = await API.formatter(svgFormatted, framework);
+    const script = await API.formatter(svgFormatted, currentFramework);
     setComponentString(script);
   }
 
-  async function onFrameworkChange(fw: Framework) {
-    setFramework(fw.framework);
-    setEditorMode(fw.mode);
+  async function onFrameworkChange(framework: Framework) {
+    setCurrentFramework(framework.name);
+    setEditorMode(framework.mode);
 
-    const script = await API.formatter(svgString, fw.framework);
+    const script = await API.formatter(svgString, framework.name);
     setComponentString(script)
   }
 
@@ -91,7 +91,7 @@ export default function Home(): JSX.Element {
     svgFormatted = svgFormatted.replace(/>;/g, '>');
     setSvgString(svgFormatted);
 
-    const script = await API.formatter(svgFormatted, framework);
+    const script = await API.formatter(svgFormatted, currentFramework);
     setComponentString(script);
   }
 
@@ -103,7 +103,7 @@ export default function Home(): JSX.Element {
     setFilesDropped([]);
   }
 
-  async function downloadWithFramework(fw: Framework) {
+  async function downloadWithFramework(framework: Framework) {
     const filesContent: FileToUpload[] = (await Promise.all(
       filesDropped.map(async (file: File) => {
         let value = await readFile(file);
@@ -115,7 +115,7 @@ export default function Home(): JSX.Element {
     )).filter(i => i);
 
     if (filesContent.length) {
-      const filesUploaded: any = await API.uploadFiles(filesContent, fw.framework);
+      const filesUploaded: any = await API.uploadFiles(filesContent, framework.name);
       downloadURL(filesUploaded?.file);
     }
   }
@@ -166,15 +166,15 @@ export default function Home(): JSX.Element {
                 ].join(' ')}
               >
                 <ul className="flex flex-col">
-                  {frameworks.map((fw, key) => {
+                  {frameworks.map((framework, key) => {
                     return <li
                       className={[
                         "mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700",
                       ].join(' ')}
                       key={key}
-                      onClick={() => downloadWithFramework(fw)}
+                      onClick={() => downloadWithFramework(framework)}
                     >
-                      download for {fw.label.toUpperCase()}
+                      download for {framework.label.toUpperCase()}
                     </li>
                   })}
                 </ul>
@@ -189,16 +189,16 @@ export default function Home(): JSX.Element {
 
                   <div className="Result__format">
                     <ul className="text-xs text-white flex bg-gray-700 p-2">
-                      {frameworks.map((fw, key) => {
+                      {frameworks.map((framework, key) => {
                         return <li
                           className={[
                             "mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer",
-                            fw.framework === framework ? 'bg-gray-400' : 'bg-gray-700'
+                            framework.name === currentFramework ? 'bg-gray-400' : 'bg-gray-700'
                           ].join(' ')}
                           key={key}
-                          onClick={() => onFrameworkChange(fw)}
+                          onClick={() => onFrameworkChange(framework)}
                         >
-                          {fw.label}
+                          {framework.label}
                         </li>
                       })}
                     </ul>

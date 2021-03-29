@@ -1,5 +1,5 @@
 export type Framework = {
-  framework: string;
+  name: string;
   label: string;
   mode: string;
 }
