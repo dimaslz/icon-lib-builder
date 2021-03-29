@@ -19,6 +19,8 @@ import CopyToClipboard from '../utils/copy-to-clipboard';
 import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
 
+import frameworks from '../constants/frameworks.constants';
+
 import API from '../api';
 
 const API_URL = process.env.API_URL;
@@ -33,13 +35,6 @@ export default function Home(): JSX.Element {
   const [filesDropped, setFilesDropped] = useState<File[]>([]);
 
   const isBrowser = (process as any).browser;
-
-  const frameworks: Framework[] = [
-    { label: 'React', name: 'react', mode: 'javascript' },
-    { label: 'Preact', name: 'preact', mode: 'javascript' },
-    { label: 'Vue 2/3', name: 'vue', mode: 'javascript' },
-    { label: 'Angular +2', name: 'angular', mode: 'typescript' },
-  ];
 
   async function onChange(value: string): Promise<string | void> {
     if (!isSvg(value)) return; // TODO: Send Notification error
