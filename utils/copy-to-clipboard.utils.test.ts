@@ -1,5 +1,10 @@
+import copyToClipboard from './copy-to-clipboard.utils';
+
 describe('CopyToClipboard', () => {
-	test('demo', () => {
-		expect(true).toBe(true);
+	test('should excecute copy command', () => {
+		document.execCommand = jest.fn();
+		copyToClipboard('my content text');
+
+		expect(document.execCommand).toHaveBeenCalledWith('copy');
 	});
 });
