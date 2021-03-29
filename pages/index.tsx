@@ -17,16 +17,12 @@ import readFile from '../utils/read-file.utils';
 import CopyToClipboard from '../utils/copy-to-clipboard';
 
 import FileToUpload from '../entity-type/FileToUpload.type';
+import Framework from '../entity-type/Framework.type';
 
 import API from '../api';
 
 const API_URL = process.env.API_URL;
 
-type Framework = {
-  framework: string;
-  label: string;
-  mode: string;
-}
 export default function Home(): JSX.Element {
   const [svgString, setSvgString] = useState("// paste your SVG here");
   const [componentString, setComponentString] = useState("");
