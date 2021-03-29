@@ -9,13 +9,11 @@ import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
 
 import { CodeEditor, DropZone, FullScreenLoading, Icon } from '../components';
-import { downloadUrl, autoDownload, readFile, copyToClipboard } from '../utils';
+import { autoDownload, readFile, copyToClipboard } from '../utils';
 
 import frameworks from '../constants/frameworks.constants';
 
 import API from '../api';
-
-const API_URL = process.env.API_URL;
 
 export default function Home(): JSX.Element {
   const [svgString, setSvgString] = useState("// paste your SVG here");
@@ -82,9 +80,8 @@ export default function Home(): JSX.Element {
     setComponentString(script);
   }
 
-  async function downloadURL(filename: string) {
-    const url = `${API_URL}/download/${filename}`;
-    const blob = await downloadUrl(url);
+  async function downloadFile(filename: string) {
+    const blob = await API.downloadFilename(filename);
 
     autoDownload(blob, filename);
     setFilesDropped([]);
@@ -103,7 +100,7 @@ export default function Home(): JSX.Element {
 
     if (filesContent.length) {
       const filesUploaded: any = await API.uploadFiles(filesContent, framework.name);
-      downloadURL(filesUploaded?.file);
+      downloadFile(filesUploaded?.file);
     }
   }
 

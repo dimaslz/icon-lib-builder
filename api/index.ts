@@ -1,4 +1,5 @@
 import FileToUpload from '../entity-type/FileToUpload.type';
+import { downloadUrl } from '../utils';
 
 const API_URL = process.env.API_URL;
 
@@ -44,6 +45,11 @@ export class API {
       }),
     }).then(i => i.json())
     .then(({ code }) => code);
+  }
+
+  public downloadFilename(filename: string) {
+    const url = `${API_URL}/download/${filename}`;
+    return downloadUrl(url);
   }
 }
 
