@@ -53,12 +53,12 @@ export default function Home(): JSX.Element {
   async function onChange(value: string): Promise<string | void> {
     if (!isSvg(value)) return; // TODO: Send Notification error
 
-    let svgFormatted = await httpFormatCode(value, 'svg');
+    let svgFormatted = await API.formatter(value, 'svg');
     svgFormatted = svgFormatted.replace(/>;/g, '>');
     svgFormatted = svgFormatted.trim();
     setSvgString(svgFormatted);
 
-    const script = await httpFormatCode(svgFormatted, framework);
+    const script = await API.formatter(svgFormatted, framework);
     setComponentString(script);
   }
 
@@ -66,22 +66,8 @@ export default function Home(): JSX.Element {
     setFramework(fw.framework);
     setEditorMode(fw.mode);
 
-    const script = await httpFormatCode(svgString, fw.framework);
+    const script = await API.formatter(svgString, fw.framework);
     setComponentString(script)
-  }
-
-  async function httpFormatCode(script: string, fw?: string): Promise<string> {
-    return await fetch(`${API_URL}/formatter`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        script,
-        framework: fw || framework,
-      }),
-    }).then(i => i.json())
-    .then(({ code }) => code);
   }
 
   function onClickCopyResult() {
@@ -110,11 +96,11 @@ export default function Home(): JSX.Element {
 
     if (!isSvg(value)) return; // TODO: Send Notification error
 
-    let svgFormatted = await httpFormatCode(value, 'svg');
+    let svgFormatted = await API.formatter(value, 'svg');
     svgFormatted = svgFormatted.replace(/>;/g, '>');
     setSvgString(svgFormatted);
 
-    const script = await httpFormatCode(svgFormatted, framework);
+    const script = await API.formatter(svgFormatted, framework);
     setComponentString(script);
   }
 

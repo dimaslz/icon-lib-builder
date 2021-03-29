@@ -30,6 +30,20 @@ export class API {
         framework,
       }),
     }).then(response => response.json());
+	}
+
+	public formatter(script: string, framework: string): Promise<string> {
+    return fetch(`${API_URL}/formatter`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        script,
+        framework,
+      }),
+    }).then(i => i.json())
+    .then(({ code }) => code);
   }
 }
 
