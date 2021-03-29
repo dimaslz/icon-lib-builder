@@ -5,15 +5,11 @@ import React, { useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
 
-import { CodeEditor, DropZone, FullScreenLoading, Icon } from '../components';
-
-import downloadFile from '../utils/download';
-import autoDownload from '../utils/auto-download';
-import readFile from '../utils/read-file.utils';
-import CopyToClipboard from '../utils/copy-to-clipboard';
-
 import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
+
+import { CodeEditor, DropZone, FullScreenLoading, Icon } from '../components';
+import { downloadUrl, autoDownload, readFile, copyToClipboard } from '../utils';
 
 import frameworks from '../constants/frameworks.constants';
 
@@ -53,7 +49,7 @@ export default function Home(): JSX.Element {
   }
 
   function onClickCopyResult() {
-    CopyToClipboard(componentString);
+    copyToClipboard(componentString);
   }
 
   async function handleDrop($event: Event, files: FileList) {
@@ -88,7 +84,7 @@ export default function Home(): JSX.Element {
 
   async function downloadURL(filename: string) {
     const url = `${API_URL}/download/${filename}`;
-    const blob = await downloadFile(url);
+    const blob = await downloadUrl(url);
 
     autoDownload(blob, filename);
     setFilesDropped([]);
