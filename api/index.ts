@@ -59,7 +59,7 @@ export class API {
     }
 
     private errorHandler(error: Error) {
-        console.error(error);
+        throw new Error(error.message);
     }
 }
 

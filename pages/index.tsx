@@ -8,7 +8,16 @@ import _ from 'lodash';
 import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
 
-import { CodeEditor, DropZone, FullScreenLoading, Icon, Footer } from '../components';
+import eventBus from '../utils/event-bus.utils';
+
+import {
+	CodeEditor,
+	DropZone,
+	FullScreenLoading,
+	Icon,
+	Footer,
+	Notification
+} from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
 
 import frameworks from '../constants/frameworks.constants';
@@ -43,6 +52,11 @@ export default function Home() {
 		}
 		catch (err) {
 			console.log('Err', err);
+			setSvgString(value);
+
+			eventBus.publish('notification', {
+				message: 'Looks like the source code is not a valid format'
+			});
 		}
 	}
 
@@ -89,10 +103,17 @@ export default function Home() {
 	}
 
 	async function downloadFile(filename: string) {
-		const blob = await API.downloadFilename(filename);
+		try {
+			const blob = await API.downloadFilename(filename);
 
-		autoDownload(blob, filename);
-		setFilesDropped([]);
+			autoDownload(blob, filename);
+			setFilesDropped([]);
+		}
+		catch (err) {
+			eventBus.publish('notification', {
+				message: 'Problem uploading files'
+			});
+		}
 	}
 
 	async function downloadWithFramework(framework: Framework) {
@@ -208,6 +229,7 @@ export default function Home() {
 				</div>
 			</main>
 
+			<Notification />
 			<Footer />
 		</div>
 	);
