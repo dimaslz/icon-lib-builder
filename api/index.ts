@@ -26,21 +26,30 @@ export class API {
                 files,
                 framework,
             }),
+        }).then((result: any): any => {
+            const { ok } = result;
+            if (!ok) throw new Error("Failing upload files");
         }).then(response => response.json())
         .catch(this.errorHandler);
 	}
 
 	public formatter(script: string, framework: string): Promise<string> {
         return fetch(`${API_URL}/formatter`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            script,
-            framework,
-        }),
-        }).then(i => i.json())
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                script,
+                framework,
+            }),
+        }).then((result: any): any => {
+            const { ok } = result;
+            if (!ok) throw new Error("File not valid");
+
+            return result;
+        })
+        .then(result => result.json())
         .catch(this.errorHandler);
     }
 
@@ -50,7 +59,7 @@ export class API {
     }
 
     private errorHandler(error: Error) {
-        console.error('Error', error);
+        console.error(error);
     }
 }
 

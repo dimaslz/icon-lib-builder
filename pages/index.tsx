@@ -27,15 +27,23 @@ export default function Home() {
 	const isBrowser = typeof window !== 'undefined';
 
 	async function onChange(value: string): Promise<string | void> {
-		if (!isSvg(value)) return; // TODO: Send Notification error
+		setSvgString('// formatting');
 
-		let svgFormatted = await API.formatter(value, 'svg');
-		svgFormatted = svgFormatted.replace(/>;/g, '>');
-		svgFormatted = svgFormatted.trim();
-		setSvgString(svgFormatted);
+		try {
+			let svgFormatted = await API.formatter(value, 'svg');
+			if (!svgFormatted) return;
 
-		const script = await API.formatter(svgFormatted, currentFramework);
-		setComponentString(script);
+			svgFormatted = svgFormatted.replace(/>;/g, '>');
+			svgFormatted = svgFormatted.trim();
+
+			setSvgString(svgFormatted);
+
+			const script = await API.formatter(svgFormatted, currentFramework);
+			setComponentString(script);
+		}
+		catch (err) {
+			console.log('Err', err);
+		}
 	}
 
 	async function onFrameworkChange(framework: Framework) {

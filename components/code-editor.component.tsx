@@ -26,7 +26,7 @@ type CodeEditorType = {
 	mode?: string;
 }
 
-export default function CodeEditor({
+export function CodeEditor({
 	value = '',
 	name = '',
 	onChange = () => { },
@@ -52,3 +52,5 @@ export default function CodeEditor({
 		/>
 	);
 }
+
+export default React.memo(CodeEditor);
