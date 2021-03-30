@@ -13,6 +13,7 @@ export default function NotificationComponent() {
 
 	useEffect(() => {
 		eventBusSubscription = eventBus.subscribe('notification', (data: Notification) => {
+			if (message) return;
 			setMessage(data.message);
 
 			const classList = messageRef?.current?.classList;
