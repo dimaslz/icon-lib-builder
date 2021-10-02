@@ -21,36 +21,36 @@ type CodeEditorType = {
 	value: string;
 	name: string;
 	onChange?: (value?: any) => void;
+	onPaste?: (value?: any) => void;
 	onLoad: (value?: any) => void;
 	readOnly?: boolean;
 	mode?: string;
 }
 
-export function CodeEditor({
+export const CodeEditor: React.FC<CodeEditorType> = ({
 	value = '',
 	name = '',
-	onChange = () => { },
-	onLoad = () => { },
+	onChange = () => ({}),
+	onPaste = () => ({}),
+	onLoad = () => ({}),
 	readOnly = false,
 	mode = 'javascript'
-}: CodeEditorType) {
-
-	return (
-		<AceEditor
-			name={name}
-			value={value}
-			mode={mode}
-			theme="nord_dark"
-			onChange={onChange}
-			onLoad={onLoad}
-			readOnly={readOnly}
-			height="100%"
-			width="100%"
-			setOptions={{
-				useWorker: false
-			}}
-		/>
-	);
-}
+}): JSX.Element => (
+	<AceEditor
+		name={name}
+		value={value}
+		mode={mode}
+		theme="nord_dark"
+		onPaste={onPaste}
+		onChange={onChange}
+		onLoad={onLoad}
+		readOnly={readOnly}
+		height="100%"
+		width="100%"
+		setOptions={{
+			useWorker: false
+		}}
+	/>
+);
 
 export default React.memo(CodeEditor);
