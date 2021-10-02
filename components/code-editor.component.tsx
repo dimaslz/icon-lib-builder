@@ -18,6 +18,7 @@ const AceEditor = dynamic(
 	});
 
 type CodeEditorType = {
+	placeholder: string;
 	value: string;
 	name: string;
 	onChange?: (value?: any) => void;
@@ -28,6 +29,7 @@ type CodeEditorType = {
 }
 
 export const CodeEditor: React.FC<CodeEditorType> = ({
+	placeholder = '',
 	value = '',
 	name = '',
 	onChange = () => ({}),
@@ -37,6 +39,7 @@ export const CodeEditor: React.FC<CodeEditorType> = ({
 	mode = 'javascript'
 }): JSX.Element => (
 	<AceEditor
+		placeholder={placeholder}
 		name={name}
 		value={value}
 		mode={mode}
