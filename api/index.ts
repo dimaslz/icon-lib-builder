@@ -29,11 +29,15 @@ export class API {
         }).then((result: any): any => {
             const { ok } = result;
             if (!ok) throw new Error("Failing upload files");
-        }).then(response => response.json())
+
+            return result;
+        }).then(response => {
+            return response.json();
+        })
         .catch(this.errorHandler);
 	}
 
-	public formatter(script: string, framework: string): Promise<string> {
+	public formatter(script: string, framework: string, iconName?: string): Promise<string> {
         return fetch(`${API_URL}/formatter`, {
             method: 'POST',
             headers: {
@@ -42,6 +46,7 @@ export class API {
             body: JSON.stringify({
                 script,
                 framework,
+                iconName,
             }),
         }).then((result: any): any => {
             const { ok } = result;
@@ -59,6 +64,7 @@ export class API {
     }
 
     private errorHandler(error: Error) {
+        console.log("error", error);
         throw new Error(error.message);
     }
 }
