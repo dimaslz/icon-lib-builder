@@ -5,9 +5,9 @@ type Props = {
 	onDrop: ($event: DragEvent, files: FileList) => void,
 };
 
-export default function DropZoneComponent({ children, onDrop }: Props) {
-	let dropZoneRef = useRef<HTMLDivElement>(null);
-	let dropZoneOverlayRef = useRef<HTMLDivElement>(null);
+export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
+	const dropZoneRef = useRef<HTMLDivElement>(null);
+	const dropZoneOverlayRef = useRef<HTMLDivElement>(null);
 
 	const [dragAndDrop, setDragAndDrop] = useState(false);
 
@@ -76,4 +76,6 @@ export default function DropZoneComponent({ children, onDrop }: Props) {
 			{children}
 		</div>
 	);
-}
+};
+
+export default DropZoneComponent;
