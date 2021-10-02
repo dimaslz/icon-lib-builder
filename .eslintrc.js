@@ -1,13 +1,15 @@
 module.exports = {
-	parser: require.resolve('babel-eslint'),
+	root: true,
+	// parser: require.resolve('babel-eslint'),
+	parser: '@typescript-eslint/parser',
 	extends: [
 		'eslint:recommended',
-		'plugin:jest/recommended'
+		'plugin:jest/recommended',
+		'plugin:@typescript-eslint/recommended',
+		// "prettier/@typescript-eslint",
+		'plugin:prettier/recommended'
 	],
-	plugins: [
-		'react',
-		'jest'
-	],
+	plugins: ['react', 'jest'],
 	env: {
 		browser: true,
 		es6: true,
@@ -16,7 +18,7 @@ module.exports = {
 		node: true
 	},
 	parserOptions: {
-		ecmaVersion: 7,
+		ecmaVersion: 2018,
 		sourceType: 'module',
 		ecmaFeatures: {
 			modules: true,
@@ -32,11 +34,12 @@ module.exports = {
 		browser: true,
 		global: true
 	},
-	settings: {
-		targets: ['last 2 versions'],
-		polyfills: ['fetch', 'Promise']
-	},
+	// settings: {
+	// 	targets: ['last 2 versions'],
+	// 	polyfills: ['fetch', 'Promise']
+	// },
 	rules: {
+		'prettier/prettier': 'off',
 		// react-related rules
 		'react/jsx-boolean-value': [2, 'never'],
 		'react/jsx-closing-bracket-location': 2,
@@ -85,7 +88,7 @@ module.exports = {
 
 		}],
 
-		// stylistic rules
+		// // stylistic rules
 		'arrow-body-style': [2, 'as-needed'],
 		'arrow-parens': [0, 'always'],
 		'arrow-spacing': 2,
@@ -152,6 +155,7 @@ module.exports = {
 		'prefer-spread': 1,
 		'prefer-template': 0,
 		'quote-props': [2, 'as-needed'],
+		// quotes: [2, 'single'],
 		quotes: [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }],
 		radix: 2,
 		'rest-spread-spacing': 2,
