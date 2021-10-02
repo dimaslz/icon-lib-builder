@@ -1,5 +1,5 @@
-export default function Footer() {
-	return (<footer className="p-4 text-xs text-white">
+export const Footer: React.FC = () => (
+	<footer className="p-4 text-xs text-white">
 		made by <a
 			href="https://dimaslz.dev"
 			className="text-gray-400 hover:text-gray-300"
@@ -16,6 +16,6 @@ export default function Footer() {
 			in
 		</a>
 	</footer>
-	);
-}
+);
 
+export default Footer;
