@@ -220,8 +220,11 @@ const Home = (): JSX.Element => {
 			</div>
 
 			<Head>
-				<title>Icon library builder</title>
+				<title>Icon library builder | dimaslz.dev</title>
 				<link rel="icon" href="/favicon.ico" />
+				<meta charSet="utf-8" />
+				<meta property="og:title" content="Icon library builder | dimaslz.dev" key="title" />
+				<meta property="og:description" content="Tool to generate a framework component from SVG icon | dimaslz.dev" key="description" />
 			</Head>
 
 			<main className="flex flex-col items-center w-full justify-start flex-grow">
