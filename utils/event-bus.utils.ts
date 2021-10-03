@@ -2,11 +2,21 @@ export type Subscription = {
 	[key: string]: any
 }
 
+export type UnSubscription = {
+	unsubscribe?: () => void
+}
+
+export type EventBus<Event, CB, UnSub> = {
+	subscribe: (eventType: Event, callback: CB) => UnSub
+	publish: (eventType: Event, arg?: any) => void
+}
+
+
 const subscriptions: Subscription = {};
 const getNextUniqueId = () => new Date().getTime();
 
-export const eventBus = {
-	subscribe: (eventType: string, callback: Function) => {
+export const eventBus: EventBus<string, () => void, UnSubscription> = {
+	subscribe: (eventType: string, callback: (data: () => void) => void): UnSubscription => {
 		const id = getNextUniqueId();
 
 		if (!subscriptions[eventType]) {subscriptions[eventType] = {};}
