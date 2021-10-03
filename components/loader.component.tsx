@@ -4,7 +4,7 @@ export const Loader: React.FC = () => (
 	<div>
 		<div className="lds-dual-ring" />
 
-		<style jsx>{`
+		<style>{`
 		.lds - dual - ring {
 			display: inline-block;
 			width: 80px;
