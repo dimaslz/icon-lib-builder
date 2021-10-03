@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { eventBus } from '../utils';
-import { UnSubscription } from '../utils/event-bus.utils';
+import { EventBusSubscription } from '../utils/event-bus.utils';
 
 export type Notification = {
 	message: string;
 };
 
-const NotificationComponent = () => {
-	// let eventBusSubscription: EventBus<string, Notification, UnSubscription>;
-	let eventBusSubscription: UnSubscription;
+const NotificationComponent = (): JSX.Element => {
+	let eventBusSubscription: EventBusSubscription;
 
 	const [message, setMessage] = useState<string | null>('');
 	const messageRef = useRef<HTMLDivElement>(null);
