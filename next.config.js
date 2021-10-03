@@ -1,4 +1,7 @@
+/** @type {import('next').NextConfig} */
 module.exports = {
+	reactStrictMode: true,
+	trailingSlash: false,
 	devIndicators: {
 		autoPrerender: false
 	},
