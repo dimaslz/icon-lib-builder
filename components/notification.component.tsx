@@ -1,37 +1,42 @@
 import { useEffect, useRef, useState } from 'react';
 import { eventBus } from '../utils';
+import { UnSubscription } from '../utils/event-bus.utils';
 
 export type Notification = {
 	message: string;
 };
 
-export default function NotificationComponent() {
-	let eventBusSubscription: any = null;
+const NotificationComponent = () => {
+	// let eventBusSubscription: EventBus<string, Notification, UnSubscription>;
+	let eventBusSubscription: UnSubscription;
 
 	const [message, setMessage] = useState<string | null>('');
 	const messageRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		eventBusSubscription = eventBus.subscribe('notification', (data: Notification) => {
-			if (message) return;
-			setMessage(data.message);
+		eventBusSubscription = eventBus.subscribe(
+			'notification',
+			(notification: Notification): void => {
+				if (message) return;
+				setMessage(notification.message);
 
-			const classList = messageRef?.current?.classList;
+				const classList = messageRef?.current?.classList;
 
-			classList?.add('opacity-0');
-			classList?.add('flex');
-			classList?.remove('hidden');
+				classList?.add('opacity-0');
+				classList?.add('flex');
+				classList?.remove('hidden');
 
-			setTimeout(() => {
-				classList?.add('opacity-100');
 				setTimeout(() => {
-					classList?.remove('opacity-100');
-					classList?.remove('flex');
-					classList?.add('hidden');
-					setMessage(null);
-				}, 2000);
-			});
-		});
+					classList?.add('opacity-100');
+					setTimeout(() => {
+						classList?.remove('opacity-100');
+						classList?.remove('flex');
+						classList?.add('hidden');
+						setMessage(null);
+					}, 2000);
+				});
+			}
+		);
 
 		return () => {
 			eventBusSubscription?.unsubscribe();
@@ -49,5 +54,6 @@ export default function NotificationComponent() {
 				</div> : null}
 		</span>
 	);
-}
+};
 
+export default NotificationComponent;
