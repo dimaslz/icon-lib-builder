@@ -211,6 +211,14 @@ const Home = (): JSX.Element => {
 
 	return (
 		<div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
+			<div
+				className="ForkMeOnGithub fixed top-4 right-0 mt-16 -mr-20 transform rotate-45 bg-gray-900 z-10"
+			>
+				<div className="flex text-gray-300 hover:text-gray-100 px-14 py-1 border border-white my-1 border-dashed">
+				Fork me on GitHub (coming soon)
+				</div>
+			</div>
+
 			<Head>
 				<title>Icon library builder</title>
 				<link rel="icon" href="/favicon.ico" />
