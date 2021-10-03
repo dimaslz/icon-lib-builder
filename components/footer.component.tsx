@@ -1,19 +1,28 @@
 export const Footer: React.FC = () => (
 	<footer className="p-4 text-xs text-white">
-		made by <a
-			href="https://dimaslz.dev"
+		developed with ♥ by <a
+			href="https://twitter.com/dimaslz"
 			className="text-gray-400 hover:text-gray-300"
 			target="_blank"
 			rel="noreferrer"
-		        >
-			dimaslz.dev
-		</a> · <a
+		                    >
+			dimaslz
+		</a>
+		{ ' ' }· <a
+			href="https://github.com/dimaslz"
+			className="text-gray-400 hover:text-gray-300"
+			target="_blank"
+			rel="noreferrer"
+		         >
+			Github
+		</a>
+		{ ' ' }· <a
 			href="https://www.linkedin.com/in/dimaslopezzurita/"
 			className="text-gray-400 hover:text-gray-300"
 			target="_blank"
 			rel="noreferrer"
-		       >
-			in
+		         >
+			LinkedIn
 		</a>
 	</footer>
 );
