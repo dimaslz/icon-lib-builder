@@ -16,7 +16,7 @@ import {
 	FullScreenLoading,
 	Icon,
 	Footer,
-	Notification
+	Notification,
 } from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
 
@@ -60,8 +60,7 @@ const Home = (): JSX.Element => {
 	async function onChange(value: string): Promise<string | void> {
 		if (!isPasted && value) {
 			await requestToFormat(value);
-		}
-		else {
+		} else {
 			setIsPasted(false);
 		}
 
@@ -83,13 +82,12 @@ const Home = (): JSX.Element => {
 
 			const script = await API.formatter(svgFormatted, currentFramework, iconName);
 			setComponentString(script);
-		}
-		catch (err) {
+		} catch (err) {
 			console.log('Err', err);
 			setSvgString(value);
 
 			eventBus.publish('notification', {
-				message: 'Looks like the source code is not a valid format'
+				message: 'Looks like the source code is not a valid format',
 			});
 		}
 	}
@@ -143,10 +141,9 @@ const Home = (): JSX.Element => {
 
 			autoDownload(blob, filename);
 			setFilesDropped([]);
-		}
-		catch (err) {
+		} catch (err) {
 			eventBus.publish('notification', {
-				message: 'Problem uploading files'
+				message: 'Problem uploading files',
 			});
 		}
 	}
@@ -158,9 +155,9 @@ const Home = (): JSX.Element => {
 					const value = await readFile(file);
 					return {
 						name: file.name,
-						svg: value
+						svg: value,
 					};
-				})
+				}),
 			)
 		).filter((i) => i);
 
@@ -168,12 +165,11 @@ const Home = (): JSX.Element => {
 			try {
 				const filesUploaded: any = await API.uploadFiles(
 					filesContent,
-					framework.name
+					framework.name,
 				);
 
 				downloadFile(filesUploaded?.file);
-			}
-			catch (err) {
+			} catch (err) {
 				console.error('Err: ', err);
 			}
 		}
@@ -267,7 +263,7 @@ const Home = (): JSX.Element => {
 							'Result w-full pl-4 h-full flex flex-col',
 							!componentString && !filesDropped.length
 								? 'pointer-events-none opacity-50'
-								: ''
+								: '',
 						].join(' ')}
 						suppressHydrationWarning
 					>
@@ -278,14 +274,14 @@ const Home = (): JSX.Element => {
 									'text-gray-200 h-full p-4 text-sm font-normal',
 									filesDropped.length
 										? 'flex flex-col items-center justify-center'
-										: ''
+										: '',
 								].join(' ')}
 							>
 								<ul className="flex flex-col">
 									{frameworks.map((framework, key) => (
 										<li
 											className={[
-												'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700'
+												'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700',
 											].join(' ')}
 											key={key}
 											onClick={onClickFrameworkOption(framework)}
@@ -314,7 +310,7 @@ const Home = (): JSX.Element => {
 													'mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
 													framework.name === currentFramework
 														? 'bg-gray-400'
-														: 'bg-gray-700'
+														: 'bg-gray-700',
 												].join(' ')}
 												key={key}
 												onClick={onFrameworkChangeHandler(framework)}

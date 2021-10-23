@@ -7,7 +7,7 @@ module.exports = {
 		'plugin:jest/recommended',
 		'plugin:@typescript-eslint/recommended',
 		// "prettier/@typescript-eslint",
-		'plugin:prettier/recommended'
+		'plugin:prettier/recommended',
 	],
 	plugins: ['react', 'jest'],
 	env: {
@@ -15,7 +15,7 @@ module.exports = {
 		es6: true,
 		mocha: true,
 		'jest/globals': true,
-		node: true
+		node: true,
 	},
 	parserOptions: {
 		ecmaVersion: 2018,
@@ -25,14 +25,14 @@ module.exports = {
 			impliedStrict: true,
 			experimentalObjectRestSpread: true,
 			experimentalDecorators: true,
-			jsx: true
-		}
+			jsx: true,
+		},
 	},
 	globals: {
 		sinon: true,
 		expect: true,
 		browser: true,
-		global: true
+		global: true,
 	},
 	// settings: {
 	// 	targets: ['last 2 versions'],
@@ -68,33 +68,30 @@ module.exports = {
 		'react/prefer-stateless-function': 1,
 		'react/require-render-return': 2,
 		'react/self-closing-comp': 2,
-		'react/sort-comp': [1, {
-			order: [
-				'properties',
-				'static-methods',
-				'everything-else',
-				'lifecycle',
-				'rendering'
-			],
-			groups: {
-				properties: [
-					'state'
+		'react/sort-comp': [
+			1,
+			{
+				order: [
+					'properties',
+					'static-methods',
+					'everything-else',
+					'lifecycle',
+					'rendering',
 				],
-				rendering: [
-					'/^render.+$/',
-					'render'
-				]
-			}
-
-		}],
+				groups: {
+					properties: ['state'],
+					rendering: ['/^render.+$/', 'render'],
+				},
+			},
+		],
 
 		// // stylistic rules
 		'arrow-body-style': [2, 'as-needed'],
 		'arrow-parens': [0, 'always'],
 		'arrow-spacing': 2,
-		'brace-style': [2, 'stroustrup', { allowSingleLine: true }],
+		'brace-style': [2, '1tbs', { allowSingleLine: true }],
 		camelcase: [1, { properties: 'never' }],
-		'comma-dangle': [2, 'never'],
+		'comma-dangle': [2, 'always-multiline'],
 		'comma-style': [2, 'last'],
 		'constructor-super': 2,
 		curly: [0, 'multi-line'],
@@ -164,6 +161,6 @@ module.exports = {
 		'space-in-parens': [0, 'never'],
 		strict: [2, 'never'],
 		'unicode-bom': 2,
-		'valid-jsdoc': [0, { requireReturn: false }]
-	}
+		'valid-jsdoc': [0, { requireReturn: false }],
+	},
 };

@@ -28,7 +28,7 @@ export const eventBus = {
 			unsubscribe: () => {
 				delete subscriptions[eventType][id];
 				if (Object.keys(subscriptions[eventType]).length === 0) {delete subscriptions[eventType];}
-			}
+			},
 		};
 	},
 
@@ -38,9 +38,9 @@ export const eventBus = {
 		}
 
 		Object.keys(subscriptions[eventType]).forEach((id) =>
-			subscriptions[eventType][id](arg)
+			subscriptions[eventType][id](arg),
 		);
-	}
+	},
 };
 
 export default eventBus;

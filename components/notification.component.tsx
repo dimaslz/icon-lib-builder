@@ -34,7 +34,7 @@ const NotificationComponent = (): JSX.Element => {
 						setMessage(null);
 					}, 2000);
 				});
-			}
+			},
 		);
 
 		return () => {

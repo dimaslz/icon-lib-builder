@@ -14,7 +14,7 @@ const AceEditor = dynamic(
 		loading: () => (
 			<>Loading...</>
 		),
-		ssr: false
+		ssr: false,
 	});
 
 type CodeEditorType = {
@@ -36,7 +36,7 @@ export const CodeEditor: React.FC<CodeEditorType> = ({
 	onPaste = () => ({}),
 	onLoad = () => ({}),
 	readOnly = false,
-	mode = 'javascript'
+	mode = 'javascript',
 }): JSX.Element => (
 	<AceEditor
 		placeholder={placeholder}
@@ -51,7 +51,7 @@ export const CodeEditor: React.FC<CodeEditorType> = ({
 		height="100%"
 		width="100%"
 		setOptions={{
-			useWorker: false
+			useWorker: false,
 		}}
 	/>
 );

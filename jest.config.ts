@@ -64,8 +64,8 @@ export default {
 	// globals: {},
 	globals: {
 		'ts-jest': {
-			tsconfig: 'tsconfig.jest.json'
-		}
+			tsconfig: 'tsconfig.jest.json',
+		},
 	},
 
 	// The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
@@ -83,7 +83,7 @@ export default {
 		'jsx',
 		'ts',
 		'tsx',
-		'node'
+		'node',
 	],
 
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
@@ -184,7 +184,7 @@ export default {
 	// A map from regular expressions to paths to transformers
 	// transform: undefined,
 	transform: {
-		'^.+\\.tsx?$': 'ts-jest'
+		'^.+\\.tsx?$': 'ts-jest',
 	},
 
 	// An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
@@ -206,13 +206,13 @@ export default {
 	// watchman: true,
 
 	moduleNameMapper: {
-		'\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js'
+		'\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
 	},
 	testMatch: [
-		'**/*.(test|spec).(js|ts|tsx)'
+		'**/*.(test|spec).(js|ts|tsx)',
 	],
 	testPathIgnorePatterns: [
 		'./.next/',
-		'./node_modules/'
-	]
+		'./node_modules/',
+	],
 };
