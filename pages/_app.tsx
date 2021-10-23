@@ -1,6 +1,9 @@
 import 'tailwindcss/tailwind.css';
 import '../assets/css/style.scss';
 
+// components
+import '../components/fork-me-on-github.component.scss';
+
 import type { AppProps } from 'next/app';
 import { useLayoutEffect } from 'react';
 
