@@ -41,7 +41,7 @@ const Home = (): JSX.Element => {
 
 	async function onPaste(value: string) {
 		setIsPasted(true);
-		await new Promise(resolve => {
+		await new Promise((resolve) => {
 			setTimeout(() => {
 				setSvgString('');
 
@@ -80,7 +80,11 @@ const Home = (): JSX.Element => {
 
 			setSvgString(svgFormatted);
 
-			const script = await API.formatter(svgFormatted, currentFramework, iconName);
+			const script = await API.formatter(
+				svgFormatted,
+				currentFramework,
+				iconName,
+			);
 			setComponentString(script);
 		} catch (err) {
 			console.log('Err', err);
@@ -191,10 +195,12 @@ const Home = (): JSX.Element => {
 		return () => onFrameworkChange(framework);
 	}
 
-	function onChangeIconNameHandler($event: ChangeEvent<HTMLInputElement>): void {
+	function onChangeIconNameHandler(
+		$event: ChangeEvent<HTMLInputElement>,
+	): void {
 		if (($event.nativeEvent as InputEvent).data === ' ') return;
 
-		const value = $event.target.value.replace(/[\W\s]+/ig, '');
+		const value = $event.target.value.replace(/[\W\s]+/gi, '');
 		setIconName(() => value);
 		if (value) {
 			requestToFormat(svgString, value);
@@ -215,14 +221,22 @@ const Home = (): JSX.Element => {
 				<title>Icon library builder | dimaslz.dev</title>
 				<link rel="icon" href="/favicon.ico" />
 				<meta charSet="utf-8" />
-				<meta property="og:title" content="Icon library builder | dimaslz.dev" key="title" />
-				<meta property="og:description" content="Tool to generate a framework component from SVG icon | dimaslz.dev" key="description" />
+				<meta
+					property="og:title"
+					content="Icon library builder | dimaslz.dev"
+					key="title"
+				/>
+				<meta
+					property="og:description"
+					content="Tool to generate a framework component from SVG icon | dimaslz.dev"
+					key="description"
+				/>
 			</Head>
 
 			<main className="flex flex-col items-center w-full justify-start flex-grow">
 				<header className="h-16 bg-gray-800 w-full flex items-center justify-center text-white text-sm">
-          icon library <Icon className="text-gray-400" width="50" height="50" />{' '}
-          builder
+					icon library <Icon className="text-gray-400" width="50" height="50" />{' '}
+					builder
 				</header>
 
 				<div className="flex w-full h-full relative">
@@ -241,12 +255,14 @@ const Home = (): JSX.Element => {
 							</div>
 						) : (
 							<div className="relative w-full h-full">
-								{!isPlaceholder && <button
-									onClick={onSetIsPlaceholder}
-									className="px-3 py-2 rounded-sm absolute right-5 top-5 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
-								                   >
-									clean
-								</button>}
+								{!isPlaceholder && (
+									<button
+										onClick={onSetIsPlaceholder}
+										className="px-3 py-2 rounded-sm absolute right-5 top-5 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
+									>
+										clean
+									</button>
+								)}
 								<CodeEditor
 									placeholder={initialPlaceholder}
 									name="source"
@@ -286,7 +302,7 @@ const Home = (): JSX.Element => {
 											key={key}
 											onClick={onClickFrameworkOption(framework)}
 										>
-                      download for {framework.label.toUpperCase()}
+											download for {framework.label.toUpperCase()}
 										</li>
 									))}
 								</ul>
@@ -298,7 +314,7 @@ const Home = (): JSX.Element => {
 										onClick={onClickCopyResult}
 										className="px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
 									>
-                    copy
+										copy
 									</button>
 								)}
 
