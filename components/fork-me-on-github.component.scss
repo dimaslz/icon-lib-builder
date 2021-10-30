@@ -1,11 +1,7 @@
 .github-corner {
 	svg {
 		fill: #151513;
-		color: #fff;
-		position: absolute;
-		top: 0;
-		border: 0;
-		right: 0;
+		@apply text-white absolute top-0 border-0 right-0 z-10;
 	}
 
 	.octo-arm {
