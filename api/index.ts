@@ -37,7 +37,17 @@ export class API {
         .catch(this.errorHandler);
 	}
 
-	public formatter(script: string, framework: string, iconName?: string): Promise<string> {
+    public formatter({
+        script,
+        framework,
+        iconName,
+        type,
+    }: {
+        script: string,
+        framework: string,
+        iconName?: string,
+        type?: string
+    }): Promise<string> {
         return fetch(`${API_URL}/formatter`, {
             method: 'POST',
             headers: {
@@ -47,6 +57,7 @@ export class API {
                 script,
                 framework,
                 iconName,
+                type,
             }),
         }).then((result: any): any => {
             const { ok } = result;

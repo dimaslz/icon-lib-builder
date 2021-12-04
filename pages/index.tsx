@@ -29,13 +29,14 @@ const Home = (): JSX.Element => {
 	const [iconName, setIconName] = useState<string>('Icon');
 	const [svgString, setSvgString] = useState<string>('');
 	const [componentString, setComponentString] = useState('');
-	const [currentFramework, setCurrentFramework] = useState('react');
+	const [currentFramework, setCurrentFramework] = useState(frameworks[0]);
 	const [editorMode, setEditorMode] = useState('javascript');
 	const [isPasted, setIsPasted] = useState(false);
 	const [isPlaceholder, setIsPlaceholder] = useState(true);
 	const [sourceEditorReady, setSourceEditorReady] = useState(false);
 	const [resultEditorReady, setResultEditorReady] = useState(false);
 	const [filesDropped, setFilesDropped] = useState<File[]>([]);
+	const [frameworkLang, setFrameworkLang] = useState<any>([]);
 
 	const isBrowser = typeof window !== 'undefined';
 
@@ -72,7 +73,10 @@ const Home = (): JSX.Element => {
 
 	async function requestToFormat(value: string, iconName?: string) {
 		try {
-			let svgFormatted = await API.formatter(value, 'svg');
+			let svgFormatted = await API.formatter({
+				script: value,
+				framework: 'svg',
+			});
 			if (!svgFormatted) return;
 
 			svgFormatted = svgFormatted.replace(/>;/g, '>');
@@ -80,11 +84,11 @@ const Home = (): JSX.Element => {
 
 			setSvgString(svgFormatted);
 
-			const script = await API.formatter(
-				svgFormatted,
-				currentFramework,
+			const script = await API.formatter({
+				script: svgFormatted,
+				framework: currentFramework.name,
 				iconName,
-			);
+			});
 			setComponentString(script);
 		} catch (err) {
 			console.log('Err', err);
@@ -96,12 +100,31 @@ const Home = (): JSX.Element => {
 		}
 	}
 
-	async function onFrameworkChange(framework: Framework) {
-		setCurrentFramework(framework.name);
-		setEditorMode(framework.mode);
+	async function onFrameworkChange(framework: Framework, type?: any) {
+		const noTypes = !framework.types?.length;
 
-		const script = await API.formatter(svgString, framework.name, iconName);
+		setCurrentFramework(framework);
+
+		let script = '';
+		if (noTypes) {
+			script = await API.formatter({
+				script: svgString,
+				framework: framework.name,
+				iconName,
+			});
+		} else {
+			const defaultType = (framework.types || [])[0];
+			setFrameworkLang(type || defaultType);
+			script = await API.formatter({
+				script: svgString,
+				framework: framework.name,
+				iconName,
+				type: type?.name || defaultType.name,
+			});
+		}
+
 		setComponentString(script);
+		setEditorMode(type?.mode || framework.mode);
 	}
 
 	function onClickCopyResult() {
@@ -130,12 +153,19 @@ const Home = (): JSX.Element => {
 
 		if (!isSvg(value)) return; // TODO: Send Notification error
 
-		let svgFormatted = await API.formatter(value, 'svg');
+		let svgFormatted = await API.formatter({
+			script: value,
+			framework: 'svg',
+		});
 
 		svgFormatted = svgFormatted.replace(/>;/g, '>');
 		setSvgString(svgFormatted);
 
-		const script = await API.formatter(svgFormatted, currentFramework);
+		const script = await API.formatter({
+			script: svgFormatted,
+			framework: currentFramework.name,
+		});
+
 		setComponentString(script);
 	}
 
@@ -197,11 +227,12 @@ const Home = (): JSX.Element => {
 
 	function onChangeIconNameHandler(
 		$event: ChangeEvent<HTMLInputElement>,
-	): void {
+	) {
 		if (($event.nativeEvent as InputEvent).data === ' ') return;
 
 		const value = $event.target.value.replace(/[\W\s]+/gi, '');
 		setIconName(() => value);
+
 		if (value) {
 			requestToFormat(svgString, value);
 		}
@@ -312,7 +343,10 @@ const Home = (): JSX.Element => {
 								{componentString && (
 									<button
 										onClick={onClickCopyResult}
-										className="px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
+										className={[
+											'px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none',
+											currentFramework?.types?.length ? 'mt-8' : '',
+										].join(' ')}
 									>
 										copy
 									</button>
@@ -321,17 +355,18 @@ const Home = (): JSX.Element => {
 								<div className="Result__format">
 									<ul className="text-xs text-white flex bg-gray-700 p-2">
 										{frameworks.map((framework, key) => (
-											<li
-												className={[
-													'mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
-													framework.name === currentFramework
-														? 'bg-gray-400'
-														: 'bg-gray-700',
-												].join(' ')}
-												key={key}
-												onClick={onFrameworkChangeHandler(framework)}
-											>
-												{framework.label}
+											<li key={key}>
+												<button
+													className={[
+														'mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
+														framework.name === currentFramework.name
+															? 'bg-gray-400'
+															: 'bg-gray-700',
+													].join(' ')}
+													onClick={onFrameworkChangeHandler(framework)}
+												>
+													{framework.label}
+												</button>
 											</li>
 										))}
 									</ul>
@@ -343,6 +378,23 @@ const Home = (): JSX.Element => {
 										value={iconName}
 										onChange={onChangeIconNameHandler}
 									/>
+								</div>
+
+								<div className="pb-1">
+									{currentFramework?.types?.map(
+										(t: any, key: number) => (
+											<button
+												className={[
+													'text-xs text-white mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
+													t.name === frameworkLang.name
+														? 'bg-gray-400'
+														: 'bg-gray-700',
+												].join(' ')}
+												key={`${key}f.label`}
+												onClick={() => onFrameworkChange(currentFramework, t)}
+											>{t.label}</button>
+										),
+									)}
 								</div>
 
 								<div className="h-full">

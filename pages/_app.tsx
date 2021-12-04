@@ -5,12 +5,12 @@ import '../assets/css/style.scss';
 import '../components/fork-me-on-github.component.scss';
 
 import type { AppProps } from 'next/app';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const { NODE_ENV } = process.env;
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (NODE_ENV === 'production') {
 			const node: HTMLScriptElement = document.createElement('script');
 			node.src = 'https://plausible.io/js/plausible.js';
@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
 			document.getElementsByTagName('head')[0].appendChild(node);
 		}
-	});
+	}, []);
 
 	return <Component {...pageProps} />;
 };
