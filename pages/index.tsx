@@ -23,6 +23,7 @@ import { autoDownload, readFile, copyToClipboard } from '../utils';
 import frameworks from '../constants/frameworks.constants';
 
 import API from '../api';
+import { JSIcon, TSIcon } from '../components/icons';
 
 const initialPlaceholder = 'paste your SVG string here or drop some SVG files';
 const Home = (): JSX.Element => {
@@ -51,6 +52,7 @@ const Home = (): JSX.Element => {
 		});
 
 		setSvgString(value);
+
 		if (value) {
 			await requestToFormat(value);
 		}
@@ -60,7 +62,7 @@ const Home = (): JSX.Element => {
 
 	async function onChange(value: string): Promise<string | void> {
 		if (!isPasted && value) {
-			await requestToFormat(value);
+			await requestToFormat(value, iconName);
 		} else {
 			setIsPasted(false);
 		}
@@ -71,7 +73,7 @@ const Home = (): JSX.Element => {
 		}
 	}
 
-	async function requestToFormat(value: string, iconName?: string) {
+	async function requestToFormat(value: string, iconName?: string, type?: string) {
 		try {
 			let svgFormatted = await API.formatter({
 				script: value,
@@ -84,12 +86,16 @@ const Home = (): JSX.Element => {
 
 			setSvgString(svgFormatted);
 
+			const t = type || currentFramework.types?.[0];
 			const script = await API.formatter({
 				script: svgFormatted,
 				framework: currentFramework.name,
 				iconName,
+				...(t ? { type: t.name } : {}),
 			});
 			setComponentString(script);
+			setEditorMode(t?.mode);
+			setFrameworkLang(t);
 		} catch (err) {
 			console.log('Err', err);
 			setSvgString(value);
@@ -112,6 +118,7 @@ const Home = (): JSX.Element => {
 				framework: framework.name,
 				iconName,
 			});
+
 		} else {
 			const defaultType = (framework.types || [])[0];
 			setFrameworkLang(type || defaultType);
@@ -219,10 +226,6 @@ const Home = (): JSX.Element => {
 
 	function onClickFrameworkOption(framework: Framework) {
 		return () => downloadWithFramework(framework);
-	}
-
-	function onFrameworkChangeHandler(framework: Framework) {
-		return () => onFrameworkChange(framework);
 	}
 
 	function onChangeIconNameHandler(
@@ -358,14 +361,14 @@ const Home = (): JSX.Element => {
 											<li key={key}>
 												<button
 													className={[
-														'mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
+														'mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
 														framework.name === currentFramework.name
 															? 'bg-gray-400'
 															: 'bg-gray-700',
 													].join(' ')}
-													onClick={onFrameworkChangeHandler(framework)}
+													onClick={() => onFrameworkChange(framework)}
 												>
-													{framework.label}
+													{framework.icon && <framework.icon size="16" />}<span className="ml-1">{framework.label}</span>
 												</button>
 											</li>
 										))}
@@ -380,19 +383,27 @@ const Home = (): JSX.Element => {
 									/>
 								</div>
 
-								<div className="pb-1">
+								<div className="pb-1 flex">
 									{currentFramework?.types?.map(
 										(t: any, key: number) => (
 											<button
 												className={[
-													'text-xs text-white mx-1 p-2 rounded-full hover:bg-gray-500 cursor-pointer',
+													'text-xs text-white mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
 													t.name === frameworkLang.name
 														? 'bg-gray-400'
 														: 'bg-gray-700',
 												].join(' ')}
 												key={`${key}f.label`}
 												onClick={() => onFrameworkChange(currentFramework, t)}
-											>{t.label}</button>
+											>
+												{['ts', 'compressed'].includes(t.name) &&
+													<span><TSIcon className="text-blue-500" /></span>
+												}
+												{['js'].includes(t.name) &&
+													<span><JSIcon className="text-yellow-500" /></span>
+												}
+												<span className="ml-2">{t.label}</span>
+											</button>
 										),
 									)}
 								</div>
