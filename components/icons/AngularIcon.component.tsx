@@ -12,7 +12,6 @@ const AngularIcon: React.FC<PROPS> = ({
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 114.4 122.88"
 		style={{
-			enableBackground: 'new 0 0 114.4 122.88',
 			width: `${size}px`,
 			height: `${size}px`,
 		}}

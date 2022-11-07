@@ -13,7 +13,6 @@ const ReactIcon: React.FC<PROPS> = ({
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 122.88 109.43"
 		style={{
-			enableBackground: 'new 0 0 122.88 109.43',
 			width: `${size}px`,
 			height: `${size}px`,
 		}}

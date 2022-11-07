@@ -13,7 +13,6 @@ const VueIcon: React.FC<PROPS> = ({
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 122.88 106.42"
 		style={{
-			enableBackground: 'new 0 0 122.88 106.42',
 			width: `${size}px`,
 			height: `${size}px`,
 		}}
