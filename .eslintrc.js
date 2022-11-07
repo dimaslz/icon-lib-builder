@@ -48,7 +48,12 @@ module.exports = {
 		'react/jsx-equals-spacing': 2,
 		'react/jsx-indent-props': [2, 'tab'],
 		'react/jsx-max-props-per-line': [2, { maximum: 6 }],
-		'react/jsx-no-bind': [1, { ignoreRefs: true }],
+		'react/jsx-no-bind': [1, {
+			ignoreRefs: true,
+			ignoreDOMComponents: true,
+			allowArrowFunctions: true,
+			allowFunctions: true,
+		}],
 		'react/jsx-no-comment-textnodes': 2,
 		'react/jsx-no-duplicate-props': 2,
 		'react/jsx-no-target-blank': 2,
