@@ -11,6 +11,7 @@
     "lint": "tsc --noEmit && eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^1.17.0",
     "@types/jest": "^27.0.2",
     "@types/lodash.camelcase": "^4.3.6",
     "ace-builds": "^1.4.13",

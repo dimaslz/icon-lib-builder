@@ -11,6 +11,7 @@ export type Framework = {
   mode: string;
   types?: any[]
   version?: string;
+  preview?: boolean;
   icon: React.FunctionComponent<PROPS> | null,
 }
 

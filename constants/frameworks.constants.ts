@@ -8,9 +8,10 @@ export const frameworks: Framework[] = [
 		name: 'react',
 		mode: 'javascript',
 		icon: ReactIcon,
+		preview: true,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
-			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
+			{ label: 'Javascript', name: 'js', mode: 'javascript', preview: true },
+			{ label: 'TypeScript', name: 'ts', mode: 'typescript', preview: true },
 		],
 	},
 	{
@@ -18,9 +19,10 @@ export const frameworks: Framework[] = [
 		name: 'preact',
 		mode: 'javascript',
 		icon: PreactIcon,
+		preview: true,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
-			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
+			{ label: 'Javascript', name: 'js', mode: 'javascript', preview: true },
+			{ label: 'TypeScript', name: 'ts', mode: 'typescript', preview: true },
 		],
 	},
 	{
@@ -28,9 +30,10 @@ export const frameworks: Framework[] = [
 		name: 'vue2',
 		mode: 'javascript',
 		icon: VueIcon,
+		preview: true,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
-			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
+			{ label: 'Javascript', name: 'js', mode: 'javascript', preview: true },
+			{ label: 'TypeScript', name: 'ts', mode: 'typescript', preview: true },
 		],
 	},
 	{
@@ -38,10 +41,11 @@ export const frameworks: Framework[] = [
 		name: 'vue3',
 		mode: 'javascript',
 		icon: VueIcon,
+		preview: true,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
-			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
-			{ label: 'TS Compressed', name: 'compressed', mode: 'typescript' },
+			{ label: 'Javascript', name: 'js', mode: 'javascript', preview: true },
+			{ label: 'TypeScript', name: 'ts', mode: 'typescript', preview: true },
+			{ label: 'TS Compressed', name: 'compressed', mode: 'typescript', preview: true },
 		],
 	},
 	{
@@ -49,6 +53,7 @@ export const frameworks: Framework[] = [
 		icon: AngularIcon,
 		name: 'angular',
 		mode: 'typescript',
+		preview: true,
 		types: [],
 	},
 ];

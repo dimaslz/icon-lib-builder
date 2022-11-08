@@ -2,6 +2,8 @@ import Head from 'next/head';
 import React, { ChangeEvent, useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
+import { SandpackPredefinedTemplate } from '@codesandbox/sandpack-react';
+
 
 import ForkMeOnGithub from '../components/fork-me-on-github.component';
 
@@ -17,13 +19,14 @@ import {
 	Icon,
 	Footer,
 	Notification,
+	Preview,
 } from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
 
 import frameworks from '../constants/frameworks.constants';
 
 import API from '../api';
-import { JSIcon, TSIcon } from '../components/icons';
+import { ViewIcon, JSIcon, TSIcon, CopyIcon } from '../components/icons';
 
 const initialPlaceholder = 'paste your SVG string here or drop some SVG files';
 const Home = (): JSX.Element => {
@@ -38,6 +41,8 @@ const Home = (): JSX.Element => {
 	const [resultEditorReady, setResultEditorReady] = useState(false);
 	const [filesDropped, setFilesDropped] = useState<File[]>([]);
 	const [frameworkLang, setFrameworkLang] = useState<any>([]);
+	const [showPreview, setShowPreview] = useState<boolean>(false);
+	const [previewTemplate, setPreviewTemplate] = useState<SandpackPredefinedTemplate>('react');
 
 	const isBrowser = typeof window !== 'undefined';
 
@@ -241,7 +246,26 @@ const Home = (): JSX.Element => {
 		}
 	}
 
-	function onSetIsPlaceholder() {
+	function onClickPreviewResult() {
+		const templates: any = {
+			'react-js': 'react',
+			'react-ts': 'react-ts',
+		};
+
+		const templateKey = `${currentFramework.name}-${frameworkLang.name}`;
+		const template: SandpackPredefinedTemplate = templates[templateKey];
+		// const template: SandpackPredefinedTemplate = `${currentFramework.name}-${frameworkLang.name}` as SandpackPredefinedTemplate;
+
+		console.log('template', template);
+		setPreviewTemplate(() => template);
+		setShowPreview(() => true);
+	}
+
+	function onClosePreviewResult() {
+		setShowPreview(() => false);
+	}
+
+	function onSetIsPlaceholder(): void {
 		setSvgString('');
 		setComponentString('');
 		setIsPlaceholder(true);
@@ -250,6 +274,14 @@ const Home = (): JSX.Element => {
 	return (
 		<div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
 			<ForkMeOnGithub />
+
+			{showPreview && (
+				<Preview
+					template={previewTemplate}
+					html={componentString}
+					onClose={onClosePreviewResult}
+				/>
+			)}
 
 			<Head>
 				<title>Icon library builder | dimaslz.dev</title>
@@ -344,15 +376,26 @@ const Home = (): JSX.Element => {
 						) : (
 							<div className="flex flex-col h-full">
 								{componentString && (
-									<button
-										onClick={onClickCopyResult}
-										className={[
-											'px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none',
-											currentFramework?.types?.length ? 'mt-8' : '',
-										].join(' ')}
-									>
-										copy
-									</button>
+									<div className="absolute right-10 top-24 z-10">
+										<button
+											onClick={onClickCopyResult}
+											className={[
+												'px-3 py-2 rounded-md bg-gray-900 text-white hover:opacity-70 focus:outline-none flex items-center',
+												currentFramework?.types?.length ? 'mt-8' : '',
+											].join(' ')}
+										>
+											<CopyIcon /><span className="ml-1">copy</span>
+										</button>
+										<button
+											onClick={onClickPreviewResult}
+											className={[
+												'px-3 py-2 rounded-md bg-gray-900 text-white hover:opacity-70 focus:outline-none flex items-center mt-1',
+											].join(' ')}
+										>
+											<ViewIcon /><span className="ml-1">preview</span>
+										</button>
+
+									</div>
 								)}
 
 								<div className="Result__format">

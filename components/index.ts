@@ -5,3 +5,4 @@ export { default as Icon } from './icon.component';
 export { default as Loader } from './loader.component';
 export { default as Footer } from './footer.component';
 export { default as Notification } from './notification.component';
+export { default as Preview } from './Preview/Preview.component';
