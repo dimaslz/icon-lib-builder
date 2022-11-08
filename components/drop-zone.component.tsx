@@ -9,22 +9,22 @@ export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
 	const dropZoneRef = useRef<HTMLDivElement>(null);
 	const dropZoneOverlayRef = useRef<HTMLDivElement>(null);
 
-	const [dragAndDrop, setDragAndDrop] = useState(false);
+	const [dragAndDrop /* setDragAndDrop */] = useState(false);
 
 	function handleDragIn($event: DragEvent) {
 		$event.preventDefault();
 		$event.stopPropagation();
 
-		if ($event.dataTransfer?.items.length) {
-			setDragAndDrop(true);
-		}
+		// if ($event.dataTransfer?.items.length) {
+		// 	setDragAndDrop(true);
+		// }
 	}
 
 	function handleDragOut($event: DragEvent) {
 		$event.preventDefault();
 		$event.stopPropagation();
 
-		setDragAndDrop(false);
+		// setDragAndDrop(false);
 	}
 
 	function handleDrag($event: DragEvent) {
@@ -36,11 +36,11 @@ export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
 		$event.preventDefault();
 		$event.stopPropagation();
 
-		if ($event.dataTransfer?.items.length) {
-			onDrop($event, $event.dataTransfer.files);
-		}
+		// if ($event.dataTransfer?.items.length) {
+		// 	onDrop($event, $event.dataTransfer.files);
+		// }
 
-		setDragAndDrop(false);
+		// setDragAndDrop(false);
 	}
 
 	useEffect(() => {

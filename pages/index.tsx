@@ -25,7 +25,8 @@ import frameworks from '../constants/frameworks.constants';
 import API from '../api';
 import { JSIcon, TSIcon } from '../components/icons';
 
-const initialPlaceholder = 'paste your SVG string here or drop some SVG files';
+// const initialPlaceholder = 'paste your SVG string here or drop some SVG files';
+const initialPlaceholder = 'paste your SVG string content here';
 const Home = (): JSX.Element => {
 	const [iconName, setIconName] = useState<string>('Icon');
 	const [svgString, setSvgString] = useState<string>('');
