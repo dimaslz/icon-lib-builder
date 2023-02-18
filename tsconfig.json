@@ -50,7 +50,8 @@
       "esnext"
     ],
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "incremental": true
   },
   "include": [
     "assets/**/*",

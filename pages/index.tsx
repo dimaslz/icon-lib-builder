@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import React, { ChangeEvent, useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
@@ -11,7 +12,6 @@ import Framework from '../entity-type/Framework.type';
 import eventBus from '../utils/event-bus.utils';
 
 import {
-	CodeEditor,
 	DropZone,
 	FullScreenLoading,
 	Icon,
@@ -19,6 +19,14 @@ import {
 	Notification,
 } from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
+
+const CodeEditor = dynamic(
+	async () => import('../components/code-editor.component'),
+	{
+		loading: () => <div>Loading</div>,
+		ssr: false,
+	},
+);
 
 import frameworks from '../constants/frameworks.constants';
 

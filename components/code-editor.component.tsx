@@ -1,21 +1,13 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
+import AceEditor from 'react-ace';
 
-const AceEditor = dynamic(
-	async () => {
-		const ace = await import('react-ace');
-		require('ace-builds/src-noconflict/mode-javascript');
-		require('ace-builds/src-noconflict/mode-typescript');
-		require('ace-builds/src-noconflict/theme-nord_dark');
-		require('ace-builds/webpack-resolver');
-		return ace;
-	},
-	{
-		loading: () => (
-			<>Loading...</>
-		),
-		ssr: false,
-	});
+
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-typescript';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/theme-dracula';
+import 'ace-builds/webpack-resolver';
+
 
 type CodeEditorType = {
 	placeholder: string;
@@ -43,7 +35,7 @@ export const CodeEditor: React.FC<CodeEditorType> = ({
 		name={name}
 		value={value}
 		mode={mode}
-		theme="nord_dark"
+		theme="dracula"
 		onPaste={onPaste}
 		onChange={onChange}
 		onLoad={onLoad}
