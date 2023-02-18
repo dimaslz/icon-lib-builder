@@ -400,7 +400,7 @@ const Home = (): JSX.Element => {
 												{['ts', 'compressed'].includes(t.name) &&
 													<span><TSIcon className="text-blue-500" /></span>
 												}
-												{['js'].includes(t.name) &&
+												{t.name.includes('js') &&
 													<span><JSIcon className="text-yellow-500" /></span>
 												}
 												<span className="ml-2">{t.label}</span>

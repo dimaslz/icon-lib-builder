@@ -9,7 +9,8 @@ export const frameworks: Framework[] = [
 		mode: 'javascript',
 		icon: ReactIcon,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
+			{ label: 'Javascript v1', name: 'js-v1', mode: 'javascript' },
+			{ label: 'Javascript v2', name: 'js-v2', mode: 'javascript' },
 			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
 		],
 	},
@@ -19,7 +20,8 @@ export const frameworks: Framework[] = [
 		mode: 'javascript',
 		icon: PreactIcon,
 		types: [
-			{ label: 'Javascript', name: 'js', mode: 'javascript' },
+			{ label: 'Javascript v1', name: 'js-v1', mode: 'javascript' },
+			{ label: 'Javascript v2', name: 'js-v2', mode: 'javascript' },
 			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
 		],
 	},
