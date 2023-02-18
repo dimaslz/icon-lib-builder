@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Loader: React.FC = () => (
+const Loader: React.FC = () => (
 	<div>
 		<div className="LoaderComponent" />
 	</div>
