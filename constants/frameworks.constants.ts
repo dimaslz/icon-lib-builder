@@ -47,7 +47,7 @@ export const frameworks: Framework[] = [
 		],
 	},
 	{
-		label: 'Angular +2',
+		label: 'Angular',
 		icon: AngularIcon,
 		name: 'angular',
 		mode: 'typescript',
