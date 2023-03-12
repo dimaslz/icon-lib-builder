@@ -1,23 +1,21 @@
 import FileToUpload from '../entity-type/FileToUpload.type';
 import { downloadUrl } from '../utils';
 
-const API_URL = process.env.API_URL;
-
 export class API {
-	private static instance: API;
+    private static instance: API;
 
-	private constructor() { }
+    private constructor() { }
 
-	public static getInstance(): API {
+    public static getInstance(): API {
         if (!API.instance) {
             API.instance = new API();
         }
 
         return API.instance;
-	}
+    }
 
-	public uploadFiles(files: FileToUpload[], framework: string) {
-        return fetch(`${API_URL}/upload`, {
+    public uploadFiles(files: FileToUpload[], framework: string) {
+        return fetch(`/api/upload`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,8 +32,8 @@ export class API {
         }).then(response => {
             return response.json();
         })
-        .catch(this.errorHandler);
-	}
+            .catch(this.errorHandler);
+    }
 
     public formatter({
         script,
@@ -48,7 +46,7 @@ export class API {
         iconName?: string,
         type?: string
     }): Promise<string> {
-        return fetch(`${API_URL}/formatter`, {
+        return fetch(`/api/formatter`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,12 +63,12 @@ export class API {
 
             return result;
         })
-        .then(result => result.json())
-        .catch(this.errorHandler);
+            .then(result => result.json())
+            .catch(this.errorHandler);
     }
 
     public downloadFilename(filename: string) {
-        const url = `${API_URL}/download/${filename}`;
+        const url = `/api/download/${filename}`;
         return downloadUrl(url);
     }
 

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
 
@@ -255,6 +255,10 @@ const Home = (): JSX.Element => {
 		setComponentString('');
 		setIsPlaceholder(true);
 	}
+
+	useEffect(() => {
+		fetch('/api/formatter');
+	}, []);
 
 	return (
 		<div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
