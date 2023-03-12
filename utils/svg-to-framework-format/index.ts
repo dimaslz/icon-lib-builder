@@ -18,7 +18,7 @@ type StyleOptions = {
 export default function svgToFrameworkFormat(
 	svg: string,
 	framework: string,
-	iconName?: string,
+	iconName: string,
 	type?: string,
 ) {
 	try {
@@ -41,7 +41,7 @@ export default function svgToFrameworkFormat(
 		// .replace(/stroke=["'](?!none).*?["']/gm, "stroke=\"currentColor\"")
 		// .replace(/fill=["'](?!none).*?["']/gm, "fill=\"currentColor\"");
 
-		const { data: svgCleaned } = cleanSvg(svg);
+		const { data: svgCleaned } = cleanSvg(svg) as { data: any };
 		let frameworkFormat = '';
 		if (/p?react/.test(framework)) {
 			frameworkFormat = svgToReact(svg, framework, type, iconName);
