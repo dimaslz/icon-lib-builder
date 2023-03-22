@@ -17,7 +17,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 			node.type = 'text/javascript';
 			node.async = true;
 			node.defer = true;
-			node.dataset.domain = 'icon-lib-builder.dimaslz.dev';
+			node.dataset.domain = 'svg-icon-2-fw-component.dimaslz.dev';
 
 			document.getElementsByTagName('head')[0].appendChild(node);
 		}
