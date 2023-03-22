@@ -256,8 +256,13 @@ const Home = (): JSX.Element => {
 		setIsPlaceholder(true);
 	}
 
+	let ignore = false;
 	useEffect(() => {
-		fetch('/api/formatter');
+		if (!ignore) {
+			fetch('/api/formatter');
+		}
+
+		return () => { ignore = true; };
 	}, []);
 
 	return (
