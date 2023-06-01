@@ -16,7 +16,7 @@ export default {
 
 		export default %iconName%;
 		`,
-		"js-v1": `import * as React from "react";
+		'js-v1': `import * as React from "react";
 
 		const %iconName% = ({ size = 24, stroke = 1, style = {} }) => {
 			return (
@@ -26,7 +26,7 @@ export default {
 
 		export default %iconName%;
 		`,
-		"js-v2": `import * as React from "react";
+		'js-v2': `import * as React from "react";
 
 		function %iconName%({ size = 24, stroke = 1, style = {} }) {
 			return (
@@ -38,7 +38,7 @@ export default {
 		`,
 	},
 	preact: {
-		"js-v1": `import { h } from "preact";
+		'js-v1': `import { h } from "preact";
 
 		const %iconName% = ({ size = 24, stroke = 1, style = {} }) => {
 			return (
@@ -48,7 +48,7 @@ export default {
 
 		export default %iconName%;
 		`,
-		"js-v2": `import { h } from "preact";
+		'js-v2': `import { h } from "preact";
 
 		function %iconName%({ size = 24, stroke = 1, style = {} }) {
 			return (
@@ -163,5 +163,15 @@ export default defineComponent({
 <template>
 	%content%
 </template>`,
+	},
+	svelte: {
+		js: `<script>
+	export let size = 24;
+</script>
+%content%`,
+		ts: `<script lang="ts">
+	export let size: number | string = 24;
+</script>
+%content%`,
 	},
 };

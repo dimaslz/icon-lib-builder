@@ -1,4 +1,4 @@
-import { AngularIcon, PreactIcon, VueIcon } from '../components/icons';
+import { AngularIcon, SvelteIcon, PreactIcon, VueIcon } from '../components/icons';
 import ReactIcon from '../components/icons/ReactIcon.component';
 import Framework from '../entity-type/Framework.type';
 
@@ -44,6 +44,16 @@ export const frameworks: Framework[] = [
 			{ label: 'Javascript', name: 'js', mode: 'javascript' },
 			{ label: 'TypeScript', name: 'ts', mode: 'typescript' },
 			{ label: 'TS Compressed', name: 'compressed', mode: 'typescript' },
+		],
+	},
+	{
+		label: 'Svelte',
+		name: 'svelte',
+		mode: 'javascript',
+		icon: SvelteIcon,
+		types: [
+			{ label: 'Javascript', name: 'js', mode: 'javascript' },
+			{ label: 'Typescript', name: 'ts', mode: 'typescript' },
 		],
 	},
 	{

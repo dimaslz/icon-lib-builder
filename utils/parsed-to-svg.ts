@@ -28,7 +28,7 @@ export default function formatSvg(arr: any[], svgStyle?: string, framework?: str
 			if (child.tagName === 'svg' && svgStyle) {
 				if (/style=\{\{[^\}]+\}\}/gm.test(properties)) {
 					properties = properties.replace(/(style=\{\{[^\}]+)\}\}/gm, `$1, ${svgStyle}}}`);
-				} else if (framework && ['vue2', 'vue3', 'angular'].includes(framework)) {
+				} else if (framework && ['vue2', 'vue3', 'angular', 'svelte'].includes(framework)) {
 					properties += `${svgStyle}`;
 				} else {
 					properties += `style={{${svgStyle}}}`;

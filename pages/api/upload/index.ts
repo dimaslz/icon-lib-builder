@@ -33,6 +33,7 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 			preact: '.tsx',
 			react: '.tsx',
 			vue: '.vue',
+			svelte: '.svelte',
 			angular: '.ts',
 		} as EXT)[framework];
 

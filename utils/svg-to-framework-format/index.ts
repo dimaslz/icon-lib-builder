@@ -28,6 +28,7 @@ export default function svgToFrameworkFormat(
 			svg: 'babel',
 			vue2: 'vue',
 			vue3: 'vue',
+			svelte: 'babel',
 			angular: 'babel',
 		};
 		const parser: string = parserOptions[framework];
@@ -35,6 +36,9 @@ export default function svgToFrameworkFormat(
 		svg = svg
 			// .replace(/^style=["'].*?["']/gm, "");
 			// .replace(/stroke-width=["'].*?["']/gm, "")
+			.replace(/xmls=["'](.*?)["']/gm, '')
+			.replace(/stroke-linecap=["'](.*?)["']/gm, "strokeLinecap='$1'")
+			.replace(/stroke-linejoin=["'](.*?)["']/gm, "strokeLinejoin='$1'")
 			.replace(/xml:space=["'].*?["']/gm, '')
 			.replace(/^width=["'].*?["']/gm, '')
 			.replace(/^height=["'].*?["']/gm, '');
@@ -47,9 +51,10 @@ export default function svgToFrameworkFormat(
 			frameworkFormat = svgToReact(svg, framework, type, iconName);
 		} else if (framework) {
 			const styleOptions: StyleOptions = {
-				vue2: ':style="{ width: `${size}px`, height: `${size}px` }"',
-				vue3: ':style="{ width: `${size}px`, height: `${size}px` }"',
-				angular: 'style="width: {{size}}px; height: {{size}}px; color: {{color}};{{style}}"',
+				vue2: ' :style="{ width: `${size}px`, height: `${size}px` }"',
+				vue3: ' :style="{ width: `${size}px`, height: `${size}px` }"',
+				svelte: ' style={`width: ${size}px; height: ${size}px;`}',
+				angular: ' style="width: {{size}}px; height: {{size}}px; color: {{color}};{{style}}"',
 			};
 			const style: string = styleOptions[framework];
 			const svgParsed = parse(svgCleaned);
@@ -72,8 +77,15 @@ export default function svgToFrameworkFormat(
 			}
 		}
 
+		if (framework === 'svelte') {
+			return prettier.format(
+				frameworkFormat.replace(/class="[^\"]+"/gm, ''),
+				{ parser: 'svelte', plugins: ['prettier-plugin-svelte'] });
+		}
+
 		return prettier.format(frameworkFormat.replace(/class="[^\"]+"/gm, ''), { parser });
 	} catch (error) {
+		console.log('[Error]: svg-to-framework', error);
 		return '';
 	}
 }

@@ -19,9 +19,11 @@
     "lodash.camelcase": "^4.3.0",
     "next": "^13.1.6",
     "prettier": "^2.8.4",
+    "prettier-plugin-svelte": "^2.10.1",
     "react": "18.2.0",
     "react-ace": "^10.1.0",
     "react-dom": "18.2.0",
+    "svelte": "^3.59.1",
     "svg-parser": "^2.0.4",
     "svgo": "^3.0.2"
   },
