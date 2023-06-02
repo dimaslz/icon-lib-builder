@@ -4,8 +4,6 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import isSvg from 'is-svg';
 import _ from 'lodash';
 
-import ForkMeOnGithub from '../components/fork-me-on-github.component';
-
 import FileToUpload from '../entity-type/FileToUpload.type';
 import Framework from '../entity-type/Framework.type';
 
@@ -31,10 +29,9 @@ const CodeEditor = dynamic(
 import frameworks from '../constants/frameworks.constants';
 
 import API from '../api';
-import { JSIcon, TSIcon } from '../components/icons';
+import { CrossIcon, JSIcon, TSIcon } from '../components/icons';
 
-// const initialPlaceholder = 'paste your SVG string here or drop some SVG files';
-const initialPlaceholder = 'paste your SVG string content here';
+const initialPlaceholder = 'paste or drop your SVG string content here';
 const Home = (): JSX.Element => {
 	const [iconName, setIconName] = useState<string>('Icon');
 	const [svgString, setSvgString] = useState<string>('');
@@ -46,6 +43,12 @@ const Home = (): JSX.Element => {
 	const [sourceEditorReady, setSourceEditorReady] = useState(false);
 	const [resultEditorReady, setResultEditorReady] = useState(false);
 	const [filesDropped, setFilesDropped] = useState<File[]>([]);
+	const [filesConfigToDownload, setFilesConfigToDownload] = useState<any>({});
+	const [filesDroppedSteps, setFilesDroppedSteps] = useState<any>({
+		framework: { label: 'Select the framework', here: true },
+		language: { label: 'Select the language', here: false },
+		download: { label: 'Download', here: false },
+	});
 	const [frameworkLang, setFrameworkLang] = useState<any>([]);
 
 	const isBrowser = typeof window !== 'undefined';
@@ -198,7 +201,11 @@ const Home = (): JSX.Element => {
 		}
 	}
 
-	async function downloadWithFramework(framework: Framework) {
+	async function downloadIcons() {
+		const language = (filesConfigToDownload.framework.types
+			.find((f: any) => f.mode === filesConfigToDownload.language) || {}).name;
+		const framework = filesConfigToDownload.framework.name;
+
 		const filesContent: FileToUpload[] = (
 			await Promise.all(
 				filesDropped.map(async (file: File) => {
@@ -215,7 +222,8 @@ const Home = (): JSX.Element => {
 			try {
 				const filesUploaded: any = await API.uploadFiles(
 					filesContent,
-					framework.name,
+					framework,
+					language,
 				);
 
 				downloadFile(filesUploaded?.file);
@@ -223,6 +231,26 @@ const Home = (): JSX.Element => {
 				console.error('Err: ', err);
 			}
 		}
+
+		setFilesDropped([]);
+		setFilesConfigToDownload({});
+		setFilesDroppedSteps((prev: any) => ({
+			...prev,
+			framework: { ...prev.framework, here: true },
+			language: { ...prev.language, here: false },
+			download: { ...prev.download, here: false },
+		}));
+	}
+
+	function cancelIconsDropped() {
+		setFilesDropped([]);
+		setFilesConfigToDownload({});
+		setFilesDroppedSteps((prev: any) => ({
+			...prev,
+			framework: { ...prev.framework, here: true },
+			language: { ...prev.language, here: false },
+			download: { ...prev.download, here: false },
+		}));
 	}
 
 	function onLoadSourceCodeEditor() {
@@ -233,8 +261,31 @@ const Home = (): JSX.Element => {
 		setResultEditorReady(true);
 	}
 
+	function onClickLanguageOption(language: string) {
+		setFilesDroppedSteps((prev: any) => ({
+			...prev,
+			framework: { ...prev.framework, here: false },
+			language: { ...prev.language, here: false },
+			download: { ...prev.download, here: true },
+		}));
+		setFilesConfigToDownload((prev: any) => ({
+			...prev,
+			language,
+		}));
+
+		// downloadIcons();
+	}
+
 	function onClickFrameworkOption(framework: Framework) {
-		return () => downloadWithFramework(framework);
+		setFilesDroppedSteps((prev: any) => ({
+			...prev,
+			framework: { ...prev.framework, here: false },
+			language: { ...prev.language, here: true },
+		}));
+		setFilesConfigToDownload((prev: any) => ({
+			...prev,
+			framework,
+		}));
 	}
 
 	function onChangeIconNameHandler(
@@ -267,7 +318,7 @@ const Home = (): JSX.Element => {
 
 	return (
 		<div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
-			<ForkMeOnGithub />
+			{/* <ForkMeOnGithub /> */}
 
 			<Head>
 				<title>Icon library builder | dimaslz.dev</title>
@@ -336,28 +387,67 @@ const Home = (): JSX.Element => {
 						suppressHydrationWarning
 					>
 						{filesDropped.length ? (
-							<div
-								style={{ backgroundColor: '#3C4451' }}
-								className={[
-									'text-gray-200 h-full p-4 text-sm font-normal',
-									filesDropped.length
-										? 'flex flex-col items-center justify-center'
-										: '',
-								].join(' ')}
-							>
-								<ul className="flex flex-col">
-									{frameworks.map((framework, key) => (
-										<li
+							<div className="relative w-full h-full">
+								<button className="absolute top-4 right-4 bg-[#414853] p-2 rounded-full hover:bg-[#272d35]" onClick={() => cancelIconsDropped()}>
+									<CrossIcon className="text-white" />
+								</button>
+								<div
+									style={{ backgroundColor: '#3C4451' }}
+									className={[
+										'text-gray-200 h-full p-4 text-sm font-normal',
+										filesDropped.length
+											? 'flex flex-col items-center justify-center'
+											: '',
+									].join(' ')}
+								>
+									{filesDroppedSteps.framework.here && <div>
+										<h2 className="text-6xl">{ filesDroppedSteps.framework.label }</h2>
+										<ul className="flex flex-col">
+											{frameworks.map((framework, key) => (
+												<li key={key}>
+													<button
+														className={[
+															'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700 text-center w-full',
+														].join(' ')}
+														onClick={() => onClickFrameworkOption(framework)}
+													>
+														{framework.label.toUpperCase()}
+													</button>
+												</li>
+											))}
+										</ul>
+									</div>}
+									{filesDroppedSteps.language.here && <div>
+										<h2 className="text-6xl">{filesDroppedSteps.language.label}</h2>
+										<ul className="flex flex-col">
+											<li>
+												<button
+													className={[
+														'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700 text-center w-full',
+													].join(' ')}
+													onClick={() => onClickLanguageOption('javascript')}
+												>javascript</button>
+											</li>
+											<li>
+												<button
+													className={[
+														'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700 text-center w-full',
+													].join(' ')}
+													onClick={() => onClickLanguageOption('typescript')}
+												>typescript</button>
+											</li>
+										</ul>
+									</div>}
+									{filesDroppedSteps.download.here && <div>
+										<h2 className="text-6xl">{filesDroppedSteps.download.label}</h2>
+										<button
 											className={[
-												'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700',
+												'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700 text-center w-full',
 											].join(' ')}
-											key={key}
-											onClick={onClickFrameworkOption(framework)}
-										>
-											download for {framework.label.toUpperCase()}
-										</li>
-									))}
-								</ul>
+											onClick={() => downloadIcons()}
+										>download</button>
+									</div>}
+								</div>
 							</div>
 						) : (
 							<div className="flex flex-col h-full">

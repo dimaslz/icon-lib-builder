@@ -14,7 +14,7 @@ export class API {
         return API.instance;
     }
 
-    public uploadFiles(files: FileToUpload[], framework: string) {
+    public uploadFiles(files: FileToUpload[], framework: string, language: string) {
         return fetch(`/api/upload`, {
             method: 'POST',
             headers: {
@@ -23,6 +23,7 @@ export class API {
             body: JSON.stringify({
                 files,
                 framework,
+                language,
             }),
         }).then((result: any): any => {
             const { ok } = result;

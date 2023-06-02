@@ -34,7 +34,7 @@ export default (
 	iconName?: string,
 ): any => {
 	try {
-		const hasStroke = /stroke-width/.test(svg);
+		const hasStroke = /stroke-width=|stroke=/.test(svg);
 
 		const svgParsed = parse(svg);
 

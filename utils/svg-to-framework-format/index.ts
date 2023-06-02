@@ -41,7 +41,7 @@ export default function svgToFrameworkFormat(
 			.replace(/^width=["'].*?["']/gm, '')
 			.replace(/^height=["'].*?["']/gm, '');
 
-		const hasStroke = /stroke-width/g.test(svg);
+		const hasStroke = /stroke-width=|stroke=/g.test(svg);
 		if (hasStroke) {
 			svg = svg.replace(/stroke=["'](?!none).*?["']/gm, 'stroke="currentColor"');
 		}

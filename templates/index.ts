@@ -182,7 +182,9 @@ export const getTemplate = ({
 	style?: React.CSSProperties;
 	className?: string | undefined;
 }`);
-			template = template.replace('%props%', '{ size = 24, stroke = 1, style = {}, className }');
+			template = template
+				.replace('<svg', '<svg\nclassName={className}')
+				.replace('%props%', '{ size = 24, stroke = 1, style = {}, className }');
 		} else {
 			template = template.replace('%props%', '{ size = 24, style = {}, className }');
 			template = template.replace('%type%', `type PROPS = {
@@ -200,7 +202,7 @@ export const getTemplate = ({
 		if (stroke) {
 			template = template
 				.replace(/stroke-width=["'].*?["']/, ':stroke-width="stroke"')
-				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, stroke-width: `${stroke}`}"')
+				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, strokeWidth: `${stroke}`}"')
 				.replace('%props%', `props: {
 		size: {
 			type: [Number, String],
@@ -224,7 +226,7 @@ export const getTemplate = ({
 		if (stroke) {
 			template = template
 				.replace(/stroke-width=["'].*?["']/, ':stroke-width="stroke"')
-				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, stroke-width: `${stroke}`}"')
+				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, strokeWidth: `${stroke}`}"')
 				.replace('%props%', lang !== 'compressed' ? `props: {
 		size: {
 			type: [Number, String],

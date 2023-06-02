@@ -1,9 +1,10 @@
 import fs from "fs";
+import path from "path";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import compress from '../../../utils/compress';
 import svgToFrameworkFormat from '../../../utils/svg-to-framework-format';
-import { Framework } from "../../../templates";
+import type { Framework, Lang } from "../../../templates";
 
 type EXT = {
 	[key: string]: string;
@@ -20,30 +21,36 @@ const capitalizeFileName = (filename: string) => {
 
 
 export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse) => {
-	const uploadPath = `${__dirname}/../../../static/upload`;
+	const uploadPath = path.join('./public', 'uploads');
 	if (!fs.existsSync(uploadPath)) {
 		fs.mkdirSync(uploadPath, { recursive: true });
 	}
 
 	try {
-		const { files, framework }: { files: any[], framework: Framework } = httpRequest.body;
+		const { files, framework, language }:
+			{ files: any[], framework: Framework, language: Lang } = httpRequest.body;
 
 		const time = `icon-builder-${new Date().getTime()}-${framework}`;
 
-		const ext = ({
-			preact: '.tsx',
-			react: '.tsx',
-			vue: '.vue',
+		let ext = ({
+			preact: { "js-v1": ".jsx", "js-v2": ".jsx", "ts": ".tsx" },
+			react: { "js-v1": ".jsx", "js-v2": ".jsx", "ts": ".tsx" },
+			vue2: '.vue',
+			vue3: '.vue',
 			svelte: '.svelte',
 			angular: '.ts',
-		} as EXT)[framework];
+		} as any)[framework];
+
+		if (typeof ext === "object") {
+			ext = ext[language];
+		}
 
 		fs.mkdirSync(`${uploadPath}/${time}`);
 		await Promise.all(
 			files.map(async (file: any) => {
-				const fileUrl = `${uploadPath}/${time}/${file.name.replace('.svg', ext)}`;
+				const fileUrl = `${uploadPath}/${time}/${capitalizeFileName(file.name)}Icon${ext}`;
 				const iconName = `${capitalizeFileName(file.name)}Icon`;
-				const content = svgToFrameworkFormat(file.svg, framework, iconName);
+				const content = svgToFrameworkFormat(file.svg, framework, iconName, language); // TODO: type!!
 				return fs.writeFileSync(fileUrl, content);
 			}),
 		);
