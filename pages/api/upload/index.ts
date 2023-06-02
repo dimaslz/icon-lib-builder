@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import compress from '../../../utils/compress';
 import svgToFrameworkFormat from '../../../utils/svg-to-framework-format';
+import { Framework } from "../../../templates";
 
 type EXT = {
 	[key: string]: string;
@@ -25,7 +26,7 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 	}
 
 	try {
-		const { files, framework }: { files: any[], framework: string } = httpRequest.body;
+		const { files, framework }: { files: any[], framework: Framework } = httpRequest.body;
 
 		const time = `icon-builder-${new Date().getTime()}-${framework}`;
 

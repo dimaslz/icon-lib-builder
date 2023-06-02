@@ -2,7 +2,7 @@ import _ from 'lodash';
 import prettier from 'prettier';
 import { parse } from 'svg-parser';
 
-import templates from '../../templates';
+import templates, { getTemplate, type Framework, type Lang } from '../../templates';
 import cleanSvg from '../clean-svg';
 import formatSvg from '../parsed-to-svg';
 import svgToReact from '../svg-to-react';
@@ -17,10 +17,12 @@ type StyleOptions = {
 
 export default function svgToFrameworkFormat(
 	svg: string,
-	framework: string,
+	framework: Framework,
 	iconName: string,
-	type?: string,
+	type?: Lang,
 ) {
+	if (!svg) return '';
+
 	try {
 		const parserOptions: ParserFW = {
 			preact: 'babel',
@@ -34,17 +36,15 @@ export default function svgToFrameworkFormat(
 		const parser: string = parserOptions[framework];
 
 		svg = svg
-			// .replace(/^style=["'].*?["']/gm, "");
-			// .replace(/stroke-width=["'].*?["']/gm, "")
 			.replace(/xmls=["'](.*?)["']/gm, '')
-			.replace(/stroke-linecap=["'](.*?)["']/gm, "strokeLinecap='$1'")
-			.replace(/stroke-linejoin=["'](.*?)["']/gm, "strokeLinejoin='$1'")
 			.replace(/xml:space=["'].*?["']/gm, '')
 			.replace(/^width=["'].*?["']/gm, '')
 			.replace(/^height=["'].*?["']/gm, '');
-		// .replace(/stroke=["'](?!none).*?["']/gm, "stroke=\"currentColor\"")
-		// .replace(/fill=["'](?!none).*?["']/gm, "fill=\"currentColor\"");
 
+		const hasStroke = /stroke-width/g.test(svg);
+		if (hasStroke) {
+			svg = svg.replace(/stroke=["'](?!none).*?["']/gm, 'stroke="currentColor"');
+		}
 		const { data: svgCleaned } = cleanSvg(svg) as { data: any };
 		let frameworkFormat = '';
 		if (/p?react/.test(framework)) {
@@ -54,27 +54,19 @@ export default function svgToFrameworkFormat(
 				vue2: ' :style="{ width: `${size}px`, height: `${size}px` }"',
 				vue3: ' :style="{ width: `${size}px`, height: `${size}px` }"',
 				svelte: ' style={`width: ${size}px; height: ${size}px;`}',
-				angular: ' style="width: {{size}}px; height: {{size}}px; color: {{color}};{{style}}"',
+				angular: ' style="width: {{size}}px; height: {{size}}px; color: {{color}}; {{style}}"',
 			};
 			const style: string = styleOptions[framework];
 			const svgParsed = parse(svgCleaned);
 			const svgFormat: string = formatSvg(svgParsed.children, style, framework);
 
-			if (type) {
-				frameworkFormat = (templates as any)[framework][type]
-					.replace(/%content%/, svgFormat);
-			} else {
-				frameworkFormat = (templates as any)[framework]
-					.replace(/%content%/, svgFormat);
-			}
-
-			if (framework === 'angular') {
-				frameworkFormat = frameworkFormat
-					.replace(/%iconName%/g, _.kebabCase(iconName))
-					.replace(/%classIconName%/g, iconName);
-			} else {
-				frameworkFormat = frameworkFormat.replace(/%iconName%/g, iconName);
-			}
+			frameworkFormat = getTemplate({
+				framework,
+				lang: framework === 'angular' ? undefined : type,
+				content: svgFormat,
+				stroke: hasStroke,
+				iconName,
+			});
 		}
 
 		if (framework === 'svelte') {
