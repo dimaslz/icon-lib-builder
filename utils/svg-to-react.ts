@@ -1,4 +1,4 @@
-import templates from '../templates';
+import { type Framework, type Lang, getTemplate } from '../templates';
 import camelCase from 'lodash/camelCase';
 import { parse } from 'svg-parser';
 
@@ -27,32 +27,37 @@ const toReact = (arr: any[]) => {
 	return arr;
 };
 
-export default (svg: string, framework = 'react', type = 'js', iconName?: string): any => {
+export default (
+	svg: string,
+	framework: Framework = 'react',
+	type: Lang = 'js-v1',
+	iconName?: string,
+): any => {
 	try {
 		const hasStroke = /stroke-width/.test(svg);
-
-		svg = svg.replace(/stroke-width=["'].*?["']/gm, '');
 
 		const svgParsed = parse(svg);
 
 		if (svgParsed) {
+			// svgParsed.children[0].properties.className = '%className%';
 			const react = toReact(svgParsed.children);
-			const template = type && typeof (templates as any)[framework] !== 'string'
-				? (templates as any)[framework][type]
-				: (templates as any)[framework];
-
 
 			const style = hasStroke
 				? 'width: `${size}px`, height: `${size}px`, strokeWidth: `${stroke}px`, ...style'
 				: 'width: `${size}px`, height: `${size}px`, ...style';
+
+			const template = getTemplate({
+				framework,
+				lang: type,
+				content: formatSvg(react, style, framework),
+				stroke: hasStroke,
+			});
+
 			return template
+				.replace(/strokeWidth=["'].*?["']/gm, 'strokeWidth={{stroke}}')
 				.replace(
 					/%iconName%/g,
 					iconName,
-				)
-				.replace(
-					/%content%/,
-					formatSvg(react, style, framework),
 				);
 		};
 
