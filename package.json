@@ -18,7 +18,7 @@
     "is-svg": "^4.3.2",
     "lodash.camelcase": "^4.3.0",
     "lodash.capitalize": "^4.2.1",
-    "next": "^13.1.6",
+    "next": "^13.4.4",
     "prettier": "^2.8.4",
     "prettier-plugin-svelte": "^2.10.1",
     "react": "18.2.0",
