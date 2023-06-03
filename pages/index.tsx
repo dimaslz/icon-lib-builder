@@ -31,7 +31,7 @@ import frameworks from '../constants/frameworks.constants';
 import API from '../api';
 import { CrossIcon, JSIcon, TSIcon } from '../components/icons';
 
-const initialPlaceholder = 'paste or drop your SVG string content here';
+const initialPlaceholder = 'paste SVG string content or drop multiple SVG files here';
 const Home = (): JSX.Element => {
 	const [iconName, setIconName] = useState<string>('Icon');
 	const [svgString, setSvgString] = useState<string>('');
