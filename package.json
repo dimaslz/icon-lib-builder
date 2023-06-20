@@ -41,7 +41,7 @@
     "@types/react": "^18.0.28",
     "@types/svg-parser": "^2.0.3",
     "@types/svgo": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.52.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.34.0",
