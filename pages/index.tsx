@@ -12,9 +12,9 @@ import eventBus from '../utils/event-bus.utils';
 import {
 	DropZone,
 	FullScreenLoading,
-	Icon,
 	Footer,
 	Notification,
+	Header,
 } from '../components';
 import { autoDownload, readFile, copyToClipboard } from '../utils';
 
@@ -337,10 +337,7 @@ const Home = (): JSX.Element => {
 			</Head>
 
 			<main className="flex flex-col items-center w-full justify-start flex-grow">
-				<header className="h-16 bg-gray-800 w-full flex items-center justify-center text-white text-sm">
-					icon library <Icon className="text-gray-400" width="50" height="50" />{' '}
-					builder
-				</header>
+				<Header />
 
 				<div className="flex w-full h-full relative">
 					{!sourceEditorReady && !resultEditorReady ? (
