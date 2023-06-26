@@ -204,6 +204,7 @@ export default {
 
 	moduleNameMapper: {
 		'\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
+		'^@/(.*)': '<rootDir>/$1',
 	},
 	testMatch: [
 		'**/*.(test|spec).(js|ts|tsx)',

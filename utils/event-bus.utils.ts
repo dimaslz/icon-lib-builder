@@ -12,11 +12,11 @@ export type EventBus<EventType, Callback, UnSub> = {
 }
 
 
-const subscriptions: Subscription = {};
 const getNextUniqueId = () => new Date().getTime();
 
+const subscriptions: Subscription = {};
 export const eventBus = {
-	subscribe: (eventType: string, callback: (notification: any) => void): EventBusSubscription => {
+	subscribe: <T>(eventType: string, callback: (data: T) => void): EventBusSubscription => {
 		const id = getNextUniqueId();
 
 		if (!subscriptions[eventType]) {
@@ -27,12 +27,14 @@ export const eventBus = {
 		return {
 			unsubscribe: () => {
 				delete subscriptions[eventType][id];
-				if (Object.keys(subscriptions[eventType]).length === 0) {delete subscriptions[eventType];}
+				if (Object.keys(subscriptions[eventType]).length === 0) {
+					delete subscriptions[eventType];
+				}
 			},
 		};
 	},
 
-	publish: (eventType: string, arg?: any) =>  {
+	publish: <T>(eventType: string, arg?: T) => {
 		if (!subscriptions[eventType]) {
 			return;
 		}

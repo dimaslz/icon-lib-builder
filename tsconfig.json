@@ -51,16 +51,24 @@
     ],
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+    }
   },
   "include": [
     "assets/**/*",
     "components/**/*",
     "pages/**/*",
+    "contexts/**/*",
+    "layouts/**/*",
     "utils/**/*",
     "constants/**/*",
     "entity-type/**/*",
     "api/**/*",
+    "stores/**/*",
+    "hooks/**/*",
     "tests/**/*"
   ],
   "exclude": [
