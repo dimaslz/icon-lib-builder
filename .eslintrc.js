@@ -6,6 +6,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		// "prettier/@typescript-eslint",
+		'plugin:tailwindcss/recommended',
 		'plugin:prettier/recommended',
 		'plugin:@next/next/recommended',
 	],
@@ -165,5 +166,8 @@ module.exports = {
 		strict: [2, 'never'],
 		'unicode-bom': 2,
 		'valid-jsdoc': [0, { requireReturn: false }],
+		'tailwindcss/no-custom-classname': ['warn', {
+			whitelist: ['github-corner', 'octo-arm', 'octo-body', 'LoaderComponent', 'Source'],
+		}],
 	},
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Loader } from './';
 
 const FullScreenLoading: React.FC = () => (
-	<div className="absolute z-10 top-0 left-0 right-0 bottom-0 w-full h-full bg-gray-900 flex items-center justify-center text-white">
+	<div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center bg-gray-900 text-white">
 		<Loader />
 	</div>
 );

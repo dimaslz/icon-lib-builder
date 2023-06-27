@@ -64,15 +64,15 @@ export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
 
 	return (
 		<div
-			className="Source h-full w-full relative inline-block"
+			className="Source relative inline-block h-full w-full"
 			ref={dropZoneRef}
 		>
 			{dragAndDrop &&
 				<div
-					className="absolute top-0 left-0 right-0 bottom-0 bg-[#282A36] z-50 flex items-center justify-center font-mono text-white font-thin flex-col"
+					className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#282A36] font-mono font-thin text-white"
 					ref={dropZoneOverlayRef}
 				>
-					<DropIcon size={100} className="text-white mb-6 opacity-80 pointer-events-none" />
+					<DropIcon size={100} className="pointer-events-none mb-6 text-white opacity-80" />
 					<div className="pointer-events-none">drop file here</div>
 				</div>}
 			{children}

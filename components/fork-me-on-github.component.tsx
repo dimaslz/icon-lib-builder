@@ -1,4 +1,4 @@
-export const ForkMeOnGithub: React.FC = () => (
+const ForkMeOnGithub: React.FC = () => (
 	<a
 		href="https://github.com/dimaslz/icon-lib-builder"
 		className="github-corner"

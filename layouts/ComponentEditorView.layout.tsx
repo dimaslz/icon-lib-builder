@@ -186,8 +186,8 @@ const ComponentEditorView = ({
 			suppressHydrationWarning
 		>
 			{settings.filesDropped.length ? (
-				<div className="relative w-full h-full">
-					<button className="absolute top-4 right-4 bg-[#414853] p-2 rounded-full hover:bg-[#272d35]" onClick={() => onCancelIconsDropped()}>
+				<div className="relative h-full w-full">
+					<button className="absolute right-4 top-4 rounded-full bg-[#414853] p-2 hover:bg-[#272d35]" onClick={() => onCancelIconsDropped()}>
 						<CrossIcon className="text-white" />
 					</button>
 					<div
@@ -249,7 +249,7 @@ const ComponentEditorView = ({
 					</div>
 				</div>
 			) : (
-				<div className="flex flex-col h-full">
+				<div className="flex h-full flex-col">
 					{settings.componentString && (
 						<button
 							onClick={onClickCopyResult}
@@ -263,7 +263,7 @@ const ComponentEditorView = ({
 					)}
 
 					<div className="Result__format">
-						<ul className="text-xs text-white flex bg-gray-700 p-2">
+						<ul className="flex bg-gray-700 p-2 text-xs text-white">
 							{frameworks.map((framework, key) => (
 								<li key={key}>
 									<button
@@ -284,13 +284,13 @@ const ComponentEditorView = ({
 					<div className="IconName">
 						<input
 							type="text"
-							className="w-full bg-gray-400 m-1 p-1 text-sm"
+							className="m-1 w-full bg-gray-400 p-1 text-sm"
 							value={settings.iconName}
 							onChange={onChangeIconName}
 						/>
 					</div>
 
-					<div className="pb-1 flex">
+					<div className="flex pb-1">
 						{settings.currentFramework?.types?.map(
 							(type, key) => (
 								<button

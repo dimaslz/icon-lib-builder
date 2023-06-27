@@ -32,7 +32,7 @@ export default (
 	framework: Framework = 'react',
 	type: Lang = 'js-v1',
 	iconName?: string,
-): any => {
+): string | null => {
 	try {
 		const hasStroke = /stroke-width=|stroke=/.test(svg);
 
@@ -59,10 +59,10 @@ export default (
 					/%iconName%/g,
 					iconName,
 				);
-		};
-
-		return null;
+		}
 	} catch (error: any) {
 		console.error(error.message);
 	}
+
+	return null;
 };

@@ -1,8 +1,7 @@
-import _ from 'lodash';
 import prettier from 'prettier';
 import { parse } from 'svg-parser';
 
-import templates, { getTemplate, type Framework, type Lang } from '../../templates';
+import { getTemplate, type Framework, type Lang } from '../../templates';
 import cleanSvg from '../clean-svg';
 import formatSvg from '../parsed-to-svg';
 import svgToReact from '../svg-to-react';
@@ -46,7 +45,7 @@ export default function svgToFrameworkFormat(
 			svg = svg.replace(/stroke=["'](?!none).*?["']/gm, 'stroke="currentColor"');
 		}
 		const { data: svgCleaned } = cleanSvg(svg) as { data: any };
-		let frameworkFormat = '';
+		let frameworkFormat: string | null = '';
 		if (/p?react/.test(framework)) {
 			frameworkFormat = svgToReact(svg, framework, type, iconName);
 		} else if (framework) {
@@ -69,13 +68,16 @@ export default function svgToFrameworkFormat(
 			});
 		}
 
+		if (!frameworkFormat) return null;
+
 		if (framework === 'svelte') {
+
 			return prettier.format(
-				frameworkFormat.replace(/class="[^\"]+"/gm, ''),
+				frameworkFormat.replace(/class="[^"]+"/gm, ''),
 				{ parser: 'svelte', plugins: ['prettier-plugin-svelte'] });
 		}
 
-		return prettier.format(frameworkFormat.replace(/class="[^\"]+"/gm, ''), { parser });
+		return prettier.format(frameworkFormat.replace(/class="[^"]+"/gm, ''), { parser });
 	} catch (error) {
 		console.log('[Error]: svg-to-framework', error);
 		return '';

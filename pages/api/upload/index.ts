@@ -51,6 +51,8 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 				const fileUrl = `${uploadPath}/${time}/${capitalizeFileName(file.name)}Icon${ext}`;
 				const iconName = `${capitalizeFileName(file.name)}Icon`;
 				const content = svgToFrameworkFormat(file.svg, framework, iconName, language); // TODO: type!!
+				if (!content) return "";
+
 				return fs.writeFileSync(fileUrl, content);
 			}),
 		);

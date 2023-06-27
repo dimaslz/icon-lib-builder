@@ -47,7 +47,7 @@ const NotificationComponent = (): JSX.Element => {
 			{message ?
 				<div
 					ref={messageRef}
-					className="p-4 text-white w-full h-16 bg-red-800 items-center justify-center text-base transition duration-500 ease-in-out hidden absolute bottom-0 left-0 right-0 z-10"
+					className="absolute inset-x-0 bottom-0 z-10 hidden h-16 w-full items-center justify-center bg-red-800 p-4 text-base text-white transition duration-500 ease-in-out"
 				>
 					{ message }
 				</div> : null}

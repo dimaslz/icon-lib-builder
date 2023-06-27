@@ -83,7 +83,7 @@ const Home = (): JSX.Element => {
 	}, [settings.svgString]);
 
 	return (
-		<div className="w-full my-0 mx-auto h-screen flex flex-col justify-start items-center bg-gray-600">
+		<div className="mx-auto my-0 flex h-screen w-full flex-col items-center justify-start bg-gray-600">
 			{/* <ForkMeOnGithub /> */}
 
 			<Head>
@@ -102,10 +102,10 @@ const Home = (): JSX.Element => {
 				/>
 			</Head>
 
-			<main className="flex flex-col items-center w-full justify-start flex-grow">
+			<main className="flex w-full grow flex-col items-center justify-start">
 				<Header />
 
-				<div className="flex w-full h-full relative">
+				<div className="relative flex h-full w-full">
 					{!sourceEditorReady && !resultEditorReady ? (
 						<FullScreenLoading />
 					) : null}

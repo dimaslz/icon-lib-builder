@@ -11,7 +11,7 @@ import Api from '@/api';
 const initialPlaceholder = 'paste SVG string content or drop multiple SVG files here';
 
 type Props = {
-	onLoad: (value: string) => void;
+	onLoad: () => void;
 };
 
 const isBrowser = typeof window !== 'undefined';
@@ -84,18 +84,18 @@ const SVGEditor = ({
 		<DropZone onDrop={onDropFiles}>
 			{settings.filesDropped.length > 0 ?  (
 				<div
-					className="bg-[#3C4451] text-gray-200 h-full p-4 text-sm font-normal"
+					className="h-full bg-[#3C4451] p-4 text-sm font-normal text-gray-200"
 				>
 					{settings.filesDropped.map((file: File, key: number) => (
 						<div key={key}>{file.name}</div>
 					))}
 				</div>
 			) : (
-				<div className="relative w-full h-full">
+				<div className="relative h-full w-full">
 					{settings.svgString && (
 						<button
 							onClick={onCleanEditor}
-							className="px-3 py-2 rounded-sm absolute right-2 top-5 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none"
+							className="absolute right-2 top-5 z-10 rounded-sm bg-gray-900 px-3 py-2 text-white hover:opacity-70 focus:outline-none"
 						>
 								clean
 						</button>
