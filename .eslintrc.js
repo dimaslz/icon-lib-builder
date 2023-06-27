@@ -4,18 +4,16 @@ module.exports = {
 	parser: '@typescript-eslint/parser',
 	extends: [
 		'eslint:recommended',
-		'plugin:jest/recommended',
 		'plugin:@typescript-eslint/recommended',
 		// "prettier/@typescript-eslint",
 		'plugin:prettier/recommended',
 		'plugin:@next/next/recommended',
 	],
-	plugins: ['react', 'jest'],
+	plugins: ['react'],
 	env: {
 		browser: true,
 		es6: true,
 		mocha: true,
-		'jest/globals': true,
 		node: true,
 	},
 	parserOptions: {

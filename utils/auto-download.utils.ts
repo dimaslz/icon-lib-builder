@@ -1,11 +1,13 @@
+const isBrowser = typeof window !== 'undefined';
+
 export const autoDownload: any = (function () {
-	if (!(typeof window !== 'undefined')) return;
+	if (!isBrowser) return;
 
-	const a: any = document.createElement('a');
+	const a: HTMLAnchorElement = document.createElement('a');
+	a.style.display = 'none';
 	document.body.appendChild(a);
-	a.style = 'display: none';
 
-	return function (blob: any, filename: string) {
+	return function (blob: Blob, filename: string) {
 		const url = window.URL.createObjectURL(blob);
 		a.href = url;
 		a.download = filename;

@@ -9,12 +9,12 @@ describe('auto download', () => {
 		let anchor: HTMLAnchorElement | null;
 
 		beforeEach(() => {
-			global.URL.createObjectURL = jest.fn(() => blobUrl);
-			global.URL.revokeObjectURL = jest.fn();
-			const blobSpy = jest
+			global.URL.createObjectURL = vi.fn(() => blobUrl);
+			global.URL.revokeObjectURL = vi.fn();
+			const blobSpy = vi
 				.spyOn(global, 'Blob')
 				.mockImplementationOnce((): any => mBlob);
-			jest.spyOn(document.body, 'appendChild');
+			vi.spyOn(document.body, 'appendChild');
 
 			autoDownload(blobSpy, filename);
 			anchor = global.document.querySelector('a');
