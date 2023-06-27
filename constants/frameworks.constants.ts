@@ -1,6 +1,5 @@
-import { AngularIcon, SvelteIcon, PreactIcon, VueIcon } from '../components/icons';
-import ReactIcon from '../components/icons/ReactIcon.component';
-import Framework from '../entity-type/Framework.type';
+import { ReactIcon, AngularIcon, SvelteIcon, PreactIcon, VueIcon } from '@/components/icons';
+import { Framework } from '@/entity-type';
 
 export const frameworks: Framework[] = [
 	{

@@ -1,5 +1,5 @@
-import FileToUpload from '../entity-type/FileToUpload.type';
-import { downloadUrl } from '../utils';
+import { FileToUpload } from '@/entity-type';
+import { downloadUrl } from '@/utils';
 
 export class API {
     private static instance: API;
