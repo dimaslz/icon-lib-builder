@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
 import { DynamicCodeEditor } from '@/components';
-import { FileToUpload, Framework, Language } from '@/entity-type';
+import { FileToUpload, Framework, FrameworkRenderType, Language } from '@/entity-type';
 import Api from '@/api';
 import { readFile, autoDownload, copyToClipboard } from '@/utils';
 import eventBus from '@/utils/event-bus.utils';
@@ -129,7 +129,7 @@ const ComponentEditorView = ({
 		}
 	}
 
-	const onFrameworkChange = async (framework: Framework, type?: any) => {
+	const onFrameworkChange = async (framework: Framework, type?: FrameworkRenderType) => {
 		const noTypes = !framework.types?.length;
 
 		const defaultType = (framework.types || [])[0];

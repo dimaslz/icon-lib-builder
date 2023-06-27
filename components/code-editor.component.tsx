@@ -1,5 +1,6 @@
 import React from 'react';
 import AceEditor from 'react-ace';
+import { Ace } from 'ace-builds';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-typescript';
@@ -12,9 +13,9 @@ type CodeEditorType = {
 	placeholder: string;
 	value: string;
 	name: string;
-	onChange?: (value?: any) => void;
-	onPaste?: (value?: any) => void;
-	onLoad: (value?: any) => void;
+	onChange?: (value: string) => void;
+	onPaste?: (value: string) => void;
+	onLoad: (editor: Ace.Editor) => void;
 	readOnly?: boolean;
 	mode?: string;
 }
