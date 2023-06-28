@@ -2,22 +2,11 @@ import fs from "fs";
 import path from "path";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import compress from '../../../utils/compress';
-import svgToFrameworkFormat from '../../../utils/svg-to-framework-format';
-import type { Framework, Lang } from "../../../templates";
-
-type EXT = {
-	[key: string]: string;
-};
-
-const capitalizeFileName = (filename: string) => {
-	return filename
-		.replace('.svg', '')
-		.replace(
-			/(\w)(\w*)/g,
-			(g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase())
-		.replace(/\s+|\W+/g, '');
-};
+import compress from '@/utils/compress';
+import svgToFrameworkFormat from '@/utils/svg-to-framework-format';
+import type { Framework, Lang } from "@/templates";
+import { capitalizeFilename } from "@/utils";
+import EXTENSION_MAP from "@/constants/extension-map.constants";
 
 
 export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse) => {
@@ -32,14 +21,7 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 
 		const time = `icon-builder-${new Date().getTime()}-${framework}`;
 
-		let ext = ({
-			preact: { "js-v1": ".jsx", "js-v2": ".jsx", "ts": ".tsx" },
-			react: { "js-v1": ".jsx", "js-v2": ".jsx", "ts": ".tsx" },
-			vue2: '.vue',
-			vue3: '.vue',
-			svelte: '.svelte',
-			angular: '.ts',
-		} as any)[framework];
+		let ext = EXTENSION_MAP[framework];
 
 		if (typeof ext === "object") {
 			ext = ext[language];
@@ -48,8 +30,8 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 		fs.mkdirSync(`${uploadPath}/${time}`);
 		await Promise.all(
 			files.map(async (file: any) => {
-				const fileUrl = `${uploadPath}/${time}/${capitalizeFileName(file.name)}Icon${ext}`;
-				const iconName = `${capitalizeFileName(file.name)}Icon`;
+				const fileUrl = `${uploadPath}/${time}/${capitalizeFilename(file.name)}Icon${ext}`;
+				const iconName = `${capitalizeFilename(file.name)}Icon`;
 				const content = svgToFrameworkFormat(file.svg, framework, iconName, language); // TODO: type!!
 				if (!content) return "";
 

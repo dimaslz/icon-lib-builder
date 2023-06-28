@@ -201,6 +201,7 @@ export const getTemplate = ({
 	} else if (framework === 'vue2') {
 		if (stroke) {
 			template = template
+				.replace(/%iconName%/g, iconName)
 				.replace(/stroke-width=["'].*?["']/, ':stroke-width="stroke"')
 				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, strokeWidth: `${stroke}`}"')
 				.replace('%props%', `props: {
@@ -225,6 +226,7 @@ export const getTemplate = ({
 	} else if (framework === 'vue3') {
 		if (stroke) {
 			template = template
+				.replace(/%iconName%/g, iconName)
 				.replace(/stroke-width=["'].*?["']/, ':stroke-width="stroke"')
 				.replace(/:style=["']{(.*?)}["']/gm, ':style="{$1, strokeWidth: `${stroke}`}"')
 				.replace('%props%', lang !== 'compressed' ? `props: {
