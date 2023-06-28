@@ -21,5 +21,4 @@ export default (httpRequest: NextApiRequest, httpResponse: NextApiResponse) => {
 
 	httpResponse.statusCode = 200;
 	return httpResponse.json(svgFrameworkCode);
-	// return httpResponse.status(200).json({});
 };

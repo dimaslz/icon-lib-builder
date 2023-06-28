@@ -14,6 +14,8 @@ import { ComponentEditorView, SVGEditor } from '@/layouts';
 import { eventBus } from '@/utils';
 
 
+let timeoutRequest: NodeJS.Timeout | null = null;
+
 const Home = (): JSX.Element => {
 	const { settings, updateSettings } = useSettings();
 
@@ -72,7 +74,13 @@ const Home = (): JSX.Element => {
 	useEffect(() => {
 		if (!settings.iconName) return;
 
-		requestToFormat(settings.svgString, settings.iconName);
+		if (timeoutRequest) {
+			clearTimeout(timeoutRequest);
+		}
+
+		timeoutRequest = setTimeout(() => {
+			requestToFormat(settings.svgString, settings.iconName);
+		}, 200);
 	}, [settings.iconName]);
 
 	useEffect(() => {

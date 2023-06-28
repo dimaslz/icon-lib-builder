@@ -26,6 +26,10 @@ const SVGEditor = ({
 				svgString: '',
 				componentString: '',
 			});
+		} else {
+			updateSettings({
+				svgString: value,
+			});
 		}
 	};
 
