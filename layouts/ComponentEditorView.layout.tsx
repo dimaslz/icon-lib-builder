@@ -3,7 +3,7 @@ import { ChangeEvent } from 'react';
 import Api from '@/api';
 import { DynamicCodeEditor } from '@/components';
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
-import frameworks from '@/constants/frameworks.constants';
+import { FRAMEWORK_CONFIG } from '@/constants';
 import { FileToUpload, Framework, FrameworkRenderType, Language } from '@/entity-type';
 import { useSettings } from '@/hooks';
 import { autoDownload, copyToClipboard, eventBus, readFile } from '@/utils';
@@ -201,7 +201,7 @@ const ComponentEditorView = ({
 						{settings.filesDroppedSteps.framework.here && <div>
 							<h2 className="text-6xl">{ settings.filesDroppedSteps.framework.label }</h2>
 							<ul className="flex flex-col">
-								{frameworks.map((framework, key) => (
+								{FRAMEWORK_CONFIG.map((framework, key) => (
 									<li key={key}>
 										<button
 											className={[
@@ -263,7 +263,7 @@ const ComponentEditorView = ({
 
 					<div className="Result__format">
 						<ul className="flex bg-gray-700 p-2 text-xs text-white">
-							{frameworks.map((framework, key) => (
+							{FRAMEWORK_CONFIG.map((framework, key) => (
 								<li key={key}>
 									<button
 										className={[

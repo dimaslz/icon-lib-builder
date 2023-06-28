@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import frameworks from '@/constants/frameworks.constants';
+import { FRAMEWORK_CONFIG } from '@/constants';
 import { Settings } from '@/entity-type';
 import Observable from '@/utils/observable.util';
 
@@ -20,7 +20,7 @@ const initialValue: Settings = {
 		name: '',
 		mode: 'javascript',
 	},
-	currentFramework: frameworks[0],
+	currentFramework: FRAMEWORK_CONFIG[0],
 	editorMode: 'javascript',
 	filesConfigToDownload: null,
 };

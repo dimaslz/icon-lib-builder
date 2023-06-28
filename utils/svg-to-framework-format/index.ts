@@ -1,14 +1,12 @@
 import prettier from 'prettier';
 import { parse } from 'svg-parser';
 
-import { type Framework, getTemplate, type Lang } from '../../templates';
-import cleanSvg from '../clean-svg';
-import formatSvg from '../parsed-to-svg';
-import svgToReact from '../svg-to-react';
+import { FRAMEWORK_PARSER } from '@/constants';
+import { FrameworkName, LanguageFormat } from '@/entity-type';
+import { getTemplate } from '@/templates';
+import { formatSvg, svgToReact } from '@/utils';
+import cleanSvg from '@/utils/clean-svg';
 
-type ParserFW = {
-	[key: string]: string;
-};
 
 type StyleOptions = {
 	[key: string]: string;
@@ -16,23 +14,14 @@ type StyleOptions = {
 
 export default function svgToFrameworkFormat(
 	svg: string,
-	framework: Framework,
+	framework: FrameworkName,
 	iconName: string,
-	type?: Lang,
+	type?: LanguageFormat,
 ) {
 	if (!svg) return '';
 
 	try {
-		const parserOptions: ParserFW = {
-			preact: 'babel',
-			react: 'babel',
-			svg: 'babel',
-			vue2: 'vue',
-			vue3: 'vue',
-			svelte: 'babel',
-			angular: 'babel',
-		};
-		const parser: string = parserOptions[framework];
+		const parser: string = FRAMEWORK_PARSER[framework];
 
 		svg = svg
 			.replace(/xmls=["'](.*?)["']/gm, '')
@@ -44,7 +33,9 @@ export default function svgToFrameworkFormat(
 		if (hasStroke) {
 			svg = svg.replace(/stroke=["'](?!none).*?["']/gm, 'stroke="currentColor"');
 		}
-		const { data: svgCleaned } = cleanSvg(svg) as { data: any };
+		const svgCleaned = cleanSvg(svg);
+		if (!svgCleaned) return null;
+
 		let frameworkFormat: string | null = '';
 		if (/p?react/.test(framework)) {
 			frameworkFormat = svgToReact(svg, framework, type, iconName);
@@ -80,6 +71,7 @@ export default function svgToFrameworkFormat(
 		return prettier.format(frameworkFormat.replace(/class="[^"]+"/gm, ''), { parser });
 	} catch (error) {
 		console.log('[Error]: svg-to-framework', error);
+
 		return '';
 	}
 }
