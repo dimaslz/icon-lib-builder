@@ -1,6 +1,6 @@
 import readFile from './read-file.utils';
 
-describe('Read file', () => {
+describe('Utils - Read file', () => {
 	test('should return the file content', async () => {
 		const mFile = new File(['filename'], 'filename.zip');
 

@@ -1,6 +1,6 @@
 import autoDownload from './auto-download.utils';
 
-describe('auto download', () => {
+describe('Utils - auto download', () => {
 	const blobUrl = 'blob:http://url.test/fa3d222e-c21d-4a06-8194-199069e8ad0e';
 
 	describe('should create link in dom', () => {
