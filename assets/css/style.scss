@@ -4,16 +4,12 @@
 }
 
 .LoaderComponent {
-	display: inline-block;
-	width: 80px;
-	height: 80px;
+	@apply inline-block w-[80px] h-[80px];
 }
 
 .LoaderComponent:after {
 	content: ' ';
-	display: block;
-	width: 64px;
-	height: 64px;
+	@apply block w-[64px] h-[64px];
 	margin: 8px;
 	border-radius: 50%;
 	border: 6px solid #fff;
