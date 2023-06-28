@@ -1,7 +1,7 @@
 import { AngularIcon, PreactIcon, ReactIcon, SvelteIcon, VueIcon } from '@/components/icons';
 import { Framework } from '@/entity-type';
 
-export const frameworks: Framework[] = [
+const FRAMEWORK_CONFIG: Framework[] = [
 	{
 		label: 'React',
 		name: 'react',
@@ -64,4 +64,4 @@ export const frameworks: Framework[] = [
 	},
 ];
 
-export default frameworks;
+export default FRAMEWORK_CONFIG;
