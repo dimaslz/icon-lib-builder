@@ -4,9 +4,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import compress from '@/utils/compress';
 import svgToFrameworkFormat from '@/utils/svg-to-framework-format';
-import type { Framework, Lang } from "@/templates";
 import { capitalizeFilename } from "@/utils";
-import EXTENSION_MAP from "@/constants/extension-map.constants";
+import { EXTENSION_MAP } from "@/constants";
+import { FrameworkName, LanguageFormat } from "@/entity-type";
 
 
 export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse) => {
@@ -17,7 +17,7 @@ export default async (httpRequest: NextApiRequest, httpResponse: NextApiResponse
 
 	try {
 		const { files, framework, language }:
-			{ files: any[], framework: Framework, language: Lang } = httpRequest.body;
+			{ files: any[], framework: FrameworkName, language: LanguageFormat } = httpRequest.body;
 
 		const time = `icon-builder-${new Date().getTime()}-${framework}`;
 
