@@ -101,9 +101,9 @@ const Home = (): JSX.Element => {
 				/>
 			</Head>
 
-			<main className="flex w-full grow flex-col items-center justify-start">
-				<Header />
+			<Header />
 
+			<main className="flex w-full grow flex-col items-center justify-start">
 				<div className="relative flex h-full w-full">
 					{!sourceEditorReady && !resultEditorReady ? (
 						<FullScreenLoading />

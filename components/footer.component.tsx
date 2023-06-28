@@ -1,5 +1,5 @@
 export const Footer: React.FC = () => (
-	<footer className="p-4 text-xs text-white">
+	<footer className="w-full p-4 text-center text-xs text-white">
 		developed with ♥ by <a
 			href="https://dimaslz.com"
 			className="text-gray-400 hover:text-gray-300"
