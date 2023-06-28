@@ -1,11 +1,15 @@
+import type { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { createMocks } from 'node-mocks-http';
 
 import formatter from "./index";
 
+const createMocksWithType = createMocks<NextApiRequest & Request, NextApiResponse & Response>
+
 describe("Api - formatter", () => {
 	describe("SVG", () => {
 		test("format svg", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -25,7 +29,7 @@ describe("Api - formatter", () => {
 
 	describe("React", () => {
 		test("format svg to react component (js v1 by default)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -43,7 +47,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to react component (js v1 by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -63,7 +67,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to react component (js v2 by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -83,7 +87,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to react component (ts by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -105,7 +109,7 @@ describe("Api - formatter", () => {
 
 	describe("Preact", () => {
 		test("format svg to react component (js v1 by default)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -123,7 +127,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to preact component (js v1 by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -143,7 +147,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to preact component (js v2 by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -163,7 +167,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to preact component (ts by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -185,7 +189,7 @@ describe("Api - formatter", () => {
 
 	describe("Vue2", () => {
 		test("format svg to vue2 component (js by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -205,7 +209,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to vue2 component (ts by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -227,7 +231,7 @@ describe("Api - formatter", () => {
 
 	describe("Vue3", () => {
 		test("format svg to vue3 component (js by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -247,7 +251,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to vue3 component (ts by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -269,7 +273,7 @@ describe("Api - formatter", () => {
 
 	describe("Svelte", () => {
 		test("format svg to svelte component (js by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -289,7 +293,7 @@ describe("Api - formatter", () => {
 		});
 
 		test("format svg to svelte component (ts by assignament)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -311,7 +315,7 @@ describe("Api - formatter", () => {
 
 	describe("Angular", () => {
 		test("format svg to angular component (only TS by default)", async () => {
-			const { req, res } = createMocks({
+			const { req, res } = createMocksWithType({
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
