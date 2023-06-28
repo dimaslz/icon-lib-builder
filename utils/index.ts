@@ -4,4 +4,6 @@ export { default as copyToClipboard } from './copy-to-clipboard.utils';
 export { default as downloadUrl } from './download-url.utils';
 export { default as eventBus } from './event-bus.utils';
 export { default as injectPlausible } from './inject-plausible.utils';
+export { default as formatSvg } from './parsed-to-svg';
 export { default as readFile } from './read-file.utils';
+export { default as svgToReact } from './svg-to-react';

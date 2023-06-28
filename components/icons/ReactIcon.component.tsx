@@ -1,13 +1,11 @@
 import * as React from 'react';
 
 type PROPS = {
-  size?: number | string,
-  stroke?: number | string,
+	size?: number | string;
 };
 
 const ReactIcon: React.FC<PROPS> = ({
 	size = 24,
-	stroke = 1,
 }: PROPS): JSX.Element => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
