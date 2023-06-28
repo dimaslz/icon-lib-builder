@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { eventBus } from '../utils';
-import { EventBusSubscription } from '../utils/event-bus.utils';
+
+import { eventBus } from '@/utils';
+import type { EventBusSubscription } from '@/utils/event-bus.utils';
 
 export type Notification = {
 	message: string;

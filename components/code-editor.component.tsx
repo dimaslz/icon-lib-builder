@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React from 'react';
 import AceEditor from 'react-ace';
-import { Ace } from 'ace-builds';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-typescript';
@@ -15,7 +15,7 @@ type CodeEditorType = {
 	name: string;
 	onChange?: (value: string) => void;
 	onPaste?: (value: string) => void;
-	onLoad: (editor: Ace.Editor) => void;
+	onLoad: () => void;
 	readOnly?: boolean;
 	mode?: string;
 }

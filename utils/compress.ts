@@ -1,5 +1,5 @@
-import fs from 'fs';
 import archiver from 'archiver';
+import fs from 'fs';
 
 export const compress = (compressFileUrl: string) => {
 	// create a file to stream archive data to.

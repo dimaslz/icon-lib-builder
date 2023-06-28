@@ -10,7 +10,7 @@ module.exports = {
 		'plugin:prettier/recommended',
 		'plugin:@next/next/recommended',
 	],
-	plugins: ['react'],
+	plugins: ['react', 'simple-import-sort'],
 	env: {
 		browser: true,
 		es6: true,
@@ -169,5 +169,7 @@ module.exports = {
 		'tailwindcss/no-custom-classname': ['warn', {
 			whitelist: ['github-corner', 'octo-arm', 'octo-body', 'LoaderComponent', 'Source'],
 		}],
+		'simple-import-sort/imports': 'error',
+		'simple-import-sort/exports': 'error',
 	},
 };

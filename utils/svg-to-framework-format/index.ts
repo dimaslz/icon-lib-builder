@@ -1,7 +1,7 @@
 import prettier from 'prettier';
 import { parse } from 'svg-parser';
 
-import { getTemplate, type Framework, type Lang } from '../../templates';
+import { type Framework, getTemplate, type Lang } from '../../templates';
 import cleanSvg from '../clean-svg';
 import formatSvg from '../parsed-to-svg';
 import svgToReact from '../svg-to-react';

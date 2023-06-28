@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import DropIcon from './icons/DropIcon.component';
 
 type Props = {

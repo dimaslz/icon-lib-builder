@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
 import { act, renderHook } from '@testing-library/react';
+import { useEffect } from 'react';
+
+import { FilesDroppedSteps, Framework, FrameworkRenderType, Language } from '@/entity-type';
 
 import useSettings from './useSettings';
-import { FilesDroppedSteps, Framework, FrameworkRenderType, Language } from '@/entity-type';
 
 describe('Hook - useSettings', () => {
 	test('default values', async () => {

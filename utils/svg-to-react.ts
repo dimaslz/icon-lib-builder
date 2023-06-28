@@ -1,6 +1,7 @@
-import { type Framework, type Lang, getTemplate } from '../templates';
 import camelCase from 'lodash/camelCase';
 import { parse } from 'svg-parser';
+
+import { type Framework, getTemplate, type Lang } from '@/templates';
 
 import formatSvg from './parsed-to-svg';
 

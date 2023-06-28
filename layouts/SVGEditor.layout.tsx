@@ -1,11 +1,10 @@
-import React from 'react';
-import debounce from 'lodash/debounce';
 import isSvg from 'is-svg';
+import debounce from 'lodash/debounce';
 
+import Api from '@/api';
 import { DropZone, DynamicCodeEditor } from '@/components';
 import { useSettings } from '@/hooks';
 import { readFile } from '@/utils';
-import Api from '@/api';
 
 
 const initialPlaceholder = 'paste SVG string content or drop multiple SVG files here';

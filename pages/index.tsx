@@ -1,18 +1,17 @@
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 
-
-import {
-	FullScreenLoading,
-	Footer,
-	Notification,
-	Header,
-} from '@/components';
-import { eventBus } from '@/utils';
 import Api from '@/api';
-import { SVGEditor, ComponentEditorView } from '@/layouts';
+import {
+	Footer,
+	FullScreenLoading,
+	Header,
+	Notification,
+} from '@/components';
+import type { FrameworkRenderType } from '@/entity-type';
 import { useSettings } from '@/hooks';
-import { FrameworkRenderType } from '@/entity-type';
+import { ComponentEditorView, SVGEditor } from '@/layouts';
+import { eventBus } from '@/utils';
 
 
 const Home = (): JSX.Element => {

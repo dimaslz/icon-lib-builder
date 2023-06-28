@@ -1,4 +1,4 @@
-import { camelCase } from 'lodash';
+import camelCase from 'lodash/camelCase';
 
 export default function formatSvg(arr: any[], svgStyle?: string, framework?: string) {
 	const toSvg: any[] = arr.map(child => {

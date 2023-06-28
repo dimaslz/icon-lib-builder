@@ -1,13 +1,12 @@
 import { ChangeEvent } from 'react';
 
-import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
-import { DynamicCodeEditor } from '@/components';
-import { FileToUpload, Framework, FrameworkRenderType, Language } from '@/entity-type';
 import Api from '@/api';
-import { readFile, autoDownload, copyToClipboard } from '@/utils';
-import eventBus from '@/utils/event-bus.utils';
+import { DynamicCodeEditor } from '@/components';
+import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
 import frameworks from '@/constants/frameworks.constants';
+import { FileToUpload, Framework, FrameworkRenderType, Language } from '@/entity-type';
 import { useSettings } from '@/hooks';
+import { autoDownload, copyToClipboard, eventBus, readFile } from '@/utils';
 
 
 type Props = {

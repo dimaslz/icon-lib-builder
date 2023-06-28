@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Language from './Language.type';
 import FrameworkRenderType from './FrameworkRenderType.type';
+import Language from './Language.type';
 
 
 export type PROPS = {
@@ -15,7 +15,7 @@ export type Framework = {
   mode: Language;
   types?: FrameworkRenderType[]
   version?: string;
-  icon: React.FunctionComponent<PROPS> | null,
+  icon: React.FC<PROPS> | null,
 }
 
 export default Framework;

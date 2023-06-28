@@ -1,6 +1,5 @@
 import 'tailwindcss/tailwind.css';
 import '../assets/css/style.scss';
-
 // components
 import '../components/fork-me-on-github.component.scss';
 
