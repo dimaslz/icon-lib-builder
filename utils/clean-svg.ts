@@ -36,7 +36,7 @@ import { optimize } from 'svgo';
 // 	'removeDesc',
 // ];
 
-export default function clean(svg: any) {
+const clean = (svg: string): string | null => {
 	// const cleaner = new Svgo({
 	//   full: true,
 	//   plugins: [...PLUGINS, { cleanupIDs: cleanupIDs && { minify: false } }],
@@ -50,8 +50,10 @@ export default function clean(svg: any) {
 			// 	...PLUGINS, { cleanupIDs: true && { minify: false } }
 			// ],
 		});
-		return cleaned;
+		return cleaned.data;
 	} catch (error) {
-		return error;
+		return null;
 	}
-}
+};
+
+export default clean;
