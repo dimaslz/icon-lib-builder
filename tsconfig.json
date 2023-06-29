@@ -74,7 +74,7 @@
     "api/**/*",
     "stores/**/*",
     "hooks/**/*",
-    "tests/**/*"
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
