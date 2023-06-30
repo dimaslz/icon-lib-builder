@@ -1,4 +1,5 @@
-import { ChangeEvent } from 'react';
+import debounce from 'lodash/debounce';
+import { ChangeEvent, useMemo, useState } from 'react';
 
 import Api from '@/api';
 import { DynamicCodeEditor } from '@/components';
@@ -11,12 +12,15 @@ import { autoDownload, copyToClipboard, eventBus, readFile } from '@/utils';
 
 type Props = {
 	onLoad: () => void;
+	onChangeIconName: (v: string) => void;
 }
 
 const ComponentEditorView = ({
 	onLoad,
+	onChangeIconName,
 }: Props) => {
 	const { settings, updateSettings } = useSettings();
+	const [iconName, updateIconName] = useState(settings.iconName);
 
 	const onDownloadIcons = () => {
 		updateSettings({
@@ -158,17 +162,24 @@ const ComponentEditorView = ({
 		});
 	};
 
-	const onChangeIconName = async (
+	const onChange = (
 		$event: ChangeEvent<HTMLInputElement>,
 	) => {
 		if (($event.nativeEvent as InputEvent).data === ' ') return;
 
 		const value = $event.target.value.replace(/[\W\s]+/gi, '');
-
+		updateIconName(value);
 		updateSettings({
 			iconName: value,
 		});
+
+		debouncedChangeHandler(value);
 	};
+
+	const debouncedChangeHandler = useMemo(
+		() => debounce(onChangeIconName, 300)
+		, [],
+	);
 
 	const onClickCopyResult = () => {
 		copyToClipboard(settings.componentString);
@@ -284,8 +295,8 @@ const ComponentEditorView = ({
 						<input
 							type="text"
 							className="m-1 w-full bg-gray-400 p-1 text-sm"
-							value={settings.iconName}
-							onChange={onChangeIconName}
+							value={iconName}
+							onChange={onChange}
 						/>
 					</div>
 

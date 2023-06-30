@@ -14,8 +14,6 @@ import { ComponentEditorView, SVGEditor } from '@/layouts';
 import { eventBus } from '@/utils';
 
 
-let timeoutRequest: NodeJS.Timeout | null = null;
-
 const Home = (): JSX.Element => {
 	const { settings, updateSettings } = useSettings();
 
@@ -71,17 +69,11 @@ const Home = (): JSX.Element => {
 		setResultEditorReady(true);
 	};
 
-	useEffect(() => {
-		if (!settings.iconName) return;
+	const onChangeIconName = (iconName: string) => {
+		if (!iconName) return;
 
-		if (timeoutRequest) {
-			clearTimeout(timeoutRequest);
-		}
-
-		timeoutRequest = setTimeout(() => {
-			requestToFormat(settings.svgString, settings.iconName);
-		}, 200);
-	}, [settings.iconName]);
+		requestToFormat(settings.svgString, iconName);
+	};
 
 	useEffect(() => {
 		if (!settings.svgString) return;
@@ -123,6 +115,7 @@ const Home = (): JSX.Element => {
 
 					<ComponentEditorView
 						onLoad={onLoadResultCodeEditor}
+						onChangeIconName={onChangeIconName}
 					/>
 				</div>
 			</main>
