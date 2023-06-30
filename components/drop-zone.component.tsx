@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import DropIcon from './icons/DropIcon.component';
 
 type Props = {
-	children: any,
+	children: ReactNode,
 	onDrop: ($event: DragEvent, files: FileList) => void,
 };
 

@@ -10,7 +10,7 @@ import {
 } from '@/components';
 import ForkMeOnGithub from '@/components/fork-me-on-github.component';
 import { FRAMEWORK_CONFIG, INITIAL_SETTINGS } from '@/constants';
-import type { Framework, FrameworkRenderType, Settings } from '@/entity-type';
+import type { Framework, FrameworkRenderType, Language, Settings } from '@/entity-type';
 import { ComponentEditorView, SVGEditor } from '@/layouts';
 import { eventBus } from '@/utils';
 
@@ -25,7 +25,19 @@ const Home = (): JSX.Element => {
 	const [filesDropped, updateFilesDropped] = useState<File[]>([]);
 	const [componentSettings, updateComponentSettings] = useState<Settings>(INITIAL_SETTINGS);
 
-	const requestToFormat = async (value: string, iconName = 'Icon', framework: Framework, render: FrameworkRenderType): Promise<any> => {
+	const requestToFormat = async (
+		value: string,
+		iconName = 'Icon',
+		framework: Framework,
+		render: FrameworkRenderType,
+	): Promise<{
+		settings: {
+			editorMode: Language;
+			render: FrameworkRenderType;
+		};
+		svgIcon: string;
+		component: string;
+	} | undefined> => {
 		if (!value) return;
 
 		try {
@@ -125,6 +137,8 @@ const Home = (): JSX.Element => {
 			settings.framework,
 			settings.render,
 		);
+
+		if (!requestResponse) return;
 
 		await updateSvgIcon(requestResponse.svgIcon);
 		await updateComponent(requestResponse.component);
