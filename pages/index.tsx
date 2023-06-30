@@ -8,6 +8,7 @@ import {
 	Header,
 	Notification,
 } from '@/components';
+import ForkMeOnGithub from '@/components/fork-me-on-github.component';
 import { FRAMEWORK_CONFIG, INITIAL_SETTINGS } from '@/constants';
 import type { Framework, FrameworkRenderType, Settings } from '@/entity-type';
 import { ComponentEditorView, SVGEditor } from '@/layouts';
@@ -154,7 +155,7 @@ const Home = (): JSX.Element => {
 
 	return (
 		<div className="mx-auto my-0 flex h-screen w-full flex-col items-center justify-start bg-gray-600">
-			{/* <ForkMeOnGithub /> */}
+			<ForkMeOnGithub />
 
 			<Head>
 				<title>Icon library builder | dimaslz.dev</title>

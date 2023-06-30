@@ -1,5 +1,6 @@
 import 'tailwindcss/tailwind.css';
 import '@/assets/css/style.scss';
+import '@/components/fork-me-on-github.component.scss';
 
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
