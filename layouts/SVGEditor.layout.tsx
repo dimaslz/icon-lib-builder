@@ -37,6 +37,7 @@ const SVGEditor = ({
 	const onCleanEditor = () => {
 		onChange({
 			svgIcon: '',
+			filesDropped: [],
 		});
 	};
 

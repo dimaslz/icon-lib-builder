@@ -159,7 +159,12 @@ const Home = (): JSX.Element => {
 			updateFilesDropped(filesDropped);
 		}
 
-		if (!svgIcon) return;
+		if (!svgIcon) {
+			updateSvgIcon('');
+			updateComponent('');
+
+			return;
+		};
 
 		updateSvgIcon(svgIcon);
 
