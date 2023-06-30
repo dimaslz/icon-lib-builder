@@ -5,86 +5,121 @@ import Api from '@/api';
 import { DynamicCodeEditor } from '@/components';
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
 import { FRAMEWORK_CONFIG } from '@/constants';
-import { FileToUpload, Framework, FrameworkRenderType, Language } from '@/entity-type';
-import { useSettings } from '@/hooks';
+import { FileToUpload, Framework, FrameworkRenderType, Language, Settings } from '@/entity-type';
 import { autoDownload, copyToClipboard, eventBus, readFile } from '@/utils';
-
 
 type Props = {
 	onLoad: () => void;
-	onChangeIconName: (v: string) => void;
+	onChange: (
+		{
+			svgIcon,
+			component,
+			filesDropped,
+			settings,
+		}: {
+				svgIcon: string;
+				component: string;
+				filesDropped: File[];
+				settings: Settings
+			}
+	) => void;
+	svgIcon: string;
+	component: string;
+	filesDropped: File[];
+	settings: Settings;
 }
 
 const ComponentEditorView = ({
 	onLoad,
-	onChangeIconName,
+	onChange,
+	svgIcon,
+	component,
+	filesDropped,
+	settings,
 }: Props) => {
-	const { settings, updateSettings } = useSettings();
+
 	const [iconName, updateIconName] = useState(settings.iconName);
 
-	const onDownloadIcons = () => {
-		updateSettings({
-			filesDropped: [],
-		});
-	};
-
 	const onClickLanguageOption = (language: Language) => {
-		if (!settings.filesConfigToDownload) return;
+		if (!settings.configToDownload) return;
 
-		updateSettings({
-			filesDroppedSteps: {
-				framework: { ...settings.filesDroppedSteps.framework, here: false },
-				language: { ...settings.filesDroppedSteps.language, here: false },
-				download: { ...settings.filesDroppedSteps.download, here: true },
-			},
-			filesConfigToDownload: {
-				...settings.filesConfigToDownload,
-				language,
+		onChange({
+			svgIcon,
+			filesDropped,
+			component,
+			settings: {
+				...settings,
+				filesDroppedSteps: {
+					...settings.filesDroppedSteps,
+					framework: { ...settings.filesDroppedSteps.framework, here: false },
+					language: { ...settings.filesDroppedSteps.language, here: false },
+					download: { ...settings.filesDroppedSteps.download, here: true },
+				},
+				configToDownload: {
+					...settings.configToDownload,
+					language,
+				},
 			},
 		});
-
-		// downloadIcons();
 	};
 
 	const onCancelIconsDropped = () => {
-		updateSettings({
+		onChange({
+			svgIcon: '',
 			filesDropped: [],
-			filesDroppedSteps: {
-				framework: { ...settings.filesDroppedSteps.framework, here: true },
-				language: { ...settings.filesDroppedSteps.language, here: false },
-				download: { ...settings.filesDroppedSteps.download, here: false },
+			component: '',
+			settings: {
+				iconName: 'Icon',
+				framework: FRAMEWORK_CONFIG[0],
+				render: {
+					label: '',
+					name: '',
+					mode: 'javascript',
+				},
+				filesDroppedSteps: {
+					framework: { label: 'Select the framework', here: true },
+					language: { label: 'Select the language', here: false },
+					download: { label: 'Download', here: false },
+				},
+				editorMode: 'javascript',
+				configToDownload: null,
 			},
-			filesConfigToDownload: null,
 		});
 	};
 
 	const onClickFrameworkOption = (framework: Framework) => {
-		updateSettings({
-			filesDroppedSteps: {
-				...settings.filesDroppedSteps,
-				framework: { ...settings.filesDroppedSteps.framework, here: false },
-				language: { ...settings.filesDroppedSteps.language, here: true },
-			},
-			filesConfigToDownload: {
-				framework,
-				language: 'javascript',
+		onChange({
+			svgIcon,
+			filesDropped,
+			component,
+			settings: {
+				...settings,
+				filesDroppedSteps: {
+					...settings.filesDroppedSteps,
+					framework: { ...settings.filesDroppedSteps.framework, here: false },
+					language: { ...settings.filesDroppedSteps.language, here: true },
+				},
+				configToDownload: {
+					framework,
+					language: 'javascript',
+				},
 			},
 		});
 	};
 
 	async function downloadIcons() {
-		if (!settings.filesConfigToDownload?.framework) return;
+		if (!settings.configToDownload?.framework) return;
 
-		const language = ((settings.filesConfigToDownload.framework.types || [])
-			.find((framework) => framework.mode === settings.filesConfigToDownload?.language) || {}).name;
+		const language = ((settings.configToDownload.framework.types || [])
+			.find((framework) => framework.mode === settings.configToDownload?.language) || {}).name;
 
 		if (!language) return;
 
-		const framework = settings.filesConfigToDownload.framework.name;
+		const framework = settings.configToDownload.framework.name;
 
 		const filesContent: FileToUpload[] = (
 			await Promise.all(
-				settings.filesDropped.map(async (file: File) => {
+				filesDropped.map(async (file: File) => {
 					const value = await readFile(file);
 					return {
 						name: file.name,
@@ -108,14 +143,19 @@ const ComponentEditorView = ({
 			}
 		}
 
-		onDownloadIcons();
-		updateSettings({
-			filesConfigToDownload: null,
-			filesDroppedSteps: {
-				...settings.filesDroppedSteps,
-				framework: { ...settings.filesDroppedSteps.framework, here: true },
-				language: { ...settings.filesDroppedSteps.language, here: false },
-				download: { ...settings.filesDroppedSteps.download, here: false },
+		onChange({
+			svgIcon,
+			filesDropped: [],
+			component,
+			settings: {
+				...settings,
+				configToDownload: null,
+				filesDroppedSteps: {
+					...settings.filesDroppedSteps,
+					framework: { ...settings.filesDroppedSteps.framework, here: true },
+					language: { ...settings.filesDroppedSteps.language, here: false },
+					download: { ...settings.filesDroppedSteps.download, here: false },
+				},
 			},
 		});
 	}
@@ -133,69 +173,58 @@ const ComponentEditorView = ({
 	}
 
 	const onFrameworkChange = async (framework: Framework, type?: FrameworkRenderType) => {
-		const noTypes = !framework.types?.length;
-
-		const defaultType = (framework.types || [])[0];
-
-		let script = '';
-		if (noTypes) {
-			script = await Api.formatter({
-				script: settings.svgString,
-				framework: framework.name,
-				iconName: settings.iconName,
-			});
-
-		} else {
-			script = await Api.formatter({
-				script: settings.svgString,
-				framework: framework.name,
-				iconName: settings.iconName,
-				type: type?.name || defaultType.name,
-			});
-		}
-
-		updateSettings({
-			componentString: script,
-			currentFramework: framework,
-			frameworkRenderType: type || defaultType,
-			editorMode: type?.mode || framework.mode,
+		onChange({
+			svgIcon,
+			component,
+			filesDropped,
+			settings: {
+				...settings,
+				framework,
+				render: type || null as any,
+				editorMode: type?.mode || framework.mode,
+			},
 		});
 	};
 
-	const onChange = (
+	const onInput = (
 		$event: ChangeEvent<HTMLInputElement>,
 	) => {
 		if (($event.nativeEvent as InputEvent).data === ' ') return;
 
 		const value = $event.target.value.replace(/[\W\s]+/gi, '');
 		updateIconName(value);
-		updateSettings({
-			iconName: value,
-		});
 
-		debouncedChangeHandler(value);
+		debouncedChangeHandler({
+			component,
+			svgIcon,
+			filesDropped,
+			settings: {
+				...settings,
+				iconName: value,
+			},
+		});
 	};
 
 	const debouncedChangeHandler = useMemo(
-		() => debounce(onChangeIconName, 300)
+		() => debounce(onChange, 300)
 		, [],
 	);
 
 	const onClickCopyResult = () => {
-		copyToClipboard(settings.componentString);
+		copyToClipboard(component);
 	};
 
 	return (
 		<div
 			className={[
 				'Result w-full pl-4 h-full flex flex-col',
-				!settings.componentString && !settings.filesDropped.length
+				!component && !filesDropped.length
 					? 'pointer-events-none opacity-50'
 					: '',
 			].join(' ')}
 			suppressHydrationWarning
 		>
-			{settings.filesDropped.length ? (
+			{filesDropped.length ? (
 				<div className="relative h-full w-full">
 					<button className="absolute right-4 top-4 rounded-full bg-[#414853] p-2 hover:bg-[#272d35]" onClick={() => onCancelIconsDropped()}>
 						<CrossIcon className="text-white" />
@@ -204,7 +233,7 @@ const ComponentEditorView = ({
 						style={{ backgroundColor: '#3C4451' }}
 						className={[
 							'text-gray-200 h-full p-4 text-sm font-normal',
-							settings.filesDropped.length
+							filesDropped.length
 								? 'flex flex-col items-center justify-center'
 								: '',
 						].join(' ')}
@@ -260,12 +289,12 @@ const ComponentEditorView = ({
 				</div>
 			) : (
 				<div className="flex h-full flex-col">
-					{settings.componentString && (
+					{component && (
 						<button
 							onClick={onClickCopyResult}
 							className={[
 								'px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none',
-								settings.currentFramework?.types?.length ? 'mt-8' : '',
+								settings.framework?.types?.length ? 'mt-8' : '',
 							].join(' ')}
 						>
 							copy
@@ -279,7 +308,7 @@ const ComponentEditorView = ({
 									<button
 										className={[
 											'mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
-											framework.name === settings.currentFramework.name
+											framework.name === settings.framework.name
 												? 'bg-gray-400'
 												: 'bg-gray-700',
 										].join(' ')}
@@ -296,22 +325,22 @@ const ComponentEditorView = ({
 							type="text"
 							className="m-1 w-full bg-gray-400 p-1 text-sm"
 							value={iconName}
-							onChange={onChange}
+							onInput={onInput}
 						/>
 					</div>
 
 					<div className="flex pb-1">
-						{settings.currentFramework?.types?.map(
+						{settings.framework?.types?.map(
 							(type, key) => (
 								<button
 									className={[
 										'text-xs text-white mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
-										type.name === settings.frameworkRenderType.name
+										type.name === settings.render.name
 											? 'bg-gray-400'
 											: 'bg-gray-700',
 									].join(' ')}
 									key={`${key}f.label`}
-									onClick={() => onFrameworkChange(settings.currentFramework, type)}
+									onClick={() => onFrameworkChange(settings.framework, type)}
 								>
 									{['ts', 'compressed'].includes(type.name) &&
 										<span><TSIcon className="text-blue-500" /></span>
@@ -329,7 +358,7 @@ const ComponentEditorView = ({
 						<DynamicCodeEditor
 							placeholder="Here you will have your code formated in the framework as you want"
 							name="result"
-							value={settings.componentString}
+							value={component}
 							readOnly
 							mode={settings.editorMode}
 							onLoad={onLoad}

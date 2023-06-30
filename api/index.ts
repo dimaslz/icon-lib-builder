@@ -1,4 +1,4 @@
-import { FileToUpload } from '@/entity-type';
+import type { FileToUpload } from '@/entity-type';
 import { downloadUrl } from '@/utils';
 
 export class API {

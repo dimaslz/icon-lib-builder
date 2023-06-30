@@ -1,4 +1,4 @@
-import ExtensionMap from '@/entity-type/ExtensionMap.type';
+import type ExtensionMap from '@/entity-type/ExtensionMap.type';
 
 const FRAMEWORK_TEMPLATES: ExtensionMap = {
 	react: {

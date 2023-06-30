@@ -4,15 +4,12 @@ import FrameworkRenderType from './FrameworkRenderType.type';
 import Language from './Language.type';
 
 type Settings = {
-	svgString: string;
-	componentString: string;
-	filesDropped: File[];
 	iconName: string;
 	filesDroppedSteps: FilesDroppedSteps;
-	frameworkRenderType: FrameworkRenderType;
-	currentFramework: Framework
+	framework: Framework
 	editorMode: Language;
-	filesConfigToDownload: {
+	render: FrameworkRenderType;
+	configToDownload: {
 		framework: Framework,
 		language: Language;
 	} | null;

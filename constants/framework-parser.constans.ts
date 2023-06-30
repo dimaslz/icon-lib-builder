@@ -1,4 +1,4 @@
-import ParserByFramework from '@/entity-type/ParserByFramework.type';
+import type ParserByFramework from '@/entity-type/ParserByFramework.type';
 
 const FRAMEWORK_PARSER: ParserByFramework = {
 	preact: 'babel',

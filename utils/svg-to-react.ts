@@ -1,6 +1,6 @@
 import { parse } from 'svg-parser';
 
-import { FrameworkName, LanguageFormat } from '@/entity-type';
+import type { FrameworkName, LanguageFormat } from '@/entity-type';
 import { getTemplate } from '@/templates';
 import svgChildrenToReact from '@/utils/svg-children-to-react';
 

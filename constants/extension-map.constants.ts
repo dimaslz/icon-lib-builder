@@ -1,4 +1,4 @@
-import ExtensionMap from '@/entity-type/ExtensionMap.type';
+import type ExtensionMap from '@/entity-type/ExtensionMap.type';
 
 const EXTENSION_MAP: ExtensionMap = {
 	preact: { 'js-v1': '.jsx', 'js-v2': '.jsx', ts: '.tsx' },
