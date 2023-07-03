@@ -17,6 +17,7 @@ export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
 		$event.preventDefault();
 		$event.stopPropagation();
 
+		console.log('DRAGIN', $event.dataTransfer?.items.length);
 		if ($event.dataTransfer?.items.length) {
 			setDragAndDrop(true);
 		}
@@ -38,6 +39,8 @@ export const DropZoneComponent: React.FC<Props> = ({ children, onDrop }) => {
 		$event.preventDefault();
 		$event.stopPropagation();
 
+		console.log('DROP A', $event.dataTransfer?.items.length);
+		console.log('DROP B', $event.dataTransfer?.files[0].name);
 		if ($event.dataTransfer?.items.length) {
 			onDrop($event, $event.dataTransfer.files);
 		}
