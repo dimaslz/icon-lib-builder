@@ -1,7 +1,7 @@
+import Editor from '@monaco-editor/react';
 import isSvg from 'is-svg';
-import debounce from 'lodash/debounce';
 
-import { DropZone, DynamicCodeEditor } from '@/components';
+import { DropZone } from '@/components';
 import { readFile } from '@/utils';
 
 
@@ -22,7 +22,9 @@ const SVGEditor = ({
 	svgIcon,
 	filesDropped,
 }: Props) => {
-	const _onChange = (value: string) => {
+	const _onChange = (value: string | undefined) => {
+		if (!value) return;
+
 		if (!value) {
 			onChange({
 				svgIcon: '',
@@ -89,13 +91,19 @@ const SVGEditor = ({
 								clean
 						</button>
 					)}
-					<DynamicCodeEditor
-						placeholder={initialPlaceholder}
-						name="source"
-						onChange={debounce(_onChange, 200)}
-						value={svgIcon}
-						onLoad={onLoad}
-					/>
+					<div className="relative h-full w-full">
+						{!svgIcon && <div className="pointer-events-none absolute z-10 flex h-full w-full items-center justify-center bg-transparent text-white">{ initialPlaceholder}</div>}
+							<Editor
+								options={{ minimap: { enabled: false } }}
+								value={svgIcon}
+								theme="vs-dark"
+								onMount={onLoad}
+								width="100%"
+								height="100%"
+								onChange={_onChange}
+								language={'html'}
+							/>
+					</div>
 				</div>
 			)}
 		</DropZone>

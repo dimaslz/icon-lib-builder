@@ -1,8 +1,8 @@
+import { Editor } from '@monaco-editor/react';
 import debounce from 'lodash/debounce';
 import { ChangeEvent, useMemo, useState } from 'react';
 
 import Api from '@/api';
-import { DynamicCodeEditor } from '@/components';
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
 import { FRAMEWORK_CONFIG } from '@/constants';
 import { FileToUpload, Framework, FrameworkRenderType, Language, Settings } from '@/entity-type';
@@ -247,6 +247,7 @@ const ComponentEditorView = ({
 											className={[
 												'mx-1 p-4 rounded-full hover:bg-gray-500 cursor-pointer my-2 bg-gray-700 text-center w-full',
 											].join(' ')}
+											aria-label={`${framework.label.toUpperCase()} framework`}
 											onClick={() => onClickFrameworkOption(framework)}
 										>
 											{framework.label.toUpperCase()}
@@ -312,6 +313,9 @@ const ComponentEditorView = ({
 												? 'bg-gray-400'
 												: 'bg-gray-700',
 										].join(' ')}
+										role="tab"
+										aria-label={`${framework.label.toUpperCase()} framework`}
+										aria-selected={framework.name === settings.framework.name}
 										onClick={() => onFrameworkChange(framework)}
 									>
 										{framework.icon && <framework.icon size="16" />}<span className="ml-1">{framework.label}</span>
@@ -355,13 +359,14 @@ const ComponentEditorView = ({
 					</div>
 
 					<div className="h-full">
-						<DynamicCodeEditor
-							placeholder="Here you will have your code formated in the framework as you want"
-							name="result"
+						<Editor
+							options={{ readOnly: true, minimap: { enabled: false } }}
 							value={component}
-							readOnly
-							mode={settings.editorMode}
-							onLoad={onLoad}
+							theme="vs-dark"
+							onMount={onLoad}
+							width="100%"
+							height="100%"
+							language={settings.editorMode}
 						/>
 					</div>
 				</div>

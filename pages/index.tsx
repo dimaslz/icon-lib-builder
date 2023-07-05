@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import Api from '@/api';
 import {
@@ -24,6 +24,10 @@ const Home = (): JSX.Element => {
 
 	const [filesDropped, updateFilesDropped] = useState<File[]>([]);
 	const [componentSettings, updateComponentSettings] = useState<Settings>(INITIAL_SETTINGS);
+
+	const isLoading = useMemo(() => (
+		!sourceEditorReady && !resultEditorReady
+	), [sourceEditorReady, resultEditorReady]);
 
 	const requestToFormat = async (
 		value: string,
@@ -196,25 +200,31 @@ const Home = (): JSX.Element => {
 
 			<main className="flex w-full grow flex-col items-center justify-start">
 				<div className="relative flex h-full w-full">
-					{!sourceEditorReady && !resultEditorReady ? (
-						<FullScreenLoading />
-					) : null}
+					{isLoading ? <FullScreenLoading /> : null}
 
-					<SVGEditor
-						onLoad={onLoadSourceCodeEditor}
-						onChange={onChangeSvgEditor}
-						svgIcon={svgIcon}
-						filesDropped={filesDropped}
-					/>
+					<div className={[
+							isLoading ? 'hidden' : 'visible',
+							'flex w-full h-full',
+						].join(' ')}
+						aria-hidden={isLoading}
+						data-testid="workzone"
+					>
+						<SVGEditor
+							onLoad={onLoadSourceCodeEditor}
+							onChange={onChangeSvgEditor}
+							svgIcon={svgIcon}
+							filesDropped={filesDropped}
+						/>
 
-					<ComponentEditorView
-						onLoad={onLoadResultCodeEditor}
-						onChange={onChangeComponentEditor}
-						filesDropped={filesDropped}
-						svgIcon={svgIcon}
-						component={component}
-						settings={componentSettings}
-					/>
+						<ComponentEditorView
+							onLoad={onLoadResultCodeEditor}
+							onChange={onChangeComponentEditor}
+							filesDropped={filesDropped}
+							svgIcon={svgIcon}
+							component={component}
+							settings={componentSettings}
+						/>
+					</div>
 				</div>
 			</main>
 
