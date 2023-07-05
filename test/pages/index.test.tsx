@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import * as React from 'react';
 
-import Index from './index';
+import Index from '@/pages/index';
 
 vi.mock('@/layouts/SVGEditor.layout', () => ({
 	default: () => <div>svg-editor</div>,

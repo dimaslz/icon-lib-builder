@@ -12,6 +12,7 @@ export default defineConfig({
 		exclude: [
 			'**/playwright-tests',
 			'**/node_modules',
+			'**/.next',
 		],
 	},
 	resolve: {
