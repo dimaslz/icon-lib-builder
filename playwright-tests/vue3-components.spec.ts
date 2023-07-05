@@ -23,9 +23,9 @@ test('Converts to Vue3 component', async ({ page }) => {
   }, buffer);
 
   await test.step('Can see text drag and drop layer', async () => {
-    await page.dispatchEvent('div.Source', 'dragenter', { dataTransfer });
-
     await page.waitForSelector('[data-testid=workzone]');
+
+    await page.dispatchEvent('div.Source', 'dragenter', { dataTransfer });
 
     expect(await page.getByText('drop file here')).toBeVisible();
   });
@@ -40,10 +40,7 @@ test('Converts to Vue3 component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForSelector('div.Source');
-    await page.waitForSelector('div.Result');
-
-    await page.waitForSelector('div.Source .view-lines');
+    await page.waitForTimeout(500);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -52,7 +49,7 @@ test('Converts to Vue3 component', async ({ page }) => {
     expect(content?.replace(/\s/g, ' ')).toBe(expected);
   });
 
-  await test.step('Click on Vue2 framework', async () => {
+  await test.step('Click on Vue3 framework', async () => {
     const vue3Button = await page.getByRole('tab', { name: /^vue 3 framework/i });
     (await vue3Button).click();
     await page.waitForTimeout(500);

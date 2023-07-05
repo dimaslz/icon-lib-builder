@@ -41,12 +41,7 @@ test('Converts to React component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForSelector('div.Source');
-    await page.waitForSelector('div.Result');
-
-    await page.waitForSelector('div.Source .view-lines');
-
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(500);
 
     const content = (await page.textContent('div.Source .view-lines'));
 

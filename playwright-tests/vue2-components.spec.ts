@@ -23,9 +23,9 @@ test('Converts to Vue2 component', async ({ page }) => {
   }, buffer);
 
   await test.step('Can see text drag and drop layer', async () => {
-    await page.dispatchEvent('div.Source', 'dragenter', { dataTransfer });
-
     await page.waitForSelector('[data-testid=workzone]');
+
+    await page.dispatchEvent('div.Source', 'dragenter', { dataTransfer });
 
     expect(await page.getByText('drop file here')).toBeVisible();
   });
@@ -40,10 +40,7 @@ test('Converts to Vue2 component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForSelector('div.Source');
-    await page.waitForSelector('div.Result');
-
-    await page.waitForSelector('div.Source .view-lines');
+    await page.waitForTimeout(500);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
