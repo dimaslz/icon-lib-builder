@@ -6,8 +6,8 @@ const INITIAL_SETTINGS: Settings = {
 	iconName: 'Icon',
 	framework: FRAMEWORK_CONFIG[0],
 	render: {
-		label: '',
-		name: '',
+		label: 'Javascript v1',
+		name: 'js-v1',
 		mode: 'javascript',
 	},
 	filesDroppedSteps: {
