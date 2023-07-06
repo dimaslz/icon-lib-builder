@@ -295,6 +295,17 @@ const ComponentEditorView = ({
 				</div>
 			) : (
 				<div className="flex h-full flex-col">
+					{component && (
+						<button
+							onClick={onClickCopyResult}
+							className={[
+								'px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none mt-8',
+							].join(' ')}
+						>
+							copy
+						</button>
+					)}
+
 					<FrameworkButtonList
 						frameworks={FRAMEWORK_CONFIG}
 						onClick={onFrameworkChange}
