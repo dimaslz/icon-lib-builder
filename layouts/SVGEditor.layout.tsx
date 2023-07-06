@@ -1,5 +1,7 @@
 import Editor from '@monaco-editor/react';
 import isSvg from 'is-svg';
+import isEqual from 'lodash.isequal';
+import { memo } from 'react';
 
 import { DropZone } from '@/components';
 import { readFile } from '@/utils';
@@ -110,4 +112,18 @@ const SVGEditor = ({
 	);
 };
 
-export default SVGEditor;
+export default memo(SVGEditor, (prevProps, nextProps) => {
+	const svgIsEmpty = !prevProps.svgIcon && !nextProps.svgIcon;
+	const svgIsEqual = isEqual(prevProps.svgIcon, nextProps.svgIcon);
+	const filesAreEqual = isEqual(prevProps.filesDropped, nextProps.filesDropped);
+
+	if (svgIsEmpty && filesAreEqual) {
+		return true;
+	}
+
+	if (!svgIsEmpty && svgIsEqual) {
+		return true;
+	}
+
+	return false;
+});

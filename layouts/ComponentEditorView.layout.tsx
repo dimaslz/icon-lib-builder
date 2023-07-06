@@ -1,6 +1,6 @@
 import { Editor } from '@monaco-editor/react';
 import debounce from 'lodash/debounce';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
 import Api from '@/api';
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
@@ -38,7 +38,11 @@ const ComponentEditorView = ({
 	settings,
 }: Props) => {
 
-	const [iconName, updateIconName] = useState(settings.iconName);
+	const [iconName, updateIconName] = useState<string>('');
+
+	useEffect(() => {
+		updateIconName(settings.iconName);
+	}, [settings.iconName]);
 
 	const onClickLanguageOption = (language: Language) => {
 		if (!settings.configToDownload) return;
@@ -107,7 +111,7 @@ const ComponentEditorView = ({
 		});
 	};
 
-	async function downloadIcons() {
+	const downloadIcons = async () => {
 		if (!settings.configToDownload?.framework) return;
 
 		const language = ((settings.configToDownload.framework.types || [])
@@ -158,9 +162,9 @@ const ComponentEditorView = ({
 				},
 			},
 		});
-	}
+	};
 
-	async function downloadFile(filename: string) {
+	const downloadFile = async (filename: string) => {
 		try {
 			const blob = await Api.downloadFilename(filename);
 
@@ -170,7 +174,7 @@ const ComponentEditorView = ({
 				message: 'Problem uploading files',
 			});
 		}
-	}
+	};
 
 	const onFrameworkChange = async (framework: Framework, type?: FrameworkRenderType) => {
 		onChange({

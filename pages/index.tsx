@@ -133,7 +133,18 @@ const Home = (): JSX.Element => {
 			return;
 		};
 
-		if (!svgIcon) return;
+		console.log('svgIcon', svgIcon);
+		if (!svgIcon) {
+			updateSvgIcon('');
+			updateComponent('');
+			updateFilesDropped([]);
+			console.log('AAA', INITIAL_SETTINGS);
+			await updateComponentSettings(JSON.parse(JSON.stringify({
+				...INITIAL_SETTINGS,
+			})));
+
+			return;
+		};
 
 		const requestResponse = await requestToFormat(
 			svgIcon,
@@ -144,7 +155,6 @@ const Home = (): JSX.Element => {
 
 		if (!requestResponse) return;
 
-		await updateSvgIcon(requestResponse.svgIcon);
 		await updateComponent(requestResponse.component);
 
 		await updateComponentSettings({
@@ -166,6 +176,8 @@ const Home = (): JSX.Element => {
 		if (!svgIcon) {
 			updateSvgIcon('');
 			updateComponent('');
+
+			await updateComponentSettings(INITIAL_SETTINGS);
 
 			return;
 		};
