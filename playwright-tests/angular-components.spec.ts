@@ -5,7 +5,7 @@ import fs from 'fs';
 test.use({ viewport: { width: 1024, height: 1000 } });
 
 test('Converts to Angular component', async ({ page }) => {
-  const buffer = fs.readFileSync(`${__dirname}/dummy.svg`, { encoding: 'utf8' });
+  const buffer = fs.readFileSync(`${__dirname}/files/dummy.svg`, { encoding: 'utf8' });
 
   await test.step('Go to page', async () => {
     await page.goto('/');
@@ -55,7 +55,10 @@ test('Converts to Angular component', async ({ page }) => {
 
     await page.waitForTimeout(1000);
 
-    expect(await page.getByRole('tab', { selected: true })).toBeVisible();
+    expect(await page.getByRole(
+      'tab',
+      { name: /^angular framework/i, selected: true },
+    )).toBeVisible();
   });
 
   await test.step('Component Editor has the expected content (Angular typescript)', async () => {

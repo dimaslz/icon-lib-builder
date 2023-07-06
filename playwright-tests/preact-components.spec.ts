@@ -5,7 +5,7 @@ import fs from 'fs';
 test.use({ viewport: { width: 1024, height: 1000 } });
 
 test('Converts to React component', async ({ page }) => {
-  const buffer = fs.readFileSync(`${__dirname}/dummy.svg`, { encoding: 'utf8' });
+  const buffer = fs.readFileSync(`${__dirname}/files/dummy.svg`, { encoding: 'utf8' });
 
   await test.step('Go to page', async () => {
     await page.goto('/');
@@ -56,7 +56,10 @@ test('Converts to React component', async ({ page }) => {
 
     await page.waitForTimeout(500);
 
-    expect(await page.getByRole('tab', { selected: true })).toBeVisible();
+    expect(await page.getByRole(
+      'tab',
+      { name: /^preact framework/i, selected: true }),
+    ).toBeVisible();
   });
 
   await test.step('Component Editor has the expected content (Preact js-v1)', async () => {

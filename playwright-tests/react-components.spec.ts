@@ -5,7 +5,7 @@ import fs from 'fs';
 test.use({ viewport: { width: 1024, height: 1000 } });
 
 test('Converts to React component', async ({ page }) => {
-  const buffer = fs.readFileSync(`${__dirname}/dummy.svg`, { encoding: 'utf8' });
+  const buffer = fs.readFileSync(`${__dirname}/files/dummy.svg`, { encoding: 'utf8' });
 
   await test.step('Go to page', async () => {
     await page.goto('/');
@@ -59,7 +59,10 @@ test('Converts to React component', async ({ page }) => {
     const reactButton = await page.getByRole('tab', { name: /^react framework/i });
     (await reactButton).click();
 
-    expect(await page.getByRole('tab', { selected: true })).toBeVisible();
+    expect(await page.getByRole(
+      'tab',
+      { name: /^react framework/i, selected: true },
+    )).toBeVisible();
   });
 
   await test.step('Component Editor has the expected content (React js-v1)', async () => {
