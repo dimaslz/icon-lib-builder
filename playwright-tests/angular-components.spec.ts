@@ -61,6 +61,8 @@ test('Converts to Angular component', async ({ page }) => {
   await test.step('Component Editor has the expected content (Angular typescript)', async () => {
     const content = (await page.textContent('div.Result .view-lines'));
 
+    await page.waitForTimeout(1000);
+
     const expected = 'import { Component, Input } from "@angular/core";@Component({  selector: "icon",  template: `<svg    xmlns="http://www.w3.org/2000/svg"    viewBox="0 0 14 14"    style="width: {{ size }}px; height: {{ size }}px; color: {{ color }}; {{      style    }} stroke-width: {{ stroke }}"  >    <path      fill="none"      stroke="currentColor"      stroke-linecap="round"      stroke-linejoin="round"      d="m13 6.81-5.95 6a2.48 2.48 0 0 1-3.54 0L1.73 11a2.53 2.53 0 0 1 0-3.55l6.34-6.36a2 2 0 0 1 2.84 0l.71.71a2 2 0 0 1 0 2.84L6 10.28a1 1 0 0 1-1.42 0l-.35-.36a1 1 0 0 1 0-1.42L8 4.76"    ></path>  </svg>`,})export class IconComponent {  @Input() style: string = "";  @Input() size: number | string = 24;  @Input() stroke: number | string = 24;  @Input() color: string = "";  constructor() {}}';
 
     expect(content?.replace(/\s/g, ' ')).toBe(expected);

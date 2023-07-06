@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const isCi = Boolean(process.env.CI);
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -16,13 +18,13 @@ export default defineConfig({
   fullyParallel: true,
 
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: !!isCi,
 
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: isCi ? 2 : 0,
 
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: isCi ? 1 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
@@ -31,12 +33,16 @@ export default defineConfig({
   use: {
     viewport: { width: 1024, height: 1000 },
 
+    headless: isCi,
+
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-    baseURL: process.env.CI ? 'https://svg-icon-2-fw-component.dimaslz.dev' : 'http://localhost:3000',
+    baseURL: isCi ? 'https://svg-icon-2-fw-component.dimaslz.dev' : 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    video: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -81,6 +87,6 @@ export default defineConfig({
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
+  //   reuseExistingServer: !isCi,
   // },
 });
