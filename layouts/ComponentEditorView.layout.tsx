@@ -3,8 +3,8 @@ import debounce from 'lodash/debounce';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
 import Api from '@/api';
-import { FrameworkButtonList } from '@/components';
-import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
+import { FrameworkButtonList, FrameworkRenderList } from '@/components';
+import { CrossIcon } from '@/components/icons';
 import { FRAMEWORK_CONFIG } from '@/constants';
 import { FileToUpload, Framework, FrameworkRenderType, Language, Settings } from '@/entity-type';
 import { autoDownload, copyToClipboard, eventBus, readFile } from '@/utils';
@@ -295,59 +295,29 @@ const ComponentEditorView = ({
 				</div>
 			) : (
 				<div className="flex h-full flex-col">
-					{component && (
-						<button
-							onClick={onClickCopyResult}
-							className={[
-								'px-3 py-2 rounded-sm absolute right-10 top-24 z-10 bg-gray-900 text-white hover:opacity-70 focus:outline-none',
-								settings.framework?.types?.length ? 'mt-8' : '',
-							].join(' ')}
-						>
-							copy
-						</button>
-					)}
-
 					<FrameworkButtonList
 						frameworks={FRAMEWORK_CONFIG}
 						onClick={onFrameworkChange}
 						selected={settings.framework.name}
 					/>
 
-					<div className="IconName">
+					<div className="IconName pb-2">
 						<input
 							type="text"
 							className="m-1 w-full bg-gray-400 p-1 text-sm"
 							value={iconName}
 							onInput={onInput}
 						/>
+						<FrameworkRenderList
+							types={settings.framework?.types}
+							onChange={onFrameworkChange}
+							selected={settings.render?.name}
+							framework={settings.framework}
+							className="h-8"
+						/>
 					</div>
 
-					<div className="flex pb-1">
-						{settings.framework?.types?.map(
-							(type, key) => (
-								<button
-									className={[
-										'text-xs text-white mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
-										type.name === settings.render.name
-											? 'bg-gray-400'
-											: 'bg-gray-700',
-									].join(' ')}
-									key={`${key}f.label`}
-									onClick={() => onFrameworkChange(settings.framework, type)}
-								>
-									{['ts', 'compressed'].includes(type.name) &&
-										<span><TSIcon className="text-blue-500" /></span>
-									}
-									{type.name.includes('js') &&
-										<span><JSIcon className="text-yellow-500" /></span>
-									}
-									<span className="ml-2">{type.label}</span>
-								</button>
-							),
-						)}
-					</div>
-
-					<div className="h-full">
+					<div className="relative h-full">
 						<Editor
 							options={{ readOnly: true, minimap: { enabled: false } }}
 							value={component}
