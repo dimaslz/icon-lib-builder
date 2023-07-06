@@ -4,7 +4,7 @@ import fs from 'fs';
 
 test.use({ viewport: { width: 1024, height: 1000 } });
 
-test('Converts to Vue3 component', async ({ page }) => {
+test('Converts to Svelte component', async ({ page }) => {
   const buffer = fs.readFileSync(`${__dirname}/dummy.svg`, { encoding: 'utf8' });
 
   await test.step('Go to page', async () => {

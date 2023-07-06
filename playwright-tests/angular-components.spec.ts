@@ -40,7 +40,7 @@ test('Converts to Angular component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -52,7 +52,8 @@ test('Converts to Angular component', async ({ page }) => {
   await test.step('Click on Angular framework', async () => {
     const angularButton = await page.getByRole('tab', { name: /^angular framework/i });
     (await angularButton).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     expect(await page.getByRole('tab', { selected: true })).toBeVisible();
   });

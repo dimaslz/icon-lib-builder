@@ -8,7 +8,8 @@ on:
     paths-ignore:
       - '.github/workflows/fito-deploy-on-pull-request.yml'
       - '**/*.md'
-      - '**/*.spec.{js,ts}'
+      - '**/*.spec.ts'
+      - '**/*.spec.js'
 concurrency:
   group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: false
