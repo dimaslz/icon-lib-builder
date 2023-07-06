@@ -40,7 +40,7 @@ test('Converts to Vue3 component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -52,7 +52,8 @@ test('Converts to Vue3 component', async ({ page }) => {
   await test.step('Click on Vue3 framework', async () => {
     const vue3Button = await page.getByRole('tab', { name: /^vue 3 framework/i });
     (await vue3Button).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     expect(await page.getByRole(
       'tab',
@@ -70,7 +71,8 @@ test('Converts to Vue3 component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Vue3 typescript)', async () => {
     (await page.getByText('TypeScript')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 
@@ -81,7 +83,8 @@ test('Converts to Vue3 component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Vue3 typescript)', async () => {
     (await page.getByText('TS Compressed')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 

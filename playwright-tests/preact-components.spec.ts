@@ -41,7 +41,7 @@ test('Converts to React component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -54,7 +54,7 @@ test('Converts to React component', async ({ page }) => {
     const preactButton = await page.getByRole('tab', { name: /^preact framework/i });
     (await preactButton).click();
 
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     expect(await page.getByRole(
       'tab',
@@ -72,7 +72,8 @@ test('Converts to React component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Preact js-v2)', async () => {
     (await page.getByText('Javascript v2')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 
@@ -83,7 +84,8 @@ test('Converts to React component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Preact typescript)', async () => {
     (await page.getByText('Typescript')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 

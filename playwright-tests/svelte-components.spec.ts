@@ -40,7 +40,7 @@ test('Converts to Svelte component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -52,7 +52,8 @@ test('Converts to Svelte component', async ({ page }) => {
   await test.step('Click on Svelte framework', async () => {
     const svelteButton = await page.getByRole('tab', { name: /^svelte framework/i });
     (await svelteButton).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     expect(await page.getByRole(
       'tab',
@@ -70,7 +71,8 @@ test('Converts to Svelte component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Svelte typescript)', async () => {
     (await page.getByText('TypeScript')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 

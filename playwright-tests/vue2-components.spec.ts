@@ -40,7 +40,7 @@ test('Converts to Vue2 component', async ({ page }) => {
   });
 
   await test.step('SVG Editor has the expected content', async () => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Source .view-lines'));
 
@@ -52,7 +52,8 @@ test('Converts to Vue2 component', async ({ page }) => {
   await test.step('Click on Vue2 framework', async () => {
     const vue2Button = await page.getByRole('tab', { name: /^vue 2 framework/i });
     (await vue2Button).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     expect(await page.getByRole(
       'tab',
@@ -71,7 +72,8 @@ test('Converts to Vue2 component', async ({ page }) => {
 
   await test.step('Component Editor has the expected content (Vue2 typescript)', async () => {
     (await page.getByText('Typescript')).click();
-    await page.waitForTimeout(500);
+
+    await page.waitForTimeout(1000);
 
     const content = (await page.textContent('div.Result .view-lines'));
 
