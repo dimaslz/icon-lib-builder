@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 
 import Api from '@/api';
+import { FrameworkButtonList } from '@/components';
 import { CrossIcon, JSIcon, TSIcon } from '@/components/icons';
 import { FRAMEWORK_CONFIG } from '@/constants';
 import { FileToUpload, Framework, FrameworkRenderType, Language, Settings } from '@/entity-type';
@@ -306,28 +307,12 @@ const ComponentEditorView = ({
 						</button>
 					)}
 
-					<div className="Result__format">
-						<ul className="flex bg-gray-700 p-2 text-xs text-white">
-							{FRAMEWORK_CONFIG.map((framework, key) => (
-								<li key={key}>
-									<button
-										className={[
-											'mx-1 p-2 rounded-md hover:bg-gray-500 cursor-pointer flex items-center',
-											framework.name === settings.framework.name
-												? 'bg-gray-400'
-												: 'bg-gray-700',
-										].join(' ')}
-										role="tab"
-										aria-label={`${framework.label.toUpperCase()} framework`}
-										aria-selected={framework.name === settings.framework.name}
-										onClick={() => onFrameworkChange(framework)}
-									>
-										{framework.icon && <framework.icon size="16" />}<span className="ml-1">{framework.label}</span>
-									</button>
-								</li>
-							))}
-						</ul>
-					</div>
+					<FrameworkButtonList
+						frameworks={FRAMEWORK_CONFIG}
+						onClick={onFrameworkChange}
+						selected={settings.framework.name}
+					/>
+
 					<div className="IconName">
 						<input
 							type="text"

@@ -133,12 +133,11 @@ const Home = (): JSX.Element => {
 			return;
 		};
 
-		console.log('svgIcon', svgIcon);
 		if (!svgIcon) {
 			updateSvgIcon('');
 			updateComponent('');
 			updateFilesDropped([]);
-			console.log('AAA', INITIAL_SETTINGS);
+
 			await updateComponentSettings(JSON.parse(JSON.stringify({
 				...INITIAL_SETTINGS,
 			})));
