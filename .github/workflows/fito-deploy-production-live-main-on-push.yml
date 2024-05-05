@@ -23,12 +23,12 @@
       steps: 
         - 
           name: "Checkout under $GITHUB_WORKSPACE"
-          uses: "actions/checkout@v4"
+          uses: "actions/checkout@main"
           with: 
             ref: "main"
         - 
           name: "Set up NodeJS"
-          uses: "actions/setup-node@v3"
+          uses: "actions/setup-node@v4"
           with: 
             node-version: "18.17"
         - 
@@ -39,7 +39,7 @@
           run: "yarn install"
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*"
             key: "${{ github.sha }}-cache"
@@ -50,13 +50,13 @@
       steps: 
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*"
             key: "${{ github.sha }}-cache"
         - 
           name: "Set up NodeJS"
-          uses: "actions/setup-node@v3"
+          uses: "actions/setup-node@v4"
           with: 
             node-version: "18.17"
         - 
@@ -64,7 +64,7 @@
           run: "yarn build"
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*\n.next\nnode_modules\npackage.json\npublic"
             key: "${{ github.sha }}-cache"
@@ -75,7 +75,7 @@
       steps: 
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*\n.next\nnode_modules\npackage.json\npublic"
             key: "${{ github.sha }}-cache"
@@ -87,7 +87,7 @@
           run: "mkdir -p ~/.ssh/\necho \"$SSH_KEY\" > ~/.ssh/prod.key\nchmod 600 ~/.ssh/prod.key\ncat >>~/.ssh/config <<END\nHost prod\n  HostName $SSH_HOST\n  User $SSH_USER\n  IdentityFile ~/.ssh/prod.key\n  StrictHostKeyChecking no\nEND"
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*\n.next\nnode_modules\npackage.json\npublic"
             key: "${{ github.sha }}-cache"
@@ -104,7 +104,7 @@
       steps: 
         - 
           name: "Cache"
-          uses: "actions/cache@v3"
+          uses: "actions/cache@v4"
           with: 
             path: "./*\n.next\nnode_modules\npackage.json\npublic"
             key: "${{ github.sha }}-cache"
@@ -119,7 +119,7 @@
           run: "currentImageId=`ssh prod \"docker images --format=\\\"{{.Repository}} {{.ID}}\\\" | grep \\\"_svg-icon-2-fw-component.dimaslz.dev\\\" || echo \\\"\\\"\"` && currentImageId=`echo $currentImageId | grep -Po \"\\s(.*?$)\" | tr -d \"\\n\" || echo \"\"` && echo \"currentImageId=$currentImageId\" >> $GITHUB_ENV"
         - 
           name: "run"
-          run: "newContainerID=`ssh prod \"docker run --name ${{ env.ATTEMPTS }}_${{ github.sha }}_svg-icon-2-fw-component.dimaslz.dev_production_container -d ${{ env.ATTEMPTS }}_${{ github.sha }}_svg-icon-2-fw-component.dimaslz.dev_production_image \"` && echo \"newContainerID=$newContainerID\" >> $GITHUB_ENV"
+          run: "newContainerID=`ssh prod \"docker run --restart=always --name ${{ env.ATTEMPTS }}_${{ github.sha }}_svg-icon-2-fw-component.dimaslz.dev_production_container -d ${{ env.ATTEMPTS }}_${{ github.sha }}_svg-icon-2-fw-component.dimaslz.dev_production_image\"` && echo \"newContainerID=$newContainerID\" >> $GITHUB_ENV"
         - 
           name: "get container IP"
           run: "newContainerIP=`ssh prod \"docker inspect -f \\\"{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}\\\" ${{ env.newContainerID }}\"` && echo \"newContainerIP=$newContainerIP\" >> $GITHUB_ENV"
@@ -132,13 +132,7 @@
           run: "echo \"container is not running\" && exit 1"
         - 
           name: "setup nginx config"
-          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx-certbot-1-step.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
-        - 
-          name: "create certificates"
-          run: "ssh prod \"mkdir -p /usr/share/nginx/html/svg-icon-2-fw-component.dimaslz.dev && echo \\\"1\\\" | certbot certonly --webroot -w /usr/share/nginx/html/svg-icon-2-fw-component.dimaslz.dev -d svg-icon-2-fw-component.dimaslz.dev --email ${{ secrets.FITO_ENV_USER_EMAIL }} --agree-tos --no-eff-email && nginx -t && systemctl restart nginx\""
-        - 
-          name: "setup nginx config"
-          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx-certbot-2-step.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
+          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
         - 
           name: "Container is not running"
           if: "${{ failure() }}"
