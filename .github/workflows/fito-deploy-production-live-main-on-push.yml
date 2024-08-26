@@ -132,7 +132,13 @@
           run: "echo \"container is not running\" && exit 1"
         - 
           name: "setup nginx config"
-          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
+          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx-certbot-1-step.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
+        - 
+          name: "create certificates"
+          run: "ssh prod \"mkdir -p /usr/share/nginx/html/svg-icon-2-fw-component.dimaslz.dev && echo \\\"1\\\" | certbot certonly --webroot -w /usr/share/nginx/html/svg-icon-2-fw-component.dimaslz.dev -d svg-icon-2-fw-component.dimaslz.dev --email ${{ secrets.FITO_ENV_USER_EMAIL }} --agree-tos --no-eff-email && nginx -t && systemctl restart nginx\""
+        - 
+          name: "setup nginx config"
+          run: "wget https://statics.dimaslz.dev/fito/nginx/static-config.nginx-certbot-2-step.tmpl -O nginx.tmpl\n\texport SERVER_NAME=\"svg-icon-2-fw-component.dimaslz.dev\"\n\texport SERVER_URL=\"http://${{ env.newContainerIP }}:${{ env.newContainerPort }}\"\n\tenvsubst < nginx.tmpl > svg-icon-2-fw-component.dimaslz.dev\n\tscp svg-icon-2-fw-component.dimaslz.dev prod:/etc/nginx/sites-enabled/svg-icon-2-fw-component.dimaslz.dev\n\tssh prod \"nginx -t && systemctl restart nginx\""
         - 
           name: "Container is not running"
           if: "${{ failure() }}"
